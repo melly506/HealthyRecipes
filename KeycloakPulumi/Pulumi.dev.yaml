@@ -3,3 +3,4 @@ config:
   keycloak:clientId: admin-cli
   keycloak:username: admin
   keycloak:password: admin
+encryptionsalt: v1:n5jO5lnTH2Y=:v1:drSUgVNXSBc9GO98:i6s/uE9yGso6jx3LMwxex30ghg419A==
