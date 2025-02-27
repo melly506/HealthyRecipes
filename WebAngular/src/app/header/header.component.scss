@@ -1,0 +1,118 @@
+/* Стилі для header */
+header {
+    display: flex; /* Робимо header флекс-контейнером */
+    justify-content: space-between; /* Розташовуємо елементи по краях */
+    align-items: center; /* Вирівнюємо елементи по центру вертикально */
+    padding: 10px 20px; /* Відступи всередині header */
+    background-color: #ffffff; /* Білий фон header */
+  }
+    /* Стилі для навігації */
+  nav {
+    display: flex; /* Робимо навігацію горизонтальною */
+    gap: 20px; /* Відступ між пунктами меню */
+  }
+  
+  nav a {
+    text-decoration: none; /* Прибираємо підкреслення посилань */
+    color: #333333; /* Колір тексту посилань */
+    font-weight: bold; /* Жирний шрифт */
+    font-size: 16px; /* Розмір шрифту */
+    transition: color 0.3s ease; /* Плавна зміна кольору при наведенні */
+  }
+  
+  nav a:hover {
+    color: #ff6b6b; /* Колір тексту при наведенні */
+  }
+
+  /* Стилі для логотипу */
+.logo a {
+    text-decoration: none;
+  }
+  
+  .logo a img {
+    height: 50px;
+  }
+
+  
+  /* Стилі для іконок */
+  .icons {
+    display: flex; /* Робимо блок іконок флекс-контейнером */
+    gap: 15px; /* Відступ між іконками */
+  }
+  
+  .icons a {
+    position: relative; /* Для позиціонування підказки */
+    text-decoration: none;
+  }
+  
+  .icons a img {
+    width: 24px; /* Ширина іконок */
+    height: 24px; /* Висота іконок */
+    transition: transform 0.3s ease; /* Плавна анімація при наведенні */
+  }
+  
+  .icons a:hover img {
+    transform: scale(1.1); /* Збільшення іконки при наведенні */
+  }
+  
+  /* Стилі для підказок (tooltips) */
+  .icons a .tooltip {
+    position: absolute; /* Абсолютне позиціонування */
+    top: 100%; /* Розташовуємо підказку під іконкою */
+    left: 50%; /* Центруємо підказку */
+    transform: translateX(-50%); /* Точне центрування */
+    background-color: #333; /* Колір фону підказки */
+    color: #fff; /* Колір тексту */
+    font-size: 12px; /* Розмір шрифту */
+    padding: 5px 10px; /* Відступи всередині підказки */
+    border-radius: 4px; /* Закруглені кути */
+    white-space: nowrap; /* Забороняємо перенесення тексту */
+    opacity: 0; /* Приховуємо підказку за замовчуванням */
+    visibility: hidden; /* Приховуємо підказку */
+    transition: opacity 0.1s ease, visibility 0.1s ease;/* Плавна поява */
+  }
+  
+  .icons a:hover .tooltip {
+    opacity: 1; /* Показуємо підказку */
+    visibility: visible; /* Робимо підказку видимою */
+  }
+  
+  /* Стрілочка для підказки */
+  .icons a .tooltip::before {
+    content: "";
+    position: absolute;
+    bottom: 100%; /* Розташовуємо стрілочку над підказкою */
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent #333 transparent; /* Стрілочка вказує вниз */
+  }
+  /* Стилі для підказок іконок */
+.icons a .tooltip {
+    position: absolute;
+    top: calc(100% + 10px); /* Підказка під іконкою */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.1s ease, visibility 0.1s ease;
+  }
+  
+  /* Стрілочка для підказок іконок */
+  .icons a .tooltip::before {
+    content: "";
+    position: absolute;
+    bottom: 100%; /* Стрілочка над підказкою */
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent #333 transparent; /* Стрілочка вказує вгору */
+  }
