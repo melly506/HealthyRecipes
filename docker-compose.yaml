@@ -55,7 +55,6 @@ services:
       - "50749:14268"
       - "50750:14269"
       - "50751:9411"
-
         
 volumes:
   # compose volumes marker - do not delete
