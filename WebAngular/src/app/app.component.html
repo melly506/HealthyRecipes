@@ -16,7 +16,10 @@
 <button type="button" (click)="test()">TEST</button>
 
 <h1>{{userInfo.firstName}} {{userInfo.lastName}}</h1>
-@for(item of items; track item.name){
+
+<h2>рецепт з бази {{item?.name}}</h2>
+
+@for(item of items; track item.id){
     <p>
         {{item.name}} / {{item.calories}}
     </p>

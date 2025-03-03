@@ -16,6 +16,7 @@ export class AppComponent {
   #ingredients = inject(IngredientsService);
   userInfo: any = {};
   items: any[] = [];
+  item: any;
   constructor(private readonly keycloak: Keycloak) {}
 
   login() {
@@ -30,6 +31,9 @@ export class AppComponent {
     this.userInfo = await this.keycloak.loadUserProfile();
     this.#ingredients.getIngredients().subscribe(response => {
       this.items = response;
+    });
+    this.#ingredients.getIngredientById('c6434a10-7db4-4600-b987-99d60315d039').subscribe(response =>{
+      this.item = response;
     });
   }
 }
