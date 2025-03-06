@@ -1,6 +1,0 @@
-config:
-  keycloak:url: http://localhost:3255
-  keycloak:clientId: admin-cli
-  keycloak:username: admin
-  keycloak:password: admin
-encryptionsalt: v1:uJtS9hhqjYw=:v1:L3BPReLf6MxDa+Xe:kIs6I2D+ik/a3jol1adzyo96R//vyw==
