@@ -83,8 +83,8 @@ public class Recipe : BaseEntity
         newRecipe.CookingTime = recipeForCreation.CookingTime;
         newRecipe.Description = recipeForCreation.Description;
         newRecipe.Instructions = recipeForCreation.Instructions;
-        newRecipe.LikesCount = recipeForCreation.LikesCount;
-        newRecipe.IsDraft = recipeForCreation.IsDraft;
+        newRecipe.LikesCount = 0;
+        newRecipe.IsDraft = false;
 
         newRecipe.QueueDomainEvent(new RecipeCreated(){ Recipe = newRecipe });
         
@@ -98,22 +98,10 @@ public class Recipe : BaseEntity
         CookingTime = recipeForUpdate.CookingTime;
         Description = recipeForUpdate.Description;
         Instructions = recipeForUpdate.Instructions;
-        LikesCount = recipeForUpdate.LikesCount;
-        IsDraft = recipeForUpdate.IsDraft;
+        LikesCount = 0;
+        IsDraft = false;
 
         QueueDomainEvent(new RecipeUpdated(){ Id = Id });
-        return this;
-    }
-
-    public Recipe AddRecipeIngridient(RecipeIngridient recipeIngridient)
-    {
-        _recipeIngridients.Add(recipeIngridient);
-        return this;
-    }
-    
-    public Recipe RemoveRecipeIngridient(RecipeIngridient recipeIngridient)
-    {
-        _recipeIngridients.RemoveAll(x => x.Id == recipeIngridient.Id);
         return this;
     }
 

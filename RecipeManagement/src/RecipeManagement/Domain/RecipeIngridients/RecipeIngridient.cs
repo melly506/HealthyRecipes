@@ -18,6 +18,9 @@ public class RecipeIngridient : BaseEntity
 
     public Ingredient Ingredient { get; }
 
+    public Guid RecipeId { get; set; }
+    public Guid IngredientId { get; set; }
+
     // Add Props Marker -- Deleting this comment will cause the add props utility to be incomplete
 
 
@@ -26,6 +29,8 @@ public class RecipeIngridient : BaseEntity
         var newRecipeIngridient = new RecipeIngridient();
 
         newRecipeIngridient.Count = recipeIngridientForCreation.Count;
+        newRecipeIngridient.RecipeId = recipeIngridientForCreation.RecipeId;
+        newRecipeIngridient.IngredientId = recipeIngridientForCreation.IngredientId;
 
         newRecipeIngridient.QueueDomainEvent(new RecipeIngridientCreated(){ RecipeIngridient = newRecipeIngridient });
         

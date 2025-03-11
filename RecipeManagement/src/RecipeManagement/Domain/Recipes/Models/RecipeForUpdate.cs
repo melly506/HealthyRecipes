@@ -9,7 +9,4 @@ public sealed record RecipeForUpdate
     public int CookingTime { get; set; }
     public string Description { get; set; }
     public string Instructions { get; set; }
-    public int LikesCount { get; set; }
-    public bool IsDraft { get; set; }
-
 }

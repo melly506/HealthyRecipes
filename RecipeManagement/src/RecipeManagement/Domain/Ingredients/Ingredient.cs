@@ -71,18 +71,6 @@ public class Ingredient : BaseEntity
         return this;
     }
 
-    public Ingredient AddRecipeIngridient(RecipeIngridient recipeIngridient)
-    {
-        _recipeIngridients.Add(recipeIngridient);
-        return this;
-    }
-    
-    public Ingredient RemoveRecipeIngridient(RecipeIngridient recipeIngridient)
-    {
-        _recipeIngridients.RemoveAll(x => x.Id == recipeIngridient.Id);
-        return this;
-    }
-
     // Add Prop Methods Marker -- Deleting this comment will cause the add props utility to be incomplete
     
     protected Ingredient() { } // For EF + Mocking

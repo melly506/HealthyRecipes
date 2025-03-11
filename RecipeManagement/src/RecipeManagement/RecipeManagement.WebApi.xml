@@ -139,16 +139,6 @@
             Gets a list of the current user's assigned permissions.
             </summary>
         </member>
-        <member name="M:RecipeManagement.Controllers.v1.RecipeIngridientsController.AddRecipeIngridient(RecipeManagement.Domain.RecipeIngridients.Dtos.RecipeIngridientForCreationDto)">
-            <summary>
-            Creates a new RecipeIngridient record.
-            </summary>
-        </member>
-        <member name="M:RecipeManagement.Controllers.v1.RecipeIngridientsController.GetRecipeIngridients(RecipeManagement.Domain.RecipeIngridients.Dtos.RecipeIngridientParametersDto)">
-            <summary>
-            Gets a list of all RecipeIngridients.
-            </summary>
-        </member>
         <member name="M:RecipeManagement.Controllers.v1.RecipeIngridientsController.UpdateRecipeIngridient(System.Guid,RecipeManagement.Domain.RecipeIngridients.Dtos.RecipeIngridientForUpdateDto)">
             <summary>
             Updates an entire existing RecipeIngridient.

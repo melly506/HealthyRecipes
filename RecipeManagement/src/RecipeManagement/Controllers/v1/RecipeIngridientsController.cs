@@ -20,51 +20,6 @@ public sealed class RecipeIngridientsController(IMediator mediator): ControllerB
 {    
 
     /// <summary>
-    /// Creates a new RecipeIngridient record.
-    /// </summary>
-    [Authorize]
-    [HttpPost(Name = "AddRecipeIngridient")]
-    public async Task<ActionResult<RecipeIngridientDto>> AddRecipeIngridient([FromBody]RecipeIngridientForCreationDto recipeIngridientForCreation)
-    {
-        var command = new AddRecipeIngridient.Command(recipeIngridientForCreation);
-        var commandResponse = await mediator.Send(command);
-
-        return CreatedAtRoute("GetRecipeIngridient",
-            new { recipeIngridientId = commandResponse.Id },
-            commandResponse);
-    }
-
-
-    /// <summary>
-    /// Gets a list of all RecipeIngridients.
-    /// </summary>
-    [HttpGet(Name = "GetRecipeIngridients")]
-    public async Task<IActionResult> GetRecipeIngridients([FromQuery] RecipeIngridientParametersDto recipeIngridientParametersDto)
-    {
-        var query = new GetRecipeIngridientList.Query(recipeIngridientParametersDto);
-        var queryResponse = await mediator.Send(query);
-
-        var paginationMetadata = new
-        {
-            totalCount = queryResponse.TotalCount,
-            pageSize = queryResponse.PageSize,
-            currentPageSize = queryResponse.CurrentPageSize,
-            currentStartIndex = queryResponse.CurrentStartIndex,
-            currentEndIndex = queryResponse.CurrentEndIndex,
-            pageNumber = queryResponse.PageNumber,
-            totalPages = queryResponse.TotalPages,
-            hasPrevious = queryResponse.HasPrevious,
-            hasNext = queryResponse.HasNext
-        };
-
-        Response.Headers.Append("X-Pagination",
-            JsonSerializer.Serialize(paginationMetadata));
-
-        return Ok(queryResponse);
-    }
-
-
-    /// <summary>
     /// Updates an entire existing RecipeIngridient.
     /// </summary>
     [Authorize]

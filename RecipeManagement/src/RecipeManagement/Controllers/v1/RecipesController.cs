@@ -12,13 +12,17 @@ using System.Threading.Tasks;
 using System.Threading;
 using Asp.Versioning;
 using MediatR;
+using RecipeManagement.Domain.Ingredients.Features;
+using RecipeManagement.Domain.RecipeIngridients.Features;
+using RecipeManagement.Domain.RecipeIngridients;
+using RecipeManagement.Domain.RecipeIngridients.Models;
+using RecipeManagement.Domain.RecipeIngridients.Dtos;
 
 [ApiController]
 [Route("api/v{v:apiVersion}/recipes")]
 [ApiVersion("1.0")]
 public sealed class RecipesController(IMediator mediator): ControllerBase
-{    
-
+{
     /// <summary>
     /// Creates a new Recipe record.
     /// </summary>
@@ -26,12 +30,29 @@ public sealed class RecipesController(IMediator mediator): ControllerBase
     [HttpPost(Name = "AddRecipe")]
     public async Task<ActionResult<RecipeDto>> AddRecipe([FromBody]RecipeForCreationDto recipeForCreation)
     {
-        var command = new AddRecipe.Command(recipeForCreation);
-        var commandResponse = await mediator.Send(command);
 
-        return CreatedAtRoute("GetRecipe",
-            new { recipeId = commandResponse.Id },
-            commandResponse);
+        var addRecipeCommand = new AddRecipe.Command(recipeForCreation);
+        var recipe = await mediator.Send(addRecipeCommand);
+
+        // Convert all recipe ingredients to be added
+        var ingredientsToAdd = recipeForCreation.RecipeIngridientsAssign
+            .Select(i => new RecipeIngridientForCreationDto
+            {
+                Count = i.Count,
+                IngredientId = i.IngridientId,
+                RecipeId = recipe.Id
+            })
+            .ToList();
+
+        var addIngredientsCommand = new AddRecipeIngridients.Command(ingredientsToAdd);
+        var recipeIngredients = await mediator.Send(addIngredientsCommand);
+
+
+        return CreatedAtRoute(
+            "GetRecipe",
+            new { recipeId = recipe.Id },
+            new { recipe, recipeIngredients }
+        );
     }
 
 
@@ -41,9 +62,12 @@ public sealed class RecipesController(IMediator mediator): ControllerBase
     [HttpGet("{recipeId:guid}", Name = "GetRecipe")]
     public async Task<ActionResult<RecipeDto>> GetRecipe(Guid recipeId)
     {
-        var query = new GetRecipe.Query(recipeId);
-        var queryResponse = await mediator.Send(query);
-        return Ok(queryResponse);
+        var getRecipeCommand = new GetRecipe.Query(recipeId);
+        var recipe = await mediator.Send(getRecipeCommand);
+
+        var getIngridientDetailsCommand = new GetRecipeIngredientDetailsList.Query(recipeId);
+        var ingridientsDetails = await mediator.Send(getIngridientDetailsCommand);
+        return Ok(new { recipe, ingridientsDetails });
     }
 
 
@@ -96,10 +120,12 @@ public sealed class RecipesController(IMediator mediator): ControllerBase
     [HttpDelete("{recipeId:guid}", Name = "DeleteRecipe")]
     public async Task<ActionResult> DeleteRecipe(Guid recipeId)
     {
-        var command = new DeleteRecipe.Command(recipeId);
-        await mediator.Send(command);
+
+        var deleteIngredientsCommand = new DeleteRecipeIngridientsByRecipeId.Command(recipeId);
+        await mediator.Send(deleteIngredientsCommand);
+
+        var deleteRecipeCommand = new DeleteRecipe.Command(recipeId);
+        await mediator.Send(deleteRecipeCommand);
         return NoContent();
     }
-
-    // endpoint marker - do not delete this comment
 }
