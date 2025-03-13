@@ -8,7 +8,6 @@ using Riok.Mapperly.Abstractions;
 public static partial class RecipeIngridientMapper
 {
     public static partial RecipeIngridientForCreation ToRecipeIngridientForCreation(this RecipeIngridientForCreationDto recipeIngridientForCreationDto);
-    public static partial RecipeIngridientForUpdate ToRecipeIngridientForUpdate(this RecipeIngridientForUpdateDto recipeIngridientForUpdateDto);
     public static partial RecipeIngridientDto ToRecipeIngridientDto(this RecipeIngridient recipeIngridient);
     public static partial IQueryable<RecipeIngridientDto> ToRecipeIngridientDtoQueryable(this IQueryable<RecipeIngridient> recipeIngridient);
 }

@@ -139,16 +139,6 @@
             Gets a list of the current user's assigned permissions.
             </summary>
         </member>
-        <member name="M:RecipeManagement.Controllers.v1.RecipeIngridientsController.UpdateRecipeIngridient(System.Guid,RecipeManagement.Domain.RecipeIngridients.Dtos.RecipeIngridientForUpdateDto)">
-            <summary>
-            Updates an entire existing RecipeIngridient.
-            </summary>
-        </member>
-        <member name="M:RecipeManagement.Controllers.v1.RecipeIngridientsController.DeleteRecipeIngridient(System.Guid)">
-            <summary>
-            Deletes an existing RecipeIngridient record.
-            </summary>
-        </member>
         <member name="M:RecipeManagement.Controllers.v1.RecipesController.AddRecipe(RecipeManagement.Domain.Recipes.Dtos.RecipeForCreationDto)">
             <summary>
             Creates a new Recipe record.
