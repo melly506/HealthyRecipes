@@ -9,5 +9,5 @@ public sealed record RecipeForUpdateDto
     public int CookingTime { get; set; }
     public string Description { get; set; }
     public string Instructions { get; set; }
-
+    public List<RecipeIngridientAssignDto> RecipeIngridientsAssign { get; set; } = new();
 }

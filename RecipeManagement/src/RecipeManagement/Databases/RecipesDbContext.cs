@@ -187,9 +187,10 @@ public static void FilterSoftDeletedRecords(this ModelBuilder modelBuilder)
         where TEntity : BaseEntity
     {
          return entity ?? throw new NotFoundException($"{typeof(TEntity).Name} was not found.");
-    }public static IQueryable<User> GetUserAggregate(this RecipesDbContext dbContext)
-{
-    return dbContext.Users
-        .Include(u => u.Roles);
-}
+    }
+    public static IQueryable<User> GetUserAggregate(this RecipesDbContext dbContext)
+    {
+        return dbContext.Users
+            .Include(u => u.Roles);
+    }
 }

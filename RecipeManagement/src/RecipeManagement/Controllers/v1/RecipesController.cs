@@ -105,10 +105,31 @@ public sealed class RecipesController(IMediator mediator): ControllerBase
     /// </summary>
     [Authorize]
     [HttpPut("{recipeId:guid}", Name = "UpdateRecipe")]
-    public async Task<IActionResult> UpdateRecipe(Guid recipeId, RecipeForUpdateDto recipe)
+    public async Task<IActionResult> UpdateRecipe(Guid recipeId, RecipeForUpdateDto recipeUpdate)
     {
-        var command = new UpdateRecipe.Command(recipeId, recipe);
-        await mediator.Send(command);
+        var updateRecipeCommand = new UpdateRecipe.Command(recipeId, recipeUpdate);
+
+        // Prepare new recipe ingridients
+        var ingredientsForUpdate = recipeUpdate.RecipeIngridientsAssign
+            .Select(i => new RecipeIngridientForCreationDto
+            {
+                Count = i.Count,
+                IngredientId = i.IngridientId,
+                RecipeId = recipeId
+            })
+            .ToList();
+
+
+        // Create comand to remove all previous recipe ingridients from recipe
+        var deleteIngredientsCommand = new DeleteRecipeIngridientsByRecipeId.Command(recipeId);
+
+        // Create comand to assign new recipe ingridients to recipe
+        var updateIngredientsCommand = new AddRecipeIngridients.Command(ingredientsForUpdate);
+
+        await mediator.Send(updateRecipeCommand);
+        await mediator.Send(deleteIngredientsCommand);
+        await mediator.Send(updateIngredientsCommand);
+
         return NoContent();
     }
 

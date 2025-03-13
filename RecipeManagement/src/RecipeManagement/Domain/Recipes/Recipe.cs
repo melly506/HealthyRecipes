@@ -98,8 +98,6 @@ public class Recipe : BaseEntity
         CookingTime = recipeForUpdate.CookingTime;
         Description = recipeForUpdate.Description;
         Instructions = recipeForUpdate.Instructions;
-        LikesCount = 0;
-        IsDraft = false;
 
         QueueDomainEvent(new RecipeUpdated(){ Id = Id });
         return this;
