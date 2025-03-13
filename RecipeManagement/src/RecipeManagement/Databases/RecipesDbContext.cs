@@ -1,28 +1,27 @@
 namespace RecipeManagement.Databases;
 
-using RecipeManagement.Domain;
-using RecipeManagement.Databases.EntityConfigurations;
-using RecipeManagement.Services;
-using RecipeManagement.Exceptions;
-using Resources;
-using MediatR;
-using RecipeManagement.Domain.RolePermissions;
-using RecipeManagement.Domain.Users;
-using RecipeManagement.Domain.Recipes;
-using RecipeManagement.Domain.RecipeIngridients;
-using RecipeManagement.Domain.Comments;
-using RecipeManagement.Domain.UserFavorites;
-using RecipeManagement.Domain.Ingredients;
-using RecipeManagement.Domain.DishTypes;
-using RecipeManagement.Domain.Seasons;
-using RecipeManagement.Domain.Diets;
-using RecipeManagement.Domain.FoodTypes;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Query;
+using RecipeManagement.Databases.EntityConfigurations;
+using RecipeManagement.Domain;
+using RecipeManagement.Domain.Comments;
+using RecipeManagement.Domain.Diets;
+using RecipeManagement.Domain.DishTypes;
+using RecipeManagement.Domain.FoodTypes;
+using RecipeManagement.Domain.Ingredients;
+using RecipeManagement.Domain.RecipeIngridients;
+using RecipeManagement.Domain.Recipes;
+using RecipeManagement.Domain.RolePermissions;
+using RecipeManagement.Domain.Seasons;
+using RecipeManagement.Domain.UserFavorites;
+using RecipeManagement.Domain.Users;
+using RecipeManagement.Exceptions;
+using RecipeManagement.Services;
 
 public sealed class RecipesDbContext(DbContextOptions<RecipesDbContext> options, 
     ICurrentUserService currentUserService, 
@@ -68,6 +67,15 @@ public sealed class RecipesDbContext(DbContextOptions<RecipesDbContext> options,
         modelBuilder.ApplyConfiguration(new UserConfiguration());
         modelBuilder.ApplyConfiguration(new RolePermissionConfiguration());
         #endregion Entity Database Config Region - Only delete if you don't want to automatically add configurations
+    }
+
+    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+    {
+        base.ConfigureConventions(configurationBuilder);
+ 
+        configurationBuilder
+            .Properties<decimal>()
+            .HavePrecision(10, 2);
     }
 
     public override int SaveChanges()

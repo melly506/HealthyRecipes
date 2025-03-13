@@ -1,15 +1,14 @@
 namespace RecipeManagement.Extensions.Services;
 
-using RecipeManagement.Databases;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using HeimGuard;
-using RecipeManagement.Resources;
-using RecipeManagement.Services;
-using RecipeManagement.Resources.HangfireUtilities;
-using Resources;
 using Hangfire;
 using Hangfire.MemoryStorage;
+using HeimGuard;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using RecipeManagement.Databases;
+using RecipeManagement.Resources;
+using RecipeManagement.Resources.HangfireUtilities;
+using RecipeManagement.Services;
 
 public static class ServiceRegistration
 {

@@ -1,15 +1,9 @@
 namespace RecipeManagement.Domain.UserFavorites;
 
-using System.ComponentModel.DataAnnotations;
-using RecipeManagement.Domain.Users;
 using RecipeManagement.Domain.Recipes;
-using System.ComponentModel.DataAnnotations.Schema;
-using Destructurama.Attributed;
-using RecipeManagement.Exceptions;
-using RecipeManagement.Domain.UserFavorites.Models;
 using RecipeManagement.Domain.UserFavorites.DomainEvents;
+using RecipeManagement.Domain.UserFavorites.Models;
 using RecipeManagement.Domain.Users;
-using RecipeManagement.Domain.Users.Models;
 
 
 public class UserFavorite : BaseEntity

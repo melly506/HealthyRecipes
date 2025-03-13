@@ -77,8 +77,8 @@ public class ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider) : 
             options.SwaggerDoc(description.GroupName, new OpenApiInfo
             {
                 Version = description.ApiVersion.ToString(),
-                Title = "",
-                Description = ""
+                Title = "Healthy Recipes - API Documentation",
+                Description = "Melnik Valya"
             });
         }
     }

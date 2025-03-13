@@ -1,19 +1,14 @@
 namespace RecipeManagement.Extensions.Services;
 
+using System.Reflection;
+using System.Text.Json.Serialization;
+using Hellang.Middleware.ProblemDetails;
+using Hellang.Middleware.ProblemDetails.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using RecipeManagement.Middleware;
 using RecipeManagement.Services;
 using Resources;
-using System.Text.Json.Serialization;
 using Serilog;
-using FluentValidation.AspNetCore;
-using Hellang.Middleware.ProblemDetails;
-using Hellang.Middleware.ProblemDetails.Mvc;
-using MediatR;
-using Microsoft.Extensions.DependencyInjection;
-using Resources;
-using System.Reflection;
-using System.Text.Json;
-using System.Text.RegularExpressions;
 
 public static class WebAppServiceConfiguration
 {

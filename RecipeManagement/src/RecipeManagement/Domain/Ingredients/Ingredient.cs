@@ -1,14 +1,9 @@
 namespace RecipeManagement.Domain.Ingredients;
 
 using System.ComponentModel.DataAnnotations;
-using RecipeManagement.Domain.RecipeIngridients;
-using System.ComponentModel.DataAnnotations.Schema;
-using Destructurama.Attributed;
-using RecipeManagement.Exceptions;
-using RecipeManagement.Domain.Ingredients.Models;
 using RecipeManagement.Domain.Ingredients.DomainEvents;
+using RecipeManagement.Domain.Ingredients.Models;
 using RecipeManagement.Domain.RecipeIngridients;
-using RecipeManagement.Domain.RecipeIngridients.Models;
 
 
 public class Ingredient : BaseEntity

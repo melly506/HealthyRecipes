@@ -1,32 +1,15 @@
 namespace RecipeManagement.Domain.Recipes;
 
 using System.ComponentModel.DataAnnotations;
-using RecipeManagement.Domain.FoodTypes;
-using RecipeManagement.Domain.Diets;
-using RecipeManagement.Domain.Seasons;
-using RecipeManagement.Domain.DishTypes;
 using RecipeManagement.Domain.Comments;
-using RecipeManagement.Domain.UserFavorites;
+using RecipeManagement.Domain.Diets;
+using RecipeManagement.Domain.DishTypes;
+using RecipeManagement.Domain.FoodTypes;
 using RecipeManagement.Domain.RecipeIngridients;
-using System.ComponentModel.DataAnnotations.Schema;
-using Destructurama.Attributed;
-using RecipeManagement.Exceptions;
-using RecipeManagement.Domain.Recipes.Models;
 using RecipeManagement.Domain.Recipes.DomainEvents;
-using RecipeManagement.Domain.RecipeIngridients;
-using RecipeManagement.Domain.RecipeIngridients.Models;
-using RecipeManagement.Domain.UserFavorites;
-using RecipeManagement.Domain.UserFavorites.Models;
-using RecipeManagement.Domain.Comments;
-using RecipeManagement.Domain.Comments.Models;
-using RecipeManagement.Domain.DishTypes;
-using RecipeManagement.Domain.DishTypes.Models;
+using RecipeManagement.Domain.Recipes.Models;
 using RecipeManagement.Domain.Seasons;
-using RecipeManagement.Domain.Seasons.Models;
-using RecipeManagement.Domain.Diets;
-using RecipeManagement.Domain.Diets.Models;
-using RecipeManagement.Domain.FoodTypes;
-using RecipeManagement.Domain.FoodTypes.Models;
+using RecipeManagement.Domain.UserFavorites;
 
 
 public class Recipe : BaseEntity

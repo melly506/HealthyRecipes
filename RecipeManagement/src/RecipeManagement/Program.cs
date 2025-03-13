@@ -1,4 +1,4 @@
-using Destructurama;
+﻿using Destructurama;
 using Serilog;
 using Hangfire;
 using Hellang.Middleware.ProblemDetails;
@@ -54,6 +54,19 @@ app.UseHangfireDashboard("/hangfire", new DashboardOptions
 });
 
 app.UseSwaggerExtension(builder.Configuration, builder.Environment);
+
+app.Lifetime.ApplicationStarted.Register(() =>
+{
+    if (builder.Environment.IsDevelopment())
+    {
+        var addresses = app.Urls;
+        if (addresses != null && addresses.Any())
+        {
+            var url = addresses.First();
+            Log.Information("\n\n\u001b[32m  Swagger UI: {SwaggerUrl} \u001b[0m\u001b[95m💘\u001b[0m \n", $"{url}/swagger");
+        }
+    }
+});
 
 try
 {

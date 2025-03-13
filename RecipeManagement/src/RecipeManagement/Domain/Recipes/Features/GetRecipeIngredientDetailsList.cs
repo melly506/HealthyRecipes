@@ -1,13 +1,9 @@
 namespace RecipeManagement.Domain.Recipes.Features;
 
-using RecipeManagement.Domain.Recipes.Dtos;
-using RecipeManagement.Domain.RecipeIngridients.Dtos;
-using RecipeManagement.Domain.RecipeIngridients.Mappings;
-using RecipeManagement.Databases;
-using RecipeManagement.Exceptions;
-using Mappings;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using RecipeManagement.Databases;
+using RecipeManagement.Domain.RecipeIngridients.Dtos;
 
 
 public static class GetRecipeIngredientDetailsList

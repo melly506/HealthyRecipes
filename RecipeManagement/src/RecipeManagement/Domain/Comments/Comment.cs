@@ -1,15 +1,10 @@
 namespace RecipeManagement.Domain.Comments;
 
 using System.ComponentModel.DataAnnotations;
-using RecipeManagement.Domain.Users;
-using RecipeManagement.Domain.Recipes;
-using System.ComponentModel.DataAnnotations.Schema;
-using Destructurama.Attributed;
-using RecipeManagement.Exceptions;
-using RecipeManagement.Domain.Comments.Models;
 using RecipeManagement.Domain.Comments.DomainEvents;
+using RecipeManagement.Domain.Comments.Models;
+using RecipeManagement.Domain.Recipes;
 using RecipeManagement.Domain.Users;
-using RecipeManagement.Domain.Users.Models;
 
 
 public class Comment : BaseEntity

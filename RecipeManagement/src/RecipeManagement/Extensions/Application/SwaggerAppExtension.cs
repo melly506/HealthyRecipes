@@ -1,6 +1,5 @@
 namespace RecipeManagement.Extensions.Application;
 
-using Resources;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Resources;
