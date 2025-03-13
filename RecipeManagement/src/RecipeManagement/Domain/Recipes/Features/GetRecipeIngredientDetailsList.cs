@@ -29,7 +29,12 @@ public static class GetRecipeIngredientDetailsList
                     RecipeId = ri.RecipeId,
                     IngredientId = ri.IngredientId,
                     IngredientName = ri.Ingredient.Name,
-                    Unit = ri.Ingredient.Unit
+                    Unit = ri.Ingredient.Unit,
+                    Calories = ri.Ingredient.Calories,
+                    Fat = ri.Ingredient.Fat,
+                    Carbs = ri.Ingredient.Carbs,
+                    Protein = ri.Ingredient.Protein,
+                    Sugar = ri.Ingredient.Sugar
                 })
                 .ToList();
         }
