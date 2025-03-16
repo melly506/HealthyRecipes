@@ -125,9 +125,17 @@ public sealed class RecipesController(IMediator mediator): ControllerBase
         // Create comand to assign new recipe ingridients to recipe
         var updateIngredientsCommand = new AddRecipeIngridients.Command(ingredientsForUpdate);
 
+        // Create comand to remove all previous food types from recipe
+        var deleteFoodTypesCommand = new DeleteFoodTypeFromRecipe.Command(recipeId);
+
+        // Attach food types to recipe
+        var attachFoodTypesCommand = new AttachFoodTypesToRecipe.Command(recipeId, recipeUpdate.FoodTypeIds);
+
         await mediator.Send(updateRecipeCommand);
         await mediator.Send(deleteIngredientsCommand);
         await mediator.Send(updateIngredientsCommand);
+        await mediator.Send(deleteFoodTypesCommand);
+        await mediator.Send(attachFoodTypesCommand);
 
         return NoContent();
     }
@@ -143,6 +151,10 @@ public sealed class RecipesController(IMediator mediator): ControllerBase
 
         var deleteIngredientsCommand = new DeleteRecipeIngridientsByRecipeId.Command(recipeId);
         await mediator.Send(deleteIngredientsCommand);
+
+        // Create comand to remove all previous food types from recipe
+        var deleteFoodTypesCommand = new DeleteFoodTypeFromRecipe.Command(recipeId);
+        await mediator.Send(deleteFoodTypesCommand);
 
         var deleteRecipeCommand = new DeleteRecipe.Command(recipeId);
         await mediator.Send(deleteRecipeCommand);
