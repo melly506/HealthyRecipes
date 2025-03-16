@@ -99,11 +99,6 @@
             Updates an entire existing FoodType.
             </summary>
         </member>
-        <member name="M:RecipeManagement.Controllers.v1.FoodTypesController.DeleteFoodType(System.Guid)">
-            <summary>
-            Deletes an existing FoodType record.
-            </summary>
-        </member>
         <member name="M:RecipeManagement.Controllers.v1.IngredientsController.AddIngredient(RecipeManagement.Domain.Ingredients.Dtos.IngredientForCreationDto)">
             <summary>
             Creates a new Ingredient record.

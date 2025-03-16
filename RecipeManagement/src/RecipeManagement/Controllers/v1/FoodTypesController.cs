@@ -88,18 +88,5 @@ public sealed class FoodTypesController(IMediator mediator): ControllerBase
         return NoContent();
     }
 
-
-    /// <summary>
-    /// Deletes an existing FoodType record.
-    /// </summary>
-    [Authorize]
-    [HttpDelete("{foodTypeId:guid}", Name = "DeleteFoodType")]
-    public async Task<ActionResult> DeleteFoodType(Guid foodTypeId)
-    {
-        var command = new DeleteFoodType.Command(foodTypeId);
-        await mediator.Send(command);
-        return NoContent();
-    }
-
     // endpoint marker - do not delete this comment
 }
