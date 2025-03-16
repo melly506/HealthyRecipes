@@ -6,6 +6,7 @@ using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RecipeManagement.Domain.FoodTypes.Features;
 using RecipeManagement.Domain.RecipeIngridients.Dtos;
 using RecipeManagement.Domain.RecipeIngridients.Features;
 using RecipeManagement.Domain.Recipes.Dtos;
@@ -40,11 +41,16 @@ public sealed class RecipesController(IMediator mediator): ControllerBase
         var addIngredientsCommand = new AddRecipeIngridients.Command(ingredientsToAdd);
         var recipeIngredients = await mediator.Send(addIngredientsCommand);
 
+        // Attach food types to recipe
+        var attachFoodTypesCommand = new AttachFoodTypesToRecipe.Command(recipe.Id, recipeForCreation.FoodTypeIds);
+        await mediator.Send(attachFoodTypesCommand);
+
+        var foodTypeIds = recipeForCreation.FoodTypeIds;
 
         return CreatedAtRoute(
             "GetRecipe",
             new { recipeId = recipe.Id },
-            new { recipe, recipeIngredients }
+            new { recipe, recipeIngredients, foodTypeIds }
         );
     }
 
