@@ -1,14 +1,13 @@
 namespace RecipeManagement.Domain.Recipes.Features;
 
-using RecipeManagement.Domain.Recipes.Dtos;
-using RecipeManagement.Databases;
-using RecipeManagement.Exceptions;
-using RecipeManagement.Resources;
 using Mappings;
-using Microsoft.EntityFrameworkCore;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using QueryKit;
 using QueryKit.Configuration;
+using RecipeManagement.Databases;
+using RecipeManagement.Domain.Recipes.Dtos;
+using RecipeManagement.Resources;
 
 public static class GetRecipeList
 {
@@ -19,7 +18,15 @@ public static class GetRecipeList
     {
         public async Task<PagedList<RecipeDto>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var collection = dbContext.Recipes.AsNoTracking();
+            var collection = dbContext.Recipes.Include(r => r.FoodType).AsNoTracking();
+
+            if (!string.IsNullOrEmpty(request.QueryParameters.FoodTypeId))
+            {
+                if (Guid.TryParse(request.QueryParameters.FoodTypeId, out var foodTypeId))
+                {
+                    collection = collection.Where(r => r.FoodType.Any(ft => ft.Id == foodTypeId));
+                }
+            }
 
             var queryKitConfig = new CustomQueryKitConfiguration();
             var queryKitData = new QueryKitData()
@@ -29,9 +36,8 @@ public static class GetRecipeList
                 Configuration = queryKitConfig
             };
             var appliedCollection = collection.ApplyQueryKit(queryKitData);
-            var dtoCollection = appliedCollection.ToRecipeDtoQueryable();
 
-            return await PagedList<RecipeDto>.CreateAsync(dtoCollection,
+            return await PagedList<RecipeDto>.CreateAsync(appliedCollection.ToRecipeDtoWithFoodTypesQueryable(),
                 request.QueryParameters.PageNumber,
                 request.QueryParameters.PageSize,
                 cancellationToken);

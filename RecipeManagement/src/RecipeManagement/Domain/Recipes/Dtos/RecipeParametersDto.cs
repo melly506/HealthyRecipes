@@ -6,4 +6,5 @@ public sealed class RecipeParametersDto : BasePaginationParameters
 {
     public string? Filters { get; set; }
     public string? SortOrder { get; set; }
+    public string? FoodTypeId { get; set; }
 }

@@ -13,4 +13,24 @@ public static partial class RecipeMapper
     [MapperIgnoreTarget(nameof(RecipeDto.FoodType))]
     public static partial RecipeDto ToRecipeDto(this Recipe recipe);
     public static partial IQueryable<RecipeDto> ToRecipeDtoQueryable(this IQueryable<Recipe> recipe);
+
+    public static IQueryable<RecipeDto> ToRecipeDtoWithFoodTypesQueryable(this IQueryable<Recipe> recipes)
+    {
+        return recipes.Select(r => new RecipeDto
+        {
+            Id = r.Id,
+            Name = r.Name,
+            ImageUrl = r.ImageUrl,
+            CookingTime = r.CookingTime,
+            Description = r.Description,
+            Instructions = r.Instructions,
+            LikesCount = r.LikesCount,
+            IsDraft = r.IsDraft,
+            FoodType = r.FoodType.Select(ft => FoodTypeMapper.ToFoodTypeDto(ft)).ToList(),
+            CreatedOn = r.CreatedOn,
+            CreatedBy = r.CreatedBy,
+            LastModifiedOn = r.LastModifiedOn,
+            LastModifiedBy = r.LastModifiedBy
+        });
+    }
 }
