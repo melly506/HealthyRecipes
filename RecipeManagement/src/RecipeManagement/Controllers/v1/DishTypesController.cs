@@ -88,18 +88,5 @@ public sealed class DishTypesController(IMediator mediator): ControllerBase
         return NoContent();
     }
 
-
-    /// <summary>
-    /// Deletes an existing DishType record.
-    /// </summary>
-    [Authorize]
-    [HttpDelete("{dishTypeId:guid}", Name = "DeleteDishType")]
-    public async Task<ActionResult> DeleteDishType(Guid dishTypeId)
-    {
-        var command = new DeleteDishType.Command(dishTypeId);
-        await mediator.Send(command);
-        return NoContent();
-    }
-
     // endpoint marker - do not delete this comment
 }

@@ -12,4 +12,6 @@ public sealed record RecipeForUpdateDto
     public List<RecipeIngridientAssignDto> RecipeIngridientsAssign { get; set; } = new();
     public List<Guid> FoodTypeIds { get; set; } = new();
     public List<Guid> DietIds { get; set; } = new();
+    public List<Guid> SeasonIds { get; set; } = new();
+    public List<Guid> DishTypeIds { get; set; } = new();
 }

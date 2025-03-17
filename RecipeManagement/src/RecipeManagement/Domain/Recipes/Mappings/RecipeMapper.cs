@@ -4,6 +4,8 @@ using RecipeManagement.Domain.Recipes.Dtos;
 using RecipeManagement.Domain.Recipes.Models;
 using RecipeManagement.Domain.FoodTypes.Mappings;
 using RecipeManagement.Domain.Diets.Mappings;
+using RecipeManagement.Domain.Seasons.Mappings;
+using RecipeManagement.Domain.DishTypes.Mappings;
 using Riok.Mapperly.Abstractions;
 
 [Mapper]
@@ -14,6 +16,8 @@ public static partial class RecipeMapper
 
     [MapperIgnoreTarget(nameof(RecipeDto.FoodType))]
     [MapperIgnoreTarget(nameof(RecipeDto.Diet))]
+    [MapperIgnoreTarget(nameof(RecipeDto.DishType))]
+    [MapperIgnoreTarget(nameof(RecipeDto.Season))]
     public static partial RecipeDto ToRecipeDto(this Recipe recipe);
     public static partial IQueryable<RecipeDto> ToRecipeDtoQueryable(this IQueryable<Recipe> recipe);
 
@@ -30,7 +34,9 @@ public static partial class RecipeMapper
             LikesCount = r.LikesCount,
             IsDraft = r.IsDraft,
             FoodType = r.FoodType.Select(ft => FoodTypeMapper.ToFoodTypeDto(ft)).ToList(),
-            Diet = r.Diet.Select(d => DietMapper.ToDietDto(d)).ToList(),
+            Diet = r.Diet.Select(di => DietMapper.ToDietDto(di)).ToList(),
+            Season = r.Season.Select(se => SeasonMapper.ToSeasonDto(se)).ToList(),
+            DishType = r.DishType.Select(dt => DishTypeMapper.ToDishTypeDto(dt)).ToList(),
             CreatedOn = r.CreatedOn,
             CreatedBy = r.CreatedBy,
             LastModifiedOn = r.LastModifiedOn,

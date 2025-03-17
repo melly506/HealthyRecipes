@@ -69,11 +69,6 @@
             Updates an entire existing DishType.
             </summary>
         </member>
-        <member name="M:RecipeManagement.Controllers.v1.DishTypesController.DeleteDishType(System.Guid)">
-            <summary>
-            Deletes an existing DishType record.
-            </summary>
-        </member>
         <member name="M:RecipeManagement.Controllers.v1.FoodTypesController.AddFoodType(RecipeManagement.Domain.FoodTypes.Dtos.FoodTypeForCreationDto)">
             <summary>
             Creates a new FoodType record.
@@ -202,11 +197,6 @@
         <member name="M:RecipeManagement.Controllers.v1.SeasonsController.UpdateSeason(System.Guid,RecipeManagement.Domain.Seasons.Dtos.SeasonForUpdateDto)">
             <summary>
             Updates an entire existing Season.
-            </summary>
-        </member>
-        <member name="M:RecipeManagement.Controllers.v1.SeasonsController.DeleteSeason(System.Guid)">
-            <summary>
-            Deletes an existing Season record.
             </summary>
         </member>
         <member name="M:RecipeManagement.Controllers.v1.UserFavoritesController.AddUserFavorite(RecipeManagement.Domain.UserFavorites.Dtos.UserFavoriteForCreationDto)">

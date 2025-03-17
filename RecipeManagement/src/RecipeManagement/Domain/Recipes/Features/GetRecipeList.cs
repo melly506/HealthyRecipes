@@ -21,6 +21,8 @@ public static class GetRecipeList
             var collection = dbContext.Recipes
                 .Include(r => r.FoodType)
                 .Include(r => r.Diet)
+                .Include(r => r.Season)
+                .Include(r => r.DishType)
                 .AsNoTracking();
 
             if (!string.IsNullOrEmpty(request.QueryParameters.FoodTypeId))
@@ -36,6 +38,22 @@ public static class GetRecipeList
                 if (Guid.TryParse(request.QueryParameters.DietId, out var dietId))
                 {
                     collection = collection.Where(r => r.Diet.Any(diet => diet.Id == dietId));
+                }
+            }
+
+            if (!string.IsNullOrEmpty(request.QueryParameters.SeasonId))
+            {
+                if (Guid.TryParse(request.QueryParameters.SeasonId, out var seasonId))
+                {
+                    collection = collection.Where(r => r.Season.Any(season => season.Id == seasonId));
+                }
+            }
+
+            if (!string.IsNullOrEmpty(request.QueryParameters.DishTypeId))
+            {
+                if (Guid.TryParse(request.QueryParameters.DishTypeId, out var dishTypeId))
+                {
+                    collection = collection.Where(r => r.DishType.Any(dishType => dishType.Id == dishTypeId));
                 }
             }
 

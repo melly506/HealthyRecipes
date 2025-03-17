@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using RecipeManagement.Databases;
 using RecipeManagement.Domain.FoodTypes.Mappings;
 using RecipeManagement.Domain.Diets.Mappings;
+using RecipeManagement.Domain.Seasons.Mappings;
+using RecipeManagement.Domain.DishTypes.Mappings;
 using RecipeManagement.Domain.Recipes.Dtos;
 
 public static class GetRecipe
@@ -30,10 +32,22 @@ public static class GetRecipe
                 .Select(diet => DietMapper.ToDietDto(diet))
                 .ToListAsync(cancellationToken);
 
+            var seasonsForRecipe = await dbContext.Seasons
+                .Where(season => season.Recipes.Any(r => r.Id == recipe.Id))
+                .Select(season => SeasonMapper.ToSeasonDto(season))
+                .ToListAsync(cancellationToken);
+
+            var dishTypesForRecipe = await dbContext.DishTypes
+                .Where(dishType => dishType.Recipes.Any(r => r.Id == recipe.Id))
+                .Select(dishType => DishTypeMapper.ToDishTypeDto(dishType))
+                .ToListAsync(cancellationToken);
+
             var recipeDto = recipe.ToRecipeDto();
 
             recipeDto.FoodType = foodTypesForRecipe.ToList();
             recipeDto.Diet = dietsForRecipe.ToList();
+            recipeDto.Season = seasonsForRecipe.ToList();
+            recipeDto.DishType = dishTypesForRecipe.ToList();
 
             return recipeDto;
         }

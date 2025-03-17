@@ -88,18 +88,5 @@ public sealed class SeasonsController(IMediator mediator): ControllerBase
         return NoContent();
     }
 
-
-    /// <summary>
-    /// Deletes an existing Season record.
-    /// </summary>
-    [Authorize]
-    [HttpDelete("{seasonId:guid}", Name = "DeleteSeason")]
-    public async Task<ActionResult> DeleteSeason(Guid seasonId)
-    {
-        var command = new DeleteSeason.Command(seasonId);
-        await mediator.Send(command);
-        return NoContent();
-    }
-
     // endpoint marker - do not delete this comment
 }
