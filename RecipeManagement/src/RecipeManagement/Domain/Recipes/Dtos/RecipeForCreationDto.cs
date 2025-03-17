@@ -17,4 +17,5 @@ public sealed record RecipeForCreationDto
     public string Instructions { get; set; }
     public List<RecipeIngridientAssignDto> RecipeIngridientsAssign { get; set; } = new();
     public List<Guid> FoodTypeIds { get; set; } = new();
+    public List<Guid> DietIds { get; set; } = new();
 }

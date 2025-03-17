@@ -10,4 +10,5 @@ public sealed record RecipeForCreation
     public string Description { get; set; }
     public string Instructions { get; set; }
     public List<Guid> FoodTypeIds { get; set; } = new();
+    public List<Guid> DietIds { get; set; } = new();
 }

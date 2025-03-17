@@ -7,6 +7,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RecipeManagement.Domain.FoodTypes.Features;
+using RecipeManagement.Domain.Diets.Features;
 using RecipeManagement.Domain.RecipeIngridients.Dtos;
 using RecipeManagement.Domain.RecipeIngridients.Features;
 using RecipeManagement.Domain.Recipes.Dtos;
@@ -44,6 +45,10 @@ public sealed class RecipesController(IMediator mediator): ControllerBase
         // Attach food types to recipe
         var attachFoodTypesCommand = new AttachFoodTypesToRecipe.Command(recipe.Id, recipeForCreation.FoodTypeIds);
         await mediator.Send(attachFoodTypesCommand);
+
+        // Attach diets to recipe
+        var attachDietsCommand = new AttachDietsToRecipe.Command(recipe.Id, recipeForCreation.DietIds);
+        await mediator.Send(attachDietsCommand);
 
         var foodTypeIds = recipeForCreation.FoodTypeIds;
 
@@ -131,11 +136,24 @@ public sealed class RecipesController(IMediator mediator): ControllerBase
         // Attach food types to recipe
         var attachFoodTypesCommand = new AttachFoodTypesToRecipe.Command(recipeId, recipeUpdate.FoodTypeIds);
 
+        // Create comand to remove all previous diets from recipe
+        var deleteDietsCommand = new DeleteDietsFromRecipe.Command(recipeId);
+
+        // Attach diets to recipe
+        var attachDietsCommand = new AttachDietsToRecipe.Command(recipeId, recipeUpdate.DietIds);
+
         await mediator.Send(updateRecipeCommand);
+        // Send ingredients update
         await mediator.Send(deleteIngredientsCommand);
         await mediator.Send(updateIngredientsCommand);
+
+        // Send food types update
         await mediator.Send(deleteFoodTypesCommand);
         await mediator.Send(attachFoodTypesCommand);
+
+        // Send diets update
+        await mediator.Send(deleteDietsCommand);
+        await mediator.Send(attachDietsCommand);
 
         return NoContent();
     }
@@ -152,9 +170,13 @@ public sealed class RecipesController(IMediator mediator): ControllerBase
         var deleteIngredientsCommand = new DeleteRecipeIngridientsByRecipeId.Command(recipeId);
         await mediator.Send(deleteIngredientsCommand);
 
-        // Create comand to remove all previous food types from recipe
+        // Create comand to remove all food types from recipe
         var deleteFoodTypesCommand = new DeleteFoodTypeFromRecipe.Command(recipeId);
         await mediator.Send(deleteFoodTypesCommand);
+
+        // Create comand to remove all previous diets from recipe
+        var deleteDietsCommand = new DeleteDietsFromRecipe.Command(recipeId);
+        await mediator.Send(deleteDietsCommand);
 
         var deleteRecipeCommand = new DeleteRecipe.Command(recipeId);
         await mediator.Send(deleteRecipeCommand);

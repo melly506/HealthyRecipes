@@ -88,18 +88,5 @@ public sealed class DietsController(IMediator mediator): ControllerBase
         return NoContent();
     }
 
-
-    /// <summary>
-    /// Deletes an existing Diet record.
-    /// </summary>
-    [Authorize]
-    [HttpDelete("{dietId:guid}", Name = "DeleteDiet")]
-    public async Task<ActionResult> DeleteDiet(Guid dietId)
-    {
-        var command = new DeleteDiet.Command(dietId);
-        await mediator.Send(command);
-        return NoContent();
-    }
-
     // endpoint marker - do not delete this comment
 }

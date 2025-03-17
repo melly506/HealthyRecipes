@@ -2,6 +2,7 @@ namespace RecipeManagement.Domain.Recipes.Dtos;
 
 using Destructurama.Attributed;
 using RecipeManagement.Domain.FoodTypes.Dtos;
+using RecipeManagement.Domain.Diets.Dtos;
 
 public sealed record RecipeDto
 {
@@ -14,6 +15,7 @@ public sealed record RecipeDto
     public int LikesCount { get; set; }
     public bool IsDraft { get; set; }
     public List<FoodTypeDto> FoodType { get; set; } = new();
+    public List<DietDto> Diet { get; set; } = new();
 
     public DateTimeOffset CreatedOn { get; set; }
     public string CreatedBy { get; set; }

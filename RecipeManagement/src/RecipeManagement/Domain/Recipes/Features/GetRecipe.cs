@@ -5,6 +5,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using RecipeManagement.Databases;
 using RecipeManagement.Domain.FoodTypes.Mappings;
+using RecipeManagement.Domain.Diets.Mappings;
 using RecipeManagement.Domain.Recipes.Dtos;
 
 public static class GetRecipe
@@ -24,9 +25,15 @@ public static class GetRecipe
                 .Select(ft => FoodTypeMapper.ToFoodTypeDto(ft))
                 .ToListAsync(cancellationToken);
 
+            var dietsForRecipe = await dbContext.Diets
+                .Where(diet => diet.Recipes.Any(r => r.Id == recipe.Id))
+                .Select(diet => DietMapper.ToDietDto(diet))
+                .ToListAsync(cancellationToken);
+
             var recipeDto = recipe.ToRecipeDto();
 
             recipeDto.FoodType = foodTypesForRecipe.ToList();
+            recipeDto.Diet = dietsForRecipe.ToList();
 
             return recipeDto;
         }

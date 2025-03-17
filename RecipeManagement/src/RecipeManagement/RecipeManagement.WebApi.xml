@@ -49,11 +49,6 @@
             Updates an entire existing Diet.
             </summary>
         </member>
-        <member name="M:RecipeManagement.Controllers.v1.DietsController.DeleteDiet(System.Guid)">
-            <summary>
-            Deletes an existing Diet record.
-            </summary>
-        </member>
         <member name="M:RecipeManagement.Controllers.v1.DishTypesController.AddDishType(RecipeManagement.Domain.DishTypes.Dtos.DishTypeForCreationDto)">
             <summary>
             Creates a new DishType record.

@@ -18,13 +18,24 @@ public static class GetRecipeList
     {
         public async Task<PagedList<RecipeDto>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var collection = dbContext.Recipes.Include(r => r.FoodType).AsNoTracking();
+            var collection = dbContext.Recipes
+                .Include(r => r.FoodType)
+                .Include(r => r.Diet)
+                .AsNoTracking();
 
             if (!string.IsNullOrEmpty(request.QueryParameters.FoodTypeId))
             {
                 if (Guid.TryParse(request.QueryParameters.FoodTypeId, out var foodTypeId))
                 {
                     collection = collection.Where(r => r.FoodType.Any(ft => ft.Id == foodTypeId));
+                }
+            }
+
+            if (!string.IsNullOrEmpty(request.QueryParameters.DietId))
+            {
+                if (Guid.TryParse(request.QueryParameters.DietId, out var dietId))
+                {
+                    collection = collection.Where(r => r.Diet.Any(diet => diet.Id == dietId));
                 }
             }
 
@@ -37,7 +48,7 @@ public static class GetRecipeList
             };
             var appliedCollection = collection.ApplyQueryKit(queryKitData);
 
-            return await PagedList<RecipeDto>.CreateAsync(appliedCollection.ToRecipeDtoWithFoodTypesQueryable(),
+            return await PagedList<RecipeDto>.CreateAsync(appliedCollection.ToRecipeDtoWithChildrenEntitiesQueryable(),
                 request.QueryParameters.PageNumber,
                 request.QueryParameters.PageSize,
                 cancellationToken);
