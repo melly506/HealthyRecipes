@@ -14,6 +14,7 @@ using RecipeManagement.Domain.RecipeIngridients.Dtos;
 using RecipeManagement.Domain.RecipeIngridients.Features;
 using RecipeManagement.Domain.Recipes.Dtos;
 using RecipeManagement.Domain.Recipes.Features;
+using RecipeManagement.Extensions.Filters;
 
 [ApiController]
 [Route("api/v{v:apiVersion}/recipes")]
@@ -24,6 +25,7 @@ public sealed class RecipesController(IMediator mediator): ControllerBase
     /// Creates a new Recipe record.
     /// </summary>
     [Authorize]
+    [Transaction]
     [HttpPost(Name = "AddRecipe")]
     public async Task<ActionResult<RecipeDto>> AddRecipe([FromBody]RecipeForCreationDto recipeForCreation)
     {
@@ -116,6 +118,7 @@ public sealed class RecipesController(IMediator mediator): ControllerBase
     /// Updates an entire existing Recipe.
     /// </summary>
     [Authorize]
+    [Transaction]
     [HttpPut("{recipeId:guid}", Name = "UpdateRecipe")]
     public async Task<IActionResult> UpdateRecipe(Guid recipeId, RecipeForUpdateDto recipeUpdate)
     {
@@ -186,6 +189,7 @@ public sealed class RecipesController(IMediator mediator): ControllerBase
     /// Deletes an existing Recipe record.
     /// </summary>
     [Authorize]
+    [Transaction]
     [HttpDelete("{recipeId:guid}", Name = "DeleteRecipe")]
     public async Task<ActionResult> DeleteRecipe(Guid recipeId)
     {

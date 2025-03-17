@@ -21,6 +21,9 @@ public static class WebAppServiceConfiguration
         builder.Services.AddProblemDetails(ProblemDetailsConfigurationExtension.ConfigureProblemDetails)
             .AddProblemDetailsConventions();
 
+
+        builder.Services.AddScoped<RecipeManagement.Extensions.Filters.TransactionAttribute.TransactionFilter>();
+
         // TODO update CORS for your env
         builder.Services.AddCorsService("RecipeManagementCorsPolicy", builder.Environment);
         builder.Services.AddInfrastructure(builder.Environment, builder.Configuration);
