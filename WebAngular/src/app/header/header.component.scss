@@ -1,54 +1,75 @@
+@use "sass:color";
+
 /* Стилі для header */
 header {
     display: flex;
-    /* Робимо header флекс-контейнером */
     justify-content: space-between;
-    /* Розташовуємо елементи по краях */
     align-items: center;
-    /* Вирівнюємо елементи по центру вертикально */
     padding: 10px 20px;
-    /* Відступи всередині header */
     background-color: #ffffff;
-    /* Білий фон header */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Додаємо тінь для кращого вигляду */
 }
 
 /* Стилі для навігації */
 nav {
     display: flex;
-    /* Робимо навігацію горизонтальною */
     gap: 20px;
-    /* Відступ між пунктами меню */
 }
 
 nav a {
     text-decoration: none;
-    /* Прибираємо підкреслення посилань */
     color: #333333;
-    /* Колір тексту посилань */
     font-weight: bold;
-    /* Жирний шрифт */
     font-size: 22px;
-    /* Розмір шрифту */
     transition: color 0.3s ease;
-    /* Плавна зміна кольору при наведенні */
-}
 
-nav a:hover {
-    color: #ff6b6b;
-    /* Колір тексту при наведенні */
+    &:hover {
+        color: #ff6b6b;
+    }
 }
 
 /* Стилі для логотипу */
-.logo a {
-    text-decoration: none;
-    /* Прибираємо підкреслення посилань */
-    color: #459b65;
-    /* Колір тексту посилань */
-    font-weight: bold;
-    /* Жирний шрифт */
-    font-size: 50px;
-    /* Розмір шрифту */
-    transition: color 0.3s ease;
-    /* Плавна зміна кольору при наведенні */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Відступ між іконкою та текстом */
+
+    a {
+        text-decoration: none;
+        color: #459b65;
+        font-weight: bold;
+        font-size: 50px;
+        transition: color 0.3s ease;
+
+        &:hover {
+            color: color.adjust(#459b65, $lightness: -10%); /* Змінюємо колір при наведенні */
+        }
+    }
+
+    .material-symbols-outlined {
+        font-size: 40px; /* Розмір іконки */
+        color: #459b65; /* Колір іконки */
+        transition: color 0.3s ease;
+
+        &:hover {
+            color: color.adjust(#459b65, $lightness: -10%);
+        }
+    }
 }
 
+/* Стилі для іконок */
+.icons {
+    display: flex;
+    gap: 15px; /* Відступ між іконками */
+
+    .material-symbols-outlined {
+        font-size: 30px; /* Розмір іконок */
+        color: #333333; /* Колір іконок */
+        cursor: pointer; /* Змінюємо курсор при наведенні */
+        transition: color 0.3s ease;
+
+        &:hover {
+            color: #ff6b6b; /* Колір іконок при наведенні */
+        }
+    }
+}
