@@ -24,6 +24,8 @@ services:
       KEYCLOAK_ADMIN_PASSWORD: admin
     ports:
       - '3255:8080'
+    volumes:
+      - ./KeycloakTheme:/opt/keycloak/providers/
     command:
       - start-dev
     depends_on:
