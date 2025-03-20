@@ -38,17 +38,4 @@ public static class ClientExtensions
             Name = $"{audience}-Mapping"
         });
     }
-    
-    // example tenant mapper
-    // public static void AddTenantMapper(this Client client)
-    // {
-    //     var userAttributeMapper = new UserAttributeProtocolMapper($"tenant_mapper_{client.GetResourceName()}", new()
-    //     {
-    //         RealmId = client.RealmId,
-    //         ClientId = client.Id,
-    //         Name = "tenant-mapper",
-    //         UserAttribute = "organization-id",
-    //         ClaimName = "organization_id"
-    //     });
-    // }
 }

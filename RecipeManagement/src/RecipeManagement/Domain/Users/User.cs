@@ -23,6 +23,12 @@ public class User : BaseEntity
 
     public string Username { get; private set; }
 
+    public string Bio { get; private set; }
+
+    public string Gender { get; private set; }
+
+    public string Picture { get; private set; }
+
     [JsonIgnore]
     [IgnoreDataMember]
     public ICollection<UserRole> Roles { get; private set; } = new List<UserRole>();
@@ -46,6 +52,9 @@ public class User : BaseEntity
         newUser.LastName = userForCreation.LastName;
         newUser.Email = new Email(userForCreation.Email);
         newUser.Username = userForCreation.Username;
+        newUser.Bio = "";
+        newUser.Gender = "";
+        newUser.Picture = "";
 
         newUser.QueueDomainEvent(new UserCreated(){ User = newUser });
         
@@ -54,14 +63,11 @@ public class User : BaseEntity
 
     public User Update(UserForUpdate userForUpdate)
     {
-        ValidationException.ThrowWhenNullOrWhitespace(userForUpdate.Identifier, 
-            "Please provide an identifier.");
-
-        Identifier = userForUpdate.Identifier;
         FirstName = userForUpdate.FirstName;
         LastName = userForUpdate.LastName;
-        Email = new Email(userForUpdate.Email);
-        Username = userForUpdate.Username;
+        Bio = userForUpdate.Bio;
+        Gender = userForUpdate.Gender;
+        Picture = userForUpdate.Picture;
 
         QueueDomainEvent(new UserUpdated(){ Id = Id });
         return this;

@@ -356,5 +356,17 @@
         <member name="M:RecipeManagement.Migrations.InitialMigration.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
+        <member name="T:RecipeManagement.Migrations.AddUserBioGenderPicture">
+            <inheritdoc />
+        </member>
+        <member name="M:RecipeManagement.Migrations.AddUserBioGenderPicture.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:RecipeManagement.Migrations.AddUserBioGenderPicture.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:RecipeManagement.Migrations.AddUserBioGenderPicture.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
     </members>
 </doc>
