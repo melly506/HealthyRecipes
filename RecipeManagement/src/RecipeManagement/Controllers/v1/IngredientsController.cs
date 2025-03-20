@@ -1,17 +1,15 @@
 namespace RecipeManagement.Controllers.v1;
 
-using RecipeManagement.Domain.Ingredients.Features;
-using RecipeManagement.Domain.Ingredients.Dtos;
-using RecipeManagement.Resources;
-using RecipeManagement.Domain;
 using System.Text.Json;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Threading.Tasks;
-using System.Threading;
 using Asp.Versioning;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using RecipeManagement.Domain.Ingredients.Dtos;
+using RecipeManagement.Domain.Ingredients.Features;
+using RecipeManagement.Domain.RecipeIngridients.Features;
+using RecipeManagement.Extensions.Filters;
 
 [ApiController]
 [Route("api/v{v:apiVersion}/ingredients")]
@@ -93,11 +91,15 @@ public sealed class IngredientsController(IMediator mediator): ControllerBase
     /// Deletes an existing Ingredient record.
     /// </summary>
     [Authorize]
+    [Transaction]
     [HttpDelete("{ingredientId:guid}", Name = "DeleteIngredient")]
     public async Task<ActionResult> DeleteIngredient(Guid ingredientId)
     {
-        var command = new DeleteIngredient.Command(ingredientId);
-        await mediator.Send(command);
+        var deleteIngredientsCommand = new DeleteRecipeIngridientsByIngridientId.Command(ingredientId);
+        await mediator.Send(deleteIngredientsCommand);
+
+        var deleteIngridientCommand = new DeleteIngredient.Command(ingredientId);
+        await mediator.Send(deleteIngridientCommand);
         return NoContent();
     }
 

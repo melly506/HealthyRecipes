@@ -9,6 +9,7 @@ using RecipeManagement.Domain.Diets.Mappings;
 using RecipeManagement.Domain.Seasons.Mappings;
 using RecipeManagement.Domain.DishTypes.Mappings;
 using RecipeManagement.Domain.Recipes.Dtos;
+using RecipeManagement.Exceptions;
 
 public static class GetRecipe
 {
@@ -21,6 +22,9 @@ public static class GetRecipe
         {
             var recipe = await dbContext.Recipes
                 .FirstOrDefaultAsync(r => r.Id == request.RecipeId, cancellationToken);
+
+            if (recipe == null)
+                throw new NotFoundException(nameof(Recipe), request.RecipeId);
 
             var foodTypesForRecipe = await dbContext.FoodTypes
                 .Where(ft => ft.Recipes.Any(r => r.Id == recipe.Id))

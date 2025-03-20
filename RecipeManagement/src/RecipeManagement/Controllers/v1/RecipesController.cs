@@ -194,25 +194,27 @@ public sealed class RecipesController(IMediator mediator): ControllerBase
     public async Task<ActionResult> DeleteRecipe(Guid recipeId)
     {
 
+        // Create comand to remove all recipe ingridients attached to recipe and send this
         var deleteIngredientsCommand = new DeleteRecipeIngridientsByRecipeId.Command(recipeId);
         await mediator.Send(deleteIngredientsCommand);
 
-        // Create comand to remove all food types from recipe
+        // Create comand to remove all recipe food types attached to recipe and send this
         var deleteFoodTypesCommand = new DeleteFoodTypeFromRecipe.Command(recipeId);
         await mediator.Send(deleteFoodTypesCommand);
 
-        // Create comand to remove all previous diets from recipe
+        // Create comand to remove all recipe diets attached to recipe and send this
         var deleteDietsCommand = new DeleteDietsFromRecipe.Command(recipeId);
         await mediator.Send(deleteDietsCommand);
 
-        // Create comand to remove all previous seasons from recipe
+        // Create comand to remove all recipe seasons attached to recipe and send this
         var deleteSeasonsCommand = new DeleteSeasonsFromRecipe.Command(recipeId);
         await mediator.Send(deleteSeasonsCommand);
 
-        // Create comand to remove all previous dishTypes from recipe
+        // Create comand to remove all recipe dishTypes attached to recipe and send this
         var deleteDishTypesCommand = new DeleteDishTypesFromRecipe.Command(recipeId);
         await mediator.Send(deleteDishTypesCommand);
 
+        // Remove recipe
         var deleteRecipeCommand = new DeleteRecipe.Command(recipeId);
         await mediator.Send(deleteRecipeCommand);
         return NoContent();
