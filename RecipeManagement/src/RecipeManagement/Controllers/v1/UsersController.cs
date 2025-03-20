@@ -85,6 +85,19 @@ public sealed class UsersController(IMediator mediator): ControllerBase
         return Ok(queryResponse);
     }
 
+    /// <summary>
+    /// Gets the current authenticated user's profile.
+    /// Creates the user in the database from keycloak token data if they don't exist.
+    /// </summary>
+    [Authorize]
+    [HttpGet("me")]
+    public async Task<ActionResult<UserDto>> GetCurrentUser()
+    {
+        var query = new GetOrCreateCurrentUser.Query();
+        var result = await mediator.Send(query);
+        return Ok(result);
+    }
+
 
     /// <summary>
     /// Creates a new User record.

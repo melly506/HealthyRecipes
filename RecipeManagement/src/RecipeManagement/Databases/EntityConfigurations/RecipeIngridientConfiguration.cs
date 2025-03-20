@@ -14,5 +14,6 @@ public sealed class RecipeIngridientConfiguration : IEntityTypeConfiguration<Rec
         // Relationship Marker -- Deleting or modifying this comment could cause incomplete relationship scaffolding
 
         // Property Marker -- Deleting or modifying this comment could cause incomplete relationship scaffolding
+        
     }
 }

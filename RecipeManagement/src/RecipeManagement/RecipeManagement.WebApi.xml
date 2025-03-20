@@ -234,6 +234,12 @@
             Gets a single User by ID.
             </summary>
         </member>
+        <member name="M:RecipeManagement.Controllers.v1.UsersController.GetCurrentUser">
+            <summary>
+            Gets the current authenticated user's profile.
+            Creates the user in the database if they don't exist.
+            </summary>
+        </member>
         <member name="M:RecipeManagement.Controllers.v1.UsersController.AddUser(RecipeManagement.Domain.Users.Dtos.UserForCreationDto)">
             <summary>
             Creates a new User record.
