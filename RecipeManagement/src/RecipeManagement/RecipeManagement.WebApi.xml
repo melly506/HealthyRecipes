@@ -149,31 +149,6 @@
             Deletes an existing Recipe record.
             </summary>
         </member>
-        <member name="M:RecipeManagement.Controllers.v1.RolePermissionsController.GetRolePermissions(RecipeManagement.Domain.RolePermissions.Dtos.RolePermissionParametersDto)">
-            <summary>
-            Gets a list of all RolePermissions.
-            </summary>
-        </member>
-        <member name="M:RecipeManagement.Controllers.v1.RolePermissionsController.GetRolePermission(System.Guid)">
-            <summary>
-            Gets a single RolePermission by ID.
-            </summary>
-        </member>
-        <member name="M:RecipeManagement.Controllers.v1.RolePermissionsController.AddRolePermission(RecipeManagement.Domain.RolePermissions.Dtos.RolePermissionForCreationDto)">
-            <summary>
-            Creates a new RolePermission record.
-            </summary>
-        </member>
-        <member name="M:RecipeManagement.Controllers.v1.RolePermissionsController.UpdateRolePermission(System.Guid,RecipeManagement.Domain.RolePermissions.Dtos.RolePermissionForUpdateDto)">
-            <summary>
-            Updates an entire existing RolePermission.
-            </summary>
-        </member>
-        <member name="M:RecipeManagement.Controllers.v1.RolePermissionsController.DeleteRolePermission(System.Guid)">
-            <summary>
-            Deletes an existing RolePermission record.
-            </summary>
-        </member>
         <member name="M:RecipeManagement.Controllers.v1.RolesController.GetRoles">
             <summary>
             Gets a list of all available roles.
