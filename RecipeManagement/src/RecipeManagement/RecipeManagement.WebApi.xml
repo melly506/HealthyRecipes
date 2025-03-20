@@ -214,16 +214,6 @@
             Deletes an existing UserFavorite record.
             </summary>
         </member>
-        <member name="M:RecipeManagement.Controllers.v1.UsersController.AddRole(System.Guid,System.String)">
-            <summary>
-            Adds a new role to a user.
-            </summary>
-        </member>
-        <member name="M:RecipeManagement.Controllers.v1.UsersController.RemoveRole(System.Guid,System.String)">
-            <summary>
-            Removes a role from a User
-            </summary>
-        </member>
         <member name="M:RecipeManagement.Controllers.v1.UsersController.GetUsers(RecipeManagement.Domain.Users.Dtos.UserParametersDto)">
             <summary>
             Gets a list of all Users.
@@ -237,22 +227,12 @@
         <member name="M:RecipeManagement.Controllers.v1.UsersController.GetCurrentUser">
             <summary>
             Gets the current authenticated user's profile.
-            Creates the user in the database if they don't exist.
+            Creates the user in the database from keycloak token data if they don't exist.
             </summary>
         </member>
-        <member name="M:RecipeManagement.Controllers.v1.UsersController.AddUser(RecipeManagement.Domain.Users.Dtos.UserForCreationDto)">
+        <member name="M:RecipeManagement.Controllers.v1.UsersController.UpdateCurrentUser(RecipeManagement.Domain.Users.Dtos.UserForUpdateDto)">
             <summary>
-            Creates a new User record.
-            </summary>
-        </member>
-        <member name="M:RecipeManagement.Controllers.v1.UsersController.UpdateUser(System.Guid,RecipeManagement.Domain.Users.Dtos.UserForUpdateDto)">
-            <summary>
-            Updates an entire existing User.
-            </summary>
-        </member>
-        <member name="M:RecipeManagement.Controllers.v1.UsersController.DeleteUser(System.Guid)">
-            <summary>
-            Deletes an existing User record.
+            Updates the current authenticated user's profile.
             </summary>
         </member>
         <member name="M:RecipeManagement.Databases.EntityConfigurations.CommentConfiguration.Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{RecipeManagement.Domain.Comments.Comment})">

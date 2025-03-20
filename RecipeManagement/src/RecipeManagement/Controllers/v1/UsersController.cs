@@ -18,30 +18,6 @@ using MediatR;
 [ApiVersion("1.0")]
 public sealed class UsersController(IMediator mediator): ControllerBase
 {    
-    /// <summary>
-    /// Adds a new role to a user.
-    /// </summary>
-    [Authorize]
-    [HttpPut("{userId:guid}/addRole", Name = "AddRole")]
-    public async Task<IActionResult> AddRole([FromRoute] Guid userId, [FromBody] string role)
-    {
-        var command = new AddUserRole.Command(userId, role);
-        await mediator.Send(command);
-        return NoContent();
-    }
-
-    /// <summary>
-    /// Removes a role from a User
-    /// </summary>
-    [Authorize]
-    [HttpPut("{userId:guid}/removeRole", Name = "RemoveRole")]
-    public async Task<ActionResult> RemoveRole([FromRoute] Guid userId, [FromBody] string role)
-    {
-        var command = new RemoveUserRole.Command(userId, role);
-        await mediator.Send(command);
-        return NoContent();
-    }
-
 
     /// <summary>
     /// Gets a list of all Users.
@@ -98,44 +74,14 @@ public sealed class UsersController(IMediator mediator): ControllerBase
         return Ok(result);
     }
 
-
     /// <summary>
-    /// Creates a new User record.
+    /// Updates the current authenticated user's profile.
     /// </summary>
     [Authorize]
-    [HttpPost(Name = "AddUser")]
-    public async Task<ActionResult<UserDto>> AddUser([FromBody]UserForCreationDto userForCreation)
+    [HttpPut("me")]
+    public async Task<ActionResult> UpdateCurrentUser(UserForUpdateDto user)
     {
-        var command = new AddUser.Command(userForCreation);
-        var commandResponse = await mediator.Send(command);
-
-        return CreatedAtRoute("GetUser",
-            new { userId = commandResponse.Id },
-            commandResponse);
-    }
-
-
-    /// <summary>
-    /// Updates an entire existing User.
-    /// </summary>
-    [Authorize]
-    [HttpPut("{userId:guid}", Name = "UpdateUser")]
-    public async Task<IActionResult> UpdateUser(Guid userId, UserForUpdateDto user)
-    {
-        var command = new UpdateUser.Command(userId, user);
-        await mediator.Send(command);
-        return NoContent();
-    }
-
-
-    /// <summary>
-    /// Deletes an existing User record.
-    /// </summary>
-    [Authorize]
-    [HttpDelete("{userId:guid}", Name = "DeleteUser")]
-    public async Task<ActionResult> DeleteUser(Guid userId)
-    {
-        var command = new DeleteUser.Command(userId);
+        var command = new UpdateCurrentUser.Command(user);
         await mediator.Send(command);
         return NoContent();
     }
