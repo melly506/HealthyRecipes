@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-header',
+  imports: [RouterLink, RouterLinkActive],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent {
-  // Більше нічого не потрібно, якщо використовуємо [routerLink]
-}
+export class HeaderComponent {}
