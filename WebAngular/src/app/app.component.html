@@ -1,27 +1,3 @@
 <app-header></app-header>
+<router-outlet></router-outlet>
 
-<button type="button" (click)="login()">LOGIN</button>
-
-<br>
-<br>
-<br>
-
-<button type="button" (click)="logout()">LOGOUT</button>
-
-
-<br>
-<br>
-<br>
-
-<button type="button" (click)="test()">TEST</button>
-
-<h1>{{userInfo.firstName}} {{userInfo.lastName}}</h1>
-
-<h2>рецепт з бази {{item?.name}}</h2>
-
-@for(item of items; track item.id){
-    <p>
-        {{item.name}} / {{item.calories}}
-    </p>
-}
-<router-outlet />
