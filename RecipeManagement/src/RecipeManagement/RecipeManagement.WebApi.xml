@@ -4,16 +4,6 @@
         <name>RecipeManagement</name>
     </assembly>
     <members>
-        <member name="M:RecipeManagement.Controllers.v1.CommentsController.AddComment(RecipeManagement.Domain.Comments.Dtos.CommentForCreationDto)">
-            <summary>
-            Creates a new Comment record.
-            </summary>
-        </member>
-        <member name="M:RecipeManagement.Controllers.v1.CommentsController.GetComments(RecipeManagement.Domain.Comments.Dtos.CommentParametersDto)">
-            <summary>
-            Gets a list of all Comments.
-            </summary>
-        </member>
         <member name="M:RecipeManagement.Controllers.v1.CommentsController.GetComment(System.Guid)">
             <summary>
             Gets a single Comment by ID.
@@ -151,7 +141,12 @@
         </member>
         <member name="M:RecipeManagement.Controllers.v1.RecipesController.AddCommentToRecipe(System.Guid,RecipeManagement.Domain.Comments.Dtos.CommentForCreationDto)">
             <summary>
-            Created comment in recipe
+            Creates a comment in Recipe
+            </summary>
+        </member>
+        <member name="M:RecipeManagement.Controllers.v1.RecipesController.GetRecipeComments(System.Guid,RecipeManagement.Domain.Comments.Dtos.CommentParametersDto)">
+            <summary>
+            Gets a list of all Recipe Comments.
             </summary>
         </member>
         <member name="M:RecipeManagement.Controllers.v1.RolesController.GetRoles">
@@ -213,6 +208,11 @@
         <member name="M:RecipeManagement.Controllers.v1.UsersController.UpdateCurrentUser(RecipeManagement.Domain.Users.Dtos.UserForUpdateDto)">
             <summary>
             Updates the current authenticated user's profile.
+            </summary>
+        </member>
+        <member name="M:RecipeManagement.Controllers.v1.UsersController.GetCurrentUserComments(RecipeManagement.Domain.Comments.Dtos.CommentParametersDto)">
+            <summary>
+            Gets a list of all User Comments.
             </summary>
         </member>
         <member name="M:RecipeManagement.Databases.EntityConfigurations.CommentConfiguration.Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{RecipeManagement.Domain.Comments.Comment})">

@@ -15,6 +15,7 @@ using RecipeManagement.Domain.RecipeIngridients.Features;
 using RecipeManagement.Domain.Recipes.Dtos;
 using RecipeManagement.Domain.Recipes.Features;
 using RecipeManagement.Domain.Comments.Dtos;
+using RecipeManagement.Domain.Comments.Features;
 using RecipeManagement.Extensions.Filters;
 
 [ApiController]
@@ -222,7 +223,7 @@ public sealed class RecipesController(IMediator mediator) : ControllerBase
     }
 
     /// <summary>
-    /// Created comment in recipe
+    /// Creates a comment in Recipe
     /// </summary>
     [Authorize]
     [HttpPost("{recipeId:guid}/addComment", Name = "AddCommentToRecipe")]
@@ -234,6 +235,34 @@ public sealed class RecipesController(IMediator mediator) : ControllerBase
         return CreatedAtRoute("GetComment",
             new { commentId = commandResponse.Id },
             commandResponse);
+    }
+
+    /// <summary>
+    /// Gets a list of all Recipe Comments.
+    /// </summary>
+    [HttpGet("{recipeId:guid}/comments", Name = "GetRecipeComments")]
+    public async Task<IActionResult> GetRecipeComments(Guid recipeId, [FromQuery] CommentParametersDto commentParametersDto)
+    {
+        var query = new GetCommentList.Query(commentParametersDto, recipeId);
+        var queryResponse = await mediator.Send(query);
+
+        var paginationMetadata = new
+        {
+            totalCount = queryResponse.TotalCount,
+            pageSize = queryResponse.PageSize,
+            currentPageSize = queryResponse.CurrentPageSize,
+            currentStartIndex = queryResponse.CurrentStartIndex,
+            currentEndIndex = queryResponse.CurrentEndIndex,
+            pageNumber = queryResponse.PageNumber,
+            totalPages = queryResponse.TotalPages,
+            hasPrevious = queryResponse.HasPrevious,
+            hasNext = queryResponse.HasNext
+        };
+
+        Response.Headers.Append("X-Pagination",
+            JsonSerializer.Serialize(paginationMetadata));
+
+        return Ok(queryResponse);
     }
 
 }
