@@ -14,12 +14,13 @@ using RecipeManagement.Domain.RecipeIngridients.Dtos;
 using RecipeManagement.Domain.RecipeIngridients.Features;
 using RecipeManagement.Domain.Recipes.Dtos;
 using RecipeManagement.Domain.Recipes.Features;
+using RecipeManagement.Domain.Comments.Dtos;
 using RecipeManagement.Extensions.Filters;
 
 [ApiController]
 [Route("api/v{v:apiVersion}/recipes")]
 [ApiVersion("1.0")]
-public sealed class RecipesController(IMediator mediator): ControllerBase
+public sealed class RecipesController(IMediator mediator) : ControllerBase
 {
     /// <summary>
     /// Creates a new Recipe record.
@@ -27,7 +28,7 @@ public sealed class RecipesController(IMediator mediator): ControllerBase
     [Authorize]
     [Transaction]
     [HttpPost(Name = "AddRecipe")]
-    public async Task<ActionResult<RecipeDto>> AddRecipe([FromBody]RecipeForCreationDto recipeForCreation)
+    public async Task<ActionResult<RecipeDto>> AddRecipe([FromBody] RecipeForCreationDto recipeForCreation)
     {
 
         var addRecipeCommand = new AddRecipe.Command(recipeForCreation);
@@ -219,4 +220,20 @@ public sealed class RecipesController(IMediator mediator): ControllerBase
         await mediator.Send(deleteRecipeCommand);
         return NoContent();
     }
+
+    /// <summary>
+    /// Created comment in recipe
+    /// </summary>
+    [Authorize]
+    [HttpPost("{recipeId:guid}/addComment", Name = "AddCommentToRecipe")]
+    public async Task<ActionResult<CommentDto>> AddCommentToRecipe(Guid recipeId, CommentForCreationDto commentForCreation)
+    {
+        var addCommentToRecipeCommand = new AddCommentToRecipe.Command(recipeId, commentForCreation);
+        var commandResponse = await mediator.Send(addCommentToRecipeCommand);
+
+        return CreatedAtRoute("GetComment",
+            new { commentId = commandResponse.Id },
+            commandResponse);
+    }
+
 }

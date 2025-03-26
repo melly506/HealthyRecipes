@@ -149,6 +149,11 @@
             Deletes an existing Recipe record.
             </summary>
         </member>
+        <member name="M:RecipeManagement.Controllers.v1.RecipesController.AddCommentToRecipe(System.Guid,RecipeManagement.Domain.Comments.Dtos.CommentForCreationDto)">
+            <summary>
+            Created comment in recipe
+            </summary>
+        </member>
         <member name="M:RecipeManagement.Controllers.v1.RolesController.GetRoles">
             <summary>
             Gets a list of all available roles.

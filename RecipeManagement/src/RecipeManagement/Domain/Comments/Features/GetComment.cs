@@ -18,6 +18,8 @@ public static class GetComment
         {
             var result = await dbContext.Comments
                 .AsNoTracking()
+                .Include(c => c.User)
+                .Include(c => c.Recipe)
                 .GetById(request.CommentId, cancellationToken);
             return result.ToCommentDto();
         }
