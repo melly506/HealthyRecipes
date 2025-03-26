@@ -13,12 +13,16 @@ public static class UpdateComment
 {
     public sealed record Command(Guid CommentId, CommentForUpdateDto UpdatedCommentData) : IRequest;
 
-    public sealed class Handler(RecipesDbContext dbContext)
+    public sealed class Handler(RecipesDbContext dbContext, ICurrentUserService currentUserService)
         : IRequestHandler<Command>
     {
         public async Task Handle(Command request, CancellationToken cancellationToken)
         {
             var commentToUpdate = await dbContext.Comments.GetById(request.CommentId, cancellationToken: cancellationToken);
+            if (commentToUpdate.CreatedBy != currentUserService.UserId)
+            {
+                throw new NoRolesAssignedException();
+            }
             var commentToAdd = request.UpdatedCommentData.ToCommentForUpdate();
             commentToUpdate.Update(commentToAdd);
 
