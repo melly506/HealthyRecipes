@@ -220,6 +220,11 @@
             Gets a list of all User Recipes.
             </summary>
         </member>
+        <member name="M:RecipeManagement.Controllers.v1.UsersController.GetCurrentUserIngredientList(RecipeManagement.Domain.Ingredients.Dtos.IngredientParametersDto)">
+            <summary>
+            Gets a list of all User Ingredients.
+            </summary>
+        </member>
         <member name="M:RecipeManagement.Databases.EntityConfigurations.CommentConfiguration.Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{RecipeManagement.Domain.Comments.Comment})">
             <summary>
             The database configuration for Comments. 

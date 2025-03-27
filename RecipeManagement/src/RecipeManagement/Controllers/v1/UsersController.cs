@@ -12,6 +12,8 @@ using RecipeManagement.Domain.Users.Dtos;
 using RecipeManagement.Domain.Users.Features;
 using RecipeManagement.Domain.Recipes.Features;
 using RecipeManagement.Domain.Recipes.Dtos;
+using RecipeManagement.Domain.Ingredients.Dtos;
+using RecipeManagement.Domain.Ingredients.Features;
 
 [ApiController]
 [Route("api/v{v:apiVersion}/users")]
@@ -123,6 +125,36 @@ public sealed class UsersController(IMediator mediator): ControllerBase
     public async Task<IActionResult> GetCurrentUserRecipes([FromQuery] RecipeParametersDto recipeParametersDto)
     {
         var query = new GetCurrentUserRecipeList.Query(recipeParametersDto);
+        var queryResponse = await mediator.Send(query);
+
+        var paginationMetadata = new
+        {
+            totalCount = queryResponse.TotalCount,
+            pageSize = queryResponse.PageSize,
+            currentPageSize = queryResponse.CurrentPageSize,
+            currentStartIndex = queryResponse.CurrentStartIndex,
+            currentEndIndex = queryResponse.CurrentEndIndex,
+            pageNumber = queryResponse.PageNumber,
+            totalPages = queryResponse.TotalPages,
+            hasPrevious = queryResponse.HasPrevious,
+            hasNext = queryResponse.HasNext
+        };
+
+        Response.Headers.Append("X-Pagination",
+            JsonSerializer.Serialize(paginationMetadata));
+
+        return Ok(queryResponse);
+    }
+
+
+    /// <summary>
+    /// Gets a list of all User Ingredients.
+    /// </summary>
+    [Authorize]
+    [HttpGet("me/ingredients", Name = "GetCurrentUserIngredientList")]
+    public async Task<IActionResult> GetCurrentUserIngredientList([FromQuery] IngredientParametersDto ingredientParametersDto)
+    {
+        var query = new GetCurrentUserIngredientList.Query(ingredientParametersDto);
         var queryResponse = await mediator.Send(query);
 
         var paginationMetadata = new
