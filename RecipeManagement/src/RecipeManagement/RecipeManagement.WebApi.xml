@@ -215,6 +215,11 @@
             Gets a list of all User Comments.
             </summary>
         </member>
+        <member name="M:RecipeManagement.Controllers.v1.UsersController.GetCurrentUserRecipes(RecipeManagement.Domain.Recipes.Dtos.RecipeParametersDto)">
+            <summary>
+            Gets a list of all User Recipes.
+            </summary>
+        </member>
         <member name="M:RecipeManagement.Databases.EntityConfigurations.CommentConfiguration.Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{RecipeManagement.Domain.Comments.Comment})">
             <summary>
             The database configuration for Comments. 

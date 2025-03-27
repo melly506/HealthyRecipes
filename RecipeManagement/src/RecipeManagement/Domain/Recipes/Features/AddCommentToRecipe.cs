@@ -1,18 +1,12 @@
 namespace RecipeManagement.Domain.Recipes.Features;
 
-using RecipeManagement.Databases;
-using RecipeManagement.Domain.Recipes;
-using RecipeManagement.Domain.Recipes.Dtos;
-using RecipeManagement.Domain.Recipes.Models;
-using RecipeManagement.Domain.Comments;
-using RecipeManagement.Domain.Comments.Dtos;
-using RecipeManagement.Domain.Comments.Models;
-using RecipeManagement.Domain.Comments.Mappings;
-using RecipeManagement.Services;
-using RecipeManagement.Exceptions;
-using Mappings;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using RecipeManagement.Databases;
+using RecipeManagement.Domain.Comments;
+using RecipeManagement.Domain.Comments.Dtos;
+using RecipeManagement.Domain.Comments.Mappings;
+using RecipeManagement.Services;
 
 
 public static class AddCommentToRecipe

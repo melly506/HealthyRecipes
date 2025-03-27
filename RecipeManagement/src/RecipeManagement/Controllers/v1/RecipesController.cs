@@ -6,16 +6,12 @@ using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using RecipeManagement.Domain.FoodTypes.Features;
-using RecipeManagement.Domain.Diets.Features;
-using RecipeManagement.Domain.DishTypes.Features;
-using RecipeManagement.Domain.Seasons.Features;
+using RecipeManagement.Domain.Comments.Dtos;
+using RecipeManagement.Domain.Comments.Features;
 using RecipeManagement.Domain.RecipeIngridients.Dtos;
 using RecipeManagement.Domain.RecipeIngridients.Features;
 using RecipeManagement.Domain.Recipes.Dtos;
 using RecipeManagement.Domain.Recipes.Features;
-using RecipeManagement.Domain.Comments.Dtos;
-using RecipeManagement.Domain.Comments.Features;
 using RecipeManagement.Extensions.Filters;
 
 [ApiController]

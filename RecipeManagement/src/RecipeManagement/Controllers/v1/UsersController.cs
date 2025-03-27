@@ -1,19 +1,17 @@
 namespace RecipeManagement.Controllers.v1;
 
-using RecipeManagement.Domain.Users.Features;
-using RecipeManagement.Domain.Users.Dtos;
-using RecipeManagement.Domain.Comments.Dtos;
-using RecipeManagement.Domain.Comments.Features;
-using RecipeManagement.Resources;
-using RecipeManagement.Domain;
 using System.Text.Json;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Threading.Tasks;
-using System.Threading;
 using Asp.Versioning;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using RecipeManagement.Domain.Comments.Dtos;
+using RecipeManagement.Domain.Comments.Features;
+using RecipeManagement.Domain.Users.Dtos;
+using RecipeManagement.Domain.Users.Features;
+using RecipeManagement.Domain.Recipes.Features;
+using RecipeManagement.Domain.Recipes.Dtos;
 
 [ApiController]
 [Route("api/v{v:apiVersion}/users")]
@@ -96,6 +94,35 @@ public sealed class UsersController(IMediator mediator): ControllerBase
     public async Task<IActionResult> GetCurrentUserComments([FromQuery] CommentParametersDto commentParametersDto)
     {
         var query = new GetCommentList.Query(commentParametersDto);
+        var queryResponse = await mediator.Send(query);
+
+        var paginationMetadata = new
+        {
+            totalCount = queryResponse.TotalCount,
+            pageSize = queryResponse.PageSize,
+            currentPageSize = queryResponse.CurrentPageSize,
+            currentStartIndex = queryResponse.CurrentStartIndex,
+            currentEndIndex = queryResponse.CurrentEndIndex,
+            pageNumber = queryResponse.PageNumber,
+            totalPages = queryResponse.TotalPages,
+            hasPrevious = queryResponse.HasPrevious,
+            hasNext = queryResponse.HasNext
+        };
+
+        Response.Headers.Append("X-Pagination",
+            JsonSerializer.Serialize(paginationMetadata));
+
+        return Ok(queryResponse);
+    }
+
+    /// <summary>
+    /// Gets a list of all User Recipes.
+    /// </summary>
+    [Authorize]
+    [HttpGet("me/recipes", Name = "GetCurrentUserRecipes")]
+    public async Task<IActionResult> GetCurrentUserRecipes([FromQuery] RecipeParametersDto recipeParametersDto)
+    {
+        var query = new GetCurrentUserRecipeList.Query(recipeParametersDto);
         var queryResponse = await mediator.Send(query);
 
         var paginationMetadata = new

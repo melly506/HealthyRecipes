@@ -1,13 +1,11 @@
 namespace RecipeManagement.Domain.Comments.Features;
 
-using RecipeManagement.Domain.Comments;
-using RecipeManagement.Domain.Comments.Dtos;
-using RecipeManagement.Databases;
-using RecipeManagement.Services;
-using RecipeManagement.Domain.Comments.Models;
-using RecipeManagement.Exceptions;
 using Mappings;
 using MediatR;
+using RecipeManagement.Databases;
+using RecipeManagement.Domain.Comments.Dtos;
+using RecipeManagement.Exceptions;
+using RecipeManagement.Services;
 
 public static class UpdateComment
 {
