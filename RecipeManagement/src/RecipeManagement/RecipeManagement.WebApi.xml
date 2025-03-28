@@ -149,6 +149,16 @@
             Gets a list of all Recipe Comments.
             </summary>
         </member>
+        <member name="M:RecipeManagement.Controllers.v1.RecipesController.AddLikeToRecipe(System.Guid)">
+            <summary>
+            Add like to Recipe
+            </summary>
+        </member>
+        <member name="M:RecipeManagement.Controllers.v1.RecipesController.UnlikeRecipe(System.Guid)">
+            <summary>
+            Add like to Recipe
+            </summary>
+        </member>
         <member name="M:RecipeManagement.Controllers.v1.RolesController.GetRoles">
             <summary>
             Gets a list of all available roles.
@@ -172,21 +182,6 @@
         <member name="M:RecipeManagement.Controllers.v1.SeasonsController.UpdateSeason(System.Guid,RecipeManagement.Domain.Seasons.Dtos.SeasonForUpdateDto)">
             <summary>
             Updates an entire existing Season.
-            </summary>
-        </member>
-        <member name="M:RecipeManagement.Controllers.v1.UserFavoritesController.AddUserFavorite(RecipeManagement.Domain.UserFavorites.Dtos.UserFavoriteForCreationDto)">
-            <summary>
-            Creates a new UserFavorite record.
-            </summary>
-        </member>
-        <member name="M:RecipeManagement.Controllers.v1.UserFavoritesController.GetUserFavorites(RecipeManagement.Domain.UserFavorites.Dtos.UserFavoriteParametersDto)">
-            <summary>
-            Gets a list of all UserFavorites.
-            </summary>
-        </member>
-        <member name="M:RecipeManagement.Controllers.v1.UserFavoritesController.DeleteUserFavorite(System.Guid)">
-            <summary>
-            Deletes an existing UserFavorite record.
             </summary>
         </member>
         <member name="M:RecipeManagement.Controllers.v1.UsersController.GetUsers(RecipeManagement.Domain.Users.Dtos.UserParametersDto)">
@@ -223,6 +218,11 @@
         <member name="M:RecipeManagement.Controllers.v1.UsersController.GetCurrentUserIngredientList(RecipeManagement.Domain.Ingredients.Dtos.IngredientParametersDto)">
             <summary>
             Gets a list of all User Ingredients.
+            </summary>
+        </member>
+        <member name="M:RecipeManagement.Controllers.v1.UsersController.GetCurrentUserFavoriteRecipeList(RecipeManagement.Domain.Recipes.Dtos.RecipeParametersDto)">
+            <summary>
+            Gets a list of all Favorite (Liked by User) Recipes.
             </summary>
         </member>
         <member name="M:RecipeManagement.Databases.EntityConfigurations.CommentConfiguration.Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{RecipeManagement.Domain.Comments.Comment})">

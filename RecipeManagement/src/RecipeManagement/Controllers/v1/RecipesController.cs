@@ -212,6 +212,10 @@ public sealed class RecipesController(IMediator mediator) : ControllerBase
         var deleteDishTypesCommand = new DeleteDishTypesFromRecipe.Command(recipeId);
         await mediator.Send(deleteDishTypesCommand);
 
+        // Create comand to remove all comments attached to recipe and send this
+        var deleteCommentsCommand = new DeleteCommentsFromRecipe.Command(recipeId);
+        await mediator.Send(deleteCommentsCommand);
+
         // Remove recipe
         var deleteRecipeCommand = new DeleteRecipe.Command(recipeId);
         await mediator.Send(deleteRecipeCommand);
@@ -259,6 +263,32 @@ public sealed class RecipesController(IMediator mediator) : ControllerBase
             JsonSerializer.Serialize(paginationMetadata));
 
         return Ok(queryResponse);
+    }
+
+    /// <summary>
+    /// Add like to Recipe
+    /// </summary>
+    [Authorize]
+    [HttpPost("{recipeId:guid}/like", Name = "AddLikeToRecipe")]
+    public async Task<ActionResult> AddLikeToRecipe(Guid recipeId)
+    {
+        var likeRecipeCommand = new AddLikeToRecipe.Command(recipeId);
+        await mediator.Send(likeRecipeCommand);
+
+        return NoContent();
+    }
+
+    /// <summary>
+    /// Add like to Recipe
+    /// </summary>
+    [Authorize]
+    [HttpDelete("{recipeId:guid}/unlike", Name = "UnlikeRecipe")]
+    public async Task<ActionResult> UnlikeRecipe(Guid recipeId)
+    {
+        var unlikeRecipeComman = new UnlikeRecipe.Command(recipeId);
+        await mediator.Send(unlikeRecipeComman);
+
+        return NoContent();
     }
 
 }

@@ -176,5 +176,34 @@ public sealed class UsersController(IMediator mediator): ControllerBase
         return Ok(queryResponse);
     }
 
+    /// <summary>
+    /// Gets a list of all Favorite (Liked by User) Recipes.
+    /// </summary>
+    [Authorize]
+    [HttpGet("me/favoriteRecipes", Name = "GetCurrentUserFavoriteRecipeList")]
+    public async Task<IActionResult> GetCurrentUserFavoriteRecipeList([FromQuery] RecipeParametersDto recipeParametersDto)
+    {
+        var query = new GetFavoriteRecipeList.Query(recipeParametersDto);
+        var queryResponse = await mediator.Send(query);
+
+        var paginationMetadata = new
+        {
+            totalCount = queryResponse.TotalCount,
+            pageSize = queryResponse.PageSize,
+            currentPageSize = queryResponse.CurrentPageSize,
+            currentStartIndex = queryResponse.CurrentStartIndex,
+            currentEndIndex = queryResponse.CurrentEndIndex,
+            pageNumber = queryResponse.PageNumber,
+            totalPages = queryResponse.TotalPages,
+            hasPrevious = queryResponse.HasPrevious,
+            hasNext = queryResponse.HasNext
+        };
+
+        Response.Headers.Append("X-Pagination",
+            JsonSerializer.Serialize(paginationMetadata));
+
+        return Ok(queryResponse);
+    }
+
     // endpoint marker - do not delete this comment
 }
