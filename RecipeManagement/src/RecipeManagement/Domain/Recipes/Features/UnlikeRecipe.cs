@@ -35,8 +35,6 @@ public static class UnlikeRecipe
                 throw new InvalidOperationException("notLikedYet");
             }
 
-            recipe.RemoveUserFavorite(existingLike);
-
 
             dbContext.UserFavorites.Remove(existingLike);
             await dbContext.SaveChangesAsync(cancellationToken);
