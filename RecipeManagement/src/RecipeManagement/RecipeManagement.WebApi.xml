@@ -184,6 +184,18 @@
             Updates an entire existing Season.
             </summary>
         </member>
+        <member name="M:RecipeManagement.Controllers.v1.ImageUploadController.UploadImage(Microsoft.AspNetCore.Http.IFormFile)">
+            <summary>
+            Uploads an image to Cloudinary.
+            </summary>
+            <param name="file">The image file to upload.</param>
+        </member>
+        <member name="M:RecipeManagement.Controllers.v1.ImageUploadController.UploadProfileImage(Microsoft.AspNetCore.Http.IFormFile)">
+            <summary>
+            Uploads a user profile image to Cloudinary, focusing on faces if present.
+            </summary>
+            <param name="file">The image file to upload.</param>
+        </member>
         <member name="M:RecipeManagement.Controllers.v1.UsersController.GetUsers(RecipeManagement.Domain.Users.Dtos.UserParametersDto)">
             <summary>
             Gets a list of all Users.
