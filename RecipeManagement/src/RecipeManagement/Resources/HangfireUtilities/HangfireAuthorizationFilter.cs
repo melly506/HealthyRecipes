@@ -13,9 +13,6 @@ public class HangfireAuthorizationFilter : IDashboardAsyncAuthorizationFilter
 
     public Task<bool> AuthorizeAsync(DashboardContext context)
     {
-        // TODO alt -- add login handling with cookie handling
-        // var heimGuard = _serviceProvider.GetService<IHeimGuardClient>();
-        // return await heimGuard.HasPermissionAsync(Permissions.HangfireAccess);
 
         var env = _serviceProvider.GetService<IWebHostEnvironment>();
         return Task.FromResult(env.IsDevelopment());

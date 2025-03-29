@@ -6,6 +6,9 @@ using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using HeimGuard;
+using RecipeManagement.Services;
+using RecipeManagement.Databases;
 using RecipeManagement.Domain.Comments.Dtos;
 using RecipeManagement.Domain.Comments.Features;
 using RecipeManagement.Domain.RecipeIngridients.Dtos;
@@ -13,11 +16,17 @@ using RecipeManagement.Domain.RecipeIngridients.Features;
 using RecipeManagement.Domain.Recipes.Dtos;
 using RecipeManagement.Domain.Recipes.Features;
 using RecipeManagement.Extensions.Filters;
+using RecipeManagement.Extensions.Services;
+using RecipeManagement.Exceptions;
 
 [ApiController]
 [Route("api/v{v:apiVersion}/recipes")]
 [ApiVersion("1.0")]
-public sealed class RecipesController(IMediator mediator) : ControllerBase
+public sealed class RecipesController(
+    IMediator mediator,
+    IHeimGuardClient heimGuard,
+    RecipesDbContext dbContext,
+    ICurrentUserService currentUserService) : ControllerBase
 {
     /// <summary>
     /// Creates a new Recipe record.
@@ -120,6 +129,15 @@ public sealed class RecipesController(IMediator mediator) : ControllerBase
     [HttpPut("{recipeId:guid}", Name = "UpdateRecipe")]
     public async Task<IActionResult> UpdateRecipe(Guid recipeId, RecipeForUpdateDto recipeUpdate)
     {
+
+        try
+        {
+            await heimGuard.MustHaveRecipeOwnership(recipeId, dbContext, currentUserService);
+        }
+        catch (ForbiddenAccessException)
+        {
+            return Forbid();
+        }
         var updateRecipeCommand = new UpdateRecipe.Command(recipeId, recipeUpdate);
 
         // Prepare new recipe ingridients
@@ -191,6 +209,14 @@ public sealed class RecipesController(IMediator mediator) : ControllerBase
     [HttpDelete("{recipeId:guid}", Name = "DeleteRecipe")]
     public async Task<ActionResult> DeleteRecipe(Guid recipeId)
     {
+        try
+        {
+            await heimGuard.MustHaveRecipeOwnership(recipeId, dbContext, currentUserService);
+        }
+        catch (ForbiddenAccessException)
+        {
+            return Forbid();
+        }
 
         // Create command to remove all recipe ingridients attached to recipe and send this
         var deleteIngredientsCommand = new DeleteRecipeIngridientsByRecipeId.Command(recipeId);
