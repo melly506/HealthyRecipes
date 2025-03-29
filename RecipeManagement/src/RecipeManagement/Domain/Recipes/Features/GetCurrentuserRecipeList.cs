@@ -19,11 +19,15 @@ public static class GetCurrentUserRecipeList
     {
         public async Task<PagedList<RecipeDto>> Handle(Query request, CancellationToken cancellationToken)
         {
+
+            var currentUserId = currentUserService.UserId;
             var collection = dbContext.Recipes
                 .Include(r => r.FoodType)
                 .Include(r => r.Diet)
                 .Include(r => r.Season)
                 .Include(r => r.DishType)
+                .Include(r => r.UserFavorites)
+                .Include(r => r.UserFavorites).ThenInclude(uf => uf.User)
                 .AsNoTracking();
 
             collection = collection.Where(r => r.CreatedBy == currentUserService.UserId);
@@ -69,7 +73,7 @@ public static class GetCurrentUserRecipeList
             };
             var appliedCollection = collection.ApplyQueryKit(queryKitData);
 
-            return await PagedList<RecipeDto>.CreateAsync(appliedCollection.ToRecipeDtoWithChildrenEntitiesQueryable(),
+            return await PagedList<RecipeDto>.CreateAsync(appliedCollection.ToRecipeDtoWithChildrenEntitiesQueryable(currentUserId),
                 request.QueryParameters.PageNumber,
                 request.QueryParameters.PageSize,
                 cancellationToken);

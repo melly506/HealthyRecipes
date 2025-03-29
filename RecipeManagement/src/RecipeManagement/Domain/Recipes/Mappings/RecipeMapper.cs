@@ -18,10 +18,11 @@ public static partial class RecipeMapper
     [MapperIgnoreTarget(nameof(RecipeDto.Diet))]
     [MapperIgnoreTarget(nameof(RecipeDto.DishType))]
     [MapperIgnoreTarget(nameof(RecipeDto.Season))]
+    [MapperIgnoreTarget(nameof(RecipeDto.IsLiked))]
     public static partial RecipeDto ToRecipeDto(this Recipe recipe);
     public static partial IQueryable<RecipeDto> ToRecipeDtoQueryable(this IQueryable<Recipe> recipe);
 
-    public static IQueryable<RecipeDto> ToRecipeDtoWithChildrenEntitiesQueryable(this IQueryable<Recipe> recipes)
+    public static IQueryable<RecipeDto> ToRecipeDtoWithChildrenEntitiesQueryable(this IQueryable<Recipe> recipes, string currentUserId)
     {
         return recipes.Select(r => new RecipeDto
         {
@@ -31,8 +32,9 @@ public static partial class RecipeMapper
             CookingTime = r.CookingTime,
             Description = r.Description,
             Instructions = r.Instructions,
-            LikesCount = r.LikesCount,
+            LikesCount = r.UserFavorites.Count,
             IsDraft = r.IsDraft,
+            IsLiked = !string.IsNullOrEmpty(currentUserId) && r.UserFavorites.Any(uf => uf.User.Identifier == currentUserId),
             FoodType = r.FoodType.Select(ft => FoodTypeMapper.ToFoodTypeDto(ft)).ToList(),
             Diet = r.Diet.Select(di => DietMapper.ToDietDto(di)).ToList(),
             Season = r.Season.Select(se => SeasonMapper.ToSeasonDto(se)).ToList(),

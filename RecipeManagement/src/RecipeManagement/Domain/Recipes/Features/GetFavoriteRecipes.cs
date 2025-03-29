@@ -28,6 +28,7 @@ public static class GetFavoriteRecipeList
                 .Include(r => r.Season)
                 .Include(r => r.DishType)
                 .Include(r => r.UserFavorites)
+                .Include(r => r.UserFavorites).ThenInclude(uf => uf.User)
                 .AsNoTracking()
                 .Where(r => r.UserFavorites.Any(uf => uf.User.Identifier == currentUserId));
 
@@ -72,7 +73,7 @@ public static class GetFavoriteRecipeList
             };
             var appliedCollection = collection.ApplyQueryKit(queryKitData);
 
-            return await PagedList<RecipeDto>.CreateAsync(appliedCollection.ToRecipeDtoWithChildrenEntitiesQueryable(),
+            return await PagedList<RecipeDto>.CreateAsync(appliedCollection.ToRecipeDtoWithChildrenEntitiesQueryable(currentUserId),
                 request.QueryParameters.PageNumber,
                 request.QueryParameters.PageSize,
                 cancellationToken);

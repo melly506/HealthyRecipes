@@ -10,17 +10,20 @@ using RecipeManagement.Domain.Seasons.Mappings;
 using RecipeManagement.Domain.DishTypes.Mappings;
 using RecipeManagement.Domain.Recipes.Dtos;
 using RecipeManagement.Exceptions;
+using RecipeManagement.Services;
 
 public static class GetRecipe
 {
     public sealed record Query(Guid RecipeId) : IRequest<RecipeDto>;
 
-    public sealed class Handler(RecipesDbContext dbContext)
+    public sealed class Handler(RecipesDbContext dbContext, ICurrentUserService currentUserService)
         : IRequestHandler<Query, RecipeDto>
     {
         public async Task<RecipeDto> Handle(Query request, CancellationToken cancellationToken)
         {
+            var currentUserId = currentUserService.UserId;
             var recipe = await dbContext.Recipes
+                .Include(r => r.UserFavorites)
                 .FirstOrDefaultAsync(r => r.Id == request.RecipeId, cancellationToken);
 
             if (recipe == null)
@@ -46,8 +49,20 @@ public static class GetRecipe
                 .Select(dishType => DishTypeMapper.ToDishTypeDto(dishType))
                 .ToListAsync(cancellationToken);
 
+            // Check if current user has liked this recipe
+            bool isLiked = false;
+            if (!string.IsNullOrEmpty(currentUserId))
+            {
+                isLiked = await dbContext.UserFavorites
+                    .AnyAsync(uf => uf.Recipe.Id == recipe.Id &&
+                                  uf.User.Identifier == currentUserId,
+                           cancellationToken);
+            }
+
+            recipe.SetLikesCount(recipe.UserFavorites?.Count ?? 0);
             var recipeDto = recipe.ToRecipeDto();
 
+            recipeDto.IsLiked = isLiked;
             recipeDto.FoodType = foodTypesForRecipe.ToList();
             recipeDto.Diet = dietsForRecipe.ToList();
             recipeDto.Season = seasonsForRecipe.ToList();
