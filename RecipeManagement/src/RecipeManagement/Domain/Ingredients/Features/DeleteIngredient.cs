@@ -9,13 +9,18 @@ public static class DeleteIngredient
 {
     public sealed record Command(Guid IngredientId) : IRequest;
 
-    public sealed class Handler(RecipesDbContext dbContext)
+    public sealed class Handler(RecipesDbContext dbContext, ICurrentUserService currentUserService)
         : IRequestHandler<Command>
     {
         public async Task Handle(Command request, CancellationToken cancellationToken)
         {
             var recordToDelete = await dbContext.Ingredients
                 .GetById(request.IngredientId, cancellationToken: cancellationToken);
+            if (recordToDelete.CreatedBy != currentUserService.UserId)
+            {
+                throw new NoRolesAssignedException();
+            }
+
             dbContext.Remove(recordToDelete);
             await dbContext.SaveChangesAsync(cancellationToken);
         }
