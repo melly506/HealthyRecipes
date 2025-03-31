@@ -10,9 +10,9 @@ import { HomeComponent } from './home/home.component'; // Додайте ком�
 
 export const routes: Routes = [
   { path: '', component: HomeComponent }, // Головна сторінка
-  { path: 'profile', component: ProfileComponent },
-  { path: 'favorites', component: FavoritesComponent },
-  { path: 'create-recipe', component: CreateRecipeComponent },
+  { path: 'profile', component: ProfileComponent },// Реєстрація 
+  { path: 'favorites', component: FavoritesComponent },// Вподобання-Збережені рецепти 
+  { path: 'create-recipe', component: CreateRecipeComponent },// Створення рецепту 
   { path: 'quick-recipes', component: QuickRecipesComponent }, // Швидкі рецепти
   { path: 'articles', component: ArticlesComponent }, // Статті
 ];
