@@ -1,10 +1,13 @@
-import { Component, inject } from '@angular/core';
+import {Component, effect, inject, signal} from '@angular/core';
 
 import Keycloak from 'keycloak-js';
 import { IngredientsService } from '../core/services/ingredients.service';
 
-   @Component({
+import {KEYCLOAK_EVENT_SIGNAL, KeycloakEventType, ReadyArgs, typeEventArgs} from 'keycloak-angular';
+
+@Component({
   selector: 'app-profile',
+  standalone: true,
   imports: [],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
@@ -12,10 +15,33 @@ import { IngredientsService } from '../core/services/ingredients.service';
 export class ProfileComponent {
   //таким чином ми підключаємо сервіс, щоб підключити його треба за import
   #ingredients = inject(IngredientsService);
-  userInfo: any = {};
+  userInfo = signal<any>({});
   items: any[] = [];
   item: any;
-  constructor(private readonly keycloak: Keycloak) {}
+  authenticated: boolean = false;
+
+  constructor(private readonly keycloak: Keycloak) {
+    const keycloakSignal = inject(KEYCLOAK_EVENT_SIGNAL);
+
+
+    effect(async () => {
+      const keycloakEvent = keycloakSignal();
+
+      if (keycloakEvent.type === KeycloakEventType.Ready) {
+        this.authenticated = typeEventArgs<ReadyArgs>(keycloakEvent.args);
+        if (this.authenticated) {
+          const userProfile = await this.keycloak.loadUserProfile();
+          this.userInfo.set(userProfile);
+        }
+      }
+
+      if (keycloakEvent.type === KeycloakEventType.AuthLogout) {
+        this.authenticated = false;
+        this.userInfo.set({ });
+      }
+    });
+  }
+
 
   login() {
     this.keycloak.login();
@@ -26,12 +52,8 @@ export class ProfileComponent {
   }
 
   async test() {
-    this.userInfo = await this.keycloak.loadUserProfile();
     this.#ingredients.getIngredients().subscribe(response => {
       this.items = response;
-    });
-    this.#ingredients.getIngredientById('c6434a10-7db4-4600-b987-99d60315d039').subscribe(response =>{
-      this.item = response;
     });
   }
 }

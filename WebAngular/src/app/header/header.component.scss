@@ -1,13 +1,29 @@
-@use "sass:color";
-
 /* Стилі для header */
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
-    background-color: #ffffff;
+    background-color: var(--color-white);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Додаємо тінь для кращого вигляду */
+}
+
+nav {
+    display: flex;
+    gap: 20px;
+    font-family: "Oswald", sans-serif;
+    text-decoration: none;
+    color: var(--dark-gray);
+    font-weight: 200;
+    font-size: 22px;
+    transition: color 0.3s ease;
+
+    a {
+        &:hover {
+            color: var(--color-red-hover);
+            cursor: pointer;
+        }
+    }
 }
 
 
@@ -19,24 +35,40 @@ header {
 
     a {
         text-decoration: none;
-        color: #459b65;
+        color: var(--color-primary-green);
         font-weight: bold;
         font-size: 50px;
         transition: color 0.3s ease;
 
         &:hover {
-            color: color.adjust(#459b65, $lightness: -10%); /* Змінюємо колір при наведенні */
+            color: var(--color-primary-green-darken);
         }
     }
 
     .material-symbols-outlined {
         font-size: 40px; /* Розмір іконки */
-        color: #459b65; /* Колір іконки */
+        color: var(--color-primary-green); /* Колір іконки */
         transition: color 0.3s ease;
 
         &:hover {
-            color: color.adjust(#459b65, $lightness: -10%);
+            color: var(--color-primary-green-darken);
         }
     }
 }
 
+.icons {
+  display: flex;
+  gap: 15px; /* Відступ між іконками */
+
+  .material-symbols-outlined {
+      font-size: 30px; /* Розмір іконок */
+      color: var(--color-gray-dark); /* Колір іконок */
+      cursor: pointer; /* Змінюємо курсор при наведенні */
+      transition: color 0.3s ease;
+
+      &:hover {
+          color: var(--color-red-hover);
+          cursor: pointer;
+      }
+  }
+}

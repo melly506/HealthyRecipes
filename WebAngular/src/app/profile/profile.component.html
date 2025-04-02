@@ -1,19 +1,30 @@
-<button type="button" (click)="login()">LOGIN</button>
+<h1>authenticated: {{authenticated}}</h1>
 
-<br>
-<br>
-<br>
-
-<button type="button" (click)="logout()">LOGOUT</button>
+@if (!authenticated) {
+    <button type="button" (click)="login()">LOGIN</button>
+}
 
 
 <br>
 <br>
 <br>
 
-<button type="button" (click)="test()">TEST</button>
+@if (authenticated) {
+    <button type="button" (click)="logout()">LOGOUT</button>
+}
 
-<h1>{{userInfo.firstName}} {{userInfo.lastName}}</h1>
+
+<br>
+<br>
+<br>
+@if (authenticated) {
+
+    <button type="button" (click)="test()">TEST</button>
+
+
+    <h1>{{userInfo().firstName}} {{userInfo().lastName}}</h1>
+}
+
 
 <h2>рецепт з бази {{item?.name}}</h2>
 

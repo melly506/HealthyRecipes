@@ -10,10 +10,6 @@ import { Observable } from 'rxjs';
 export class IngredientsService {
   //#- ПРИВАТНИЙ МЕТОД
   #http = inject(HttpClient);
-  //c6434a10-7db4-4600-b987-99d60315d039
-  getIngredientById(id: string): Observable<any> {
-    return this.#http.get<any>(`${environment.baseUrl}ingredients/${id}`);
-  }
 
   getIngredients(
     filters: string = '', 
