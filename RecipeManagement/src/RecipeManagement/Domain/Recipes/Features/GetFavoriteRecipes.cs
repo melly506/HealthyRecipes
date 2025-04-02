@@ -10,7 +10,7 @@ using RecipeManagement.Domain.Recipes.Dtos;
 using RecipeManagement.Resources;
 using RecipeManagement.Services;
 
-public static class GetRecipeList
+public static class GetFavoriteRecipeList
 {
     public sealed record Query(RecipeParametersDto QueryParameters) : IRequest<PagedList<RecipeDto>>;
 
@@ -19,7 +19,9 @@ public static class GetRecipeList
     {
         public async Task<PagedList<RecipeDto>> Handle(Query request, CancellationToken cancellationToken)
         {
+
             var currentUserId = currentUserService.UserId;
+
             var collection = dbContext.Recipes
                 .Include(r => r.FoodType)
                 .Include(r => r.Diet)
@@ -27,7 +29,8 @@ public static class GetRecipeList
                 .Include(r => r.DishType)
                 .Include(r => r.UserFavorites)
                 .Include(r => r.UserFavorites).ThenInclude(uf => uf.User)
-                .AsNoTracking();
+                .AsNoTracking()
+                .Where(r => r.UserFavorites.Any(uf => uf.User.Identifier == currentUserId));
 
             if (!string.IsNullOrEmpty(request.QueryParameters.FoodTypeId))
             {

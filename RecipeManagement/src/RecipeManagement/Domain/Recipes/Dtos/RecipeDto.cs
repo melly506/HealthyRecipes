@@ -20,6 +20,7 @@ public sealed record RecipeDto
     public List<DietDto> Diet { get; set; } = new();
     public List<SeasonDto> Season { get; set; } = new();
     public List<DishTypeDto> DishType { get; set; } = new();
+    public bool IsLiked { get; set; }
 
     public DateTimeOffset CreatedOn { get; set; }
     public string CreatedBy { get; set; }

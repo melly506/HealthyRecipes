@@ -4,16 +4,6 @@
         <name>RecipeManagement</name>
     </assembly>
     <members>
-        <member name="M:RecipeManagement.Controllers.v1.CommentsController.AddComment(RecipeManagement.Domain.Comments.Dtos.CommentForCreationDto)">
-            <summary>
-            Creates a new Comment record.
-            </summary>
-        </member>
-        <member name="M:RecipeManagement.Controllers.v1.CommentsController.GetComments(RecipeManagement.Domain.Comments.Dtos.CommentParametersDto)">
-            <summary>
-            Gets a list of all Comments.
-            </summary>
-        </member>
         <member name="M:RecipeManagement.Controllers.v1.CommentsController.GetComment(System.Guid)">
             <summary>
             Gets a single Comment by ID.
@@ -149,6 +139,26 @@
             Deletes an existing Recipe record.
             </summary>
         </member>
+        <member name="M:RecipeManagement.Controllers.v1.RecipesController.AddCommentToRecipe(System.Guid,RecipeManagement.Domain.Comments.Dtos.CommentForCreationDto)">
+            <summary>
+            Creates a comment in Recipe
+            </summary>
+        </member>
+        <member name="M:RecipeManagement.Controllers.v1.RecipesController.GetRecipeComments(System.Guid,RecipeManagement.Domain.Comments.Dtos.CommentParametersDto)">
+            <summary>
+            Gets a list of all Recipe Comments.
+            </summary>
+        </member>
+        <member name="M:RecipeManagement.Controllers.v1.RecipesController.AddLikeToRecipe(System.Guid)">
+            <summary>
+            Add like to Recipe
+            </summary>
+        </member>
+        <member name="M:RecipeManagement.Controllers.v1.RecipesController.UnlikeRecipe(System.Guid)">
+            <summary>
+            Add like to Recipe
+            </summary>
+        </member>
         <member name="M:RecipeManagement.Controllers.v1.RolesController.GetRoles">
             <summary>
             Gets a list of all available roles.
@@ -174,20 +184,17 @@
             Updates an entire existing Season.
             </summary>
         </member>
-        <member name="M:RecipeManagement.Controllers.v1.UserFavoritesController.AddUserFavorite(RecipeManagement.Domain.UserFavorites.Dtos.UserFavoriteForCreationDto)">
+        <member name="M:RecipeManagement.Controllers.v1.ImageUploadController.UploadImage(Microsoft.AspNetCore.Http.IFormFile)">
             <summary>
-            Creates a new UserFavorite record.
+            Uploads an image to Cloudinary.
             </summary>
+            <param name="file">The image file to upload.</param>
         </member>
-        <member name="M:RecipeManagement.Controllers.v1.UserFavoritesController.GetUserFavorites(RecipeManagement.Domain.UserFavorites.Dtos.UserFavoriteParametersDto)">
+        <member name="M:RecipeManagement.Controllers.v1.ImageUploadController.UploadProfileImage(Microsoft.AspNetCore.Http.IFormFile)">
             <summary>
-            Gets a list of all UserFavorites.
+            Uploads a user profile image to Cloudinary, focusing on faces if present.
             </summary>
-        </member>
-        <member name="M:RecipeManagement.Controllers.v1.UserFavoritesController.DeleteUserFavorite(System.Guid)">
-            <summary>
-            Deletes an existing UserFavorite record.
-            </summary>
+            <param name="file">The image file to upload.</param>
         </member>
         <member name="M:RecipeManagement.Controllers.v1.UsersController.GetUsers(RecipeManagement.Domain.Users.Dtos.UserParametersDto)">
             <summary>
@@ -208,6 +215,26 @@
         <member name="M:RecipeManagement.Controllers.v1.UsersController.UpdateCurrentUser(RecipeManagement.Domain.Users.Dtos.UserForUpdateDto)">
             <summary>
             Updates the current authenticated user's profile.
+            </summary>
+        </member>
+        <member name="M:RecipeManagement.Controllers.v1.UsersController.GetCurrentUserComments(RecipeManagement.Domain.Comments.Dtos.CommentParametersDto)">
+            <summary>
+            Gets a list of all User Comments.
+            </summary>
+        </member>
+        <member name="M:RecipeManagement.Controllers.v1.UsersController.GetCurrentUserRecipes(RecipeManagement.Domain.Recipes.Dtos.RecipeParametersDto)">
+            <summary>
+            Gets a list of all User Recipes.
+            </summary>
+        </member>
+        <member name="M:RecipeManagement.Controllers.v1.UsersController.GetCurrentUserIngredientList(RecipeManagement.Domain.Ingredients.Dtos.IngredientParametersDto)">
+            <summary>
+            Gets a list of all User Ingredients.
+            </summary>
+        </member>
+        <member name="M:RecipeManagement.Controllers.v1.UsersController.GetCurrentUserFavoriteRecipeList(RecipeManagement.Domain.Recipes.Dtos.RecipeParametersDto)">
+            <summary>
+            Gets a list of all Favorite (Liked by User) Recipes.
             </summary>
         </member>
         <member name="M:RecipeManagement.Databases.EntityConfigurations.CommentConfiguration.Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{RecipeManagement.Domain.Comments.Comment})">

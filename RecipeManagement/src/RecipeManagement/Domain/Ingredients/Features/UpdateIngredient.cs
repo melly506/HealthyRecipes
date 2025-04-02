@@ -13,12 +13,17 @@ public static class UpdateIngredient
 {
     public sealed record Command(Guid IngredientId, IngredientForUpdateDto UpdatedIngredientData) : IRequest;
 
-    public sealed class Handler(RecipesDbContext dbContext)
+    public sealed class Handler(RecipesDbContext dbContext, ICurrentUserService currentUserService)
         : IRequestHandler<Command>
     {
         public async Task Handle(Command request, CancellationToken cancellationToken)
         {
             var ingredientToUpdate = await dbContext.Ingredients.GetById(request.IngredientId, cancellationToken: cancellationToken);
+            if (ingredientToUpdate.CreatedBy != currentUserService.UserId)
+            {
+                throw new NoRolesAssignedException();
+            }
+
             var ingredientToAdd = request.UpdatedIngredientData.ToIngredientForUpdate();
             ingredientToUpdate.Update(ingredientToAdd);
 

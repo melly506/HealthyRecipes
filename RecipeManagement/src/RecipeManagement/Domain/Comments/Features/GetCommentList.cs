@@ -2,6 +2,7 @@ namespace RecipeManagement.Domain.Comments.Features;
 
 using RecipeManagement.Domain.Comments.Dtos;
 using RecipeManagement.Databases;
+using RecipeManagement.Services;
 using RecipeManagement.Exceptions;
 using RecipeManagement.Resources;
 using Mappings;
@@ -12,14 +13,24 @@ using QueryKit.Configuration;
 
 public static class GetCommentList
 {
-    public sealed record Query(CommentParametersDto QueryParameters) : IRequest<PagedList<CommentDto>>;
+    public sealed record Query(CommentParametersDto QueryParameters, Guid? RecipeId = null) : IRequest<PagedList<CommentDto>>;
 
-    public sealed class Handler(RecipesDbContext dbContext)
+    public sealed class Handler(RecipesDbContext dbContext, ICurrentUserService currentUserService)
         : IRequestHandler<Query, PagedList<CommentDto>>
     {
         public async Task<PagedList<CommentDto>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var collection = dbContext.Comments.AsNoTracking();
+            var collection = dbContext.Comments
+                .Include(c => c.User)
+                .AsNoTracking();
+
+            if (request.RecipeId.HasValue)
+            {
+                collection = collection.Where(c => c.Recipe.Id == request.RecipeId.Value);
+            } else
+            {
+                collection = collection.Where(c => c.User.Identifier.ToString() == currentUserService.UserId);
+            }
 
             var queryKitConfig = new CustomQueryKitConfiguration();
             var queryKitData = new QueryKitData()

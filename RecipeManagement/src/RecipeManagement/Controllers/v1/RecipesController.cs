@@ -6,20 +6,27 @@ using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using RecipeManagement.Domain.FoodTypes.Features;
-using RecipeManagement.Domain.Diets.Features;
-using RecipeManagement.Domain.DishTypes.Features;
-using RecipeManagement.Domain.Seasons.Features;
+using HeimGuard;
+using RecipeManagement.Services;
+using RecipeManagement.Databases;
+using RecipeManagement.Domain.Comments.Dtos;
+using RecipeManagement.Domain.Comments.Features;
 using RecipeManagement.Domain.RecipeIngridients.Dtos;
 using RecipeManagement.Domain.RecipeIngridients.Features;
 using RecipeManagement.Domain.Recipes.Dtos;
 using RecipeManagement.Domain.Recipes.Features;
 using RecipeManagement.Extensions.Filters;
+using RecipeManagement.Extensions.Services;
+using RecipeManagement.Exceptions;
 
 [ApiController]
 [Route("api/v{v:apiVersion}/recipes")]
 [ApiVersion("1.0")]
-public sealed class RecipesController(IMediator mediator): ControllerBase
+public sealed class RecipesController(
+    IMediator mediator,
+    IHeimGuardClient heimGuard,
+    RecipesDbContext dbContext,
+    ICurrentUserService currentUserService) : ControllerBase
 {
     /// <summary>
     /// Creates a new Recipe record.
@@ -27,7 +34,7 @@ public sealed class RecipesController(IMediator mediator): ControllerBase
     [Authorize]
     [Transaction]
     [HttpPost(Name = "AddRecipe")]
-    public async Task<ActionResult<RecipeDto>> AddRecipe([FromBody]RecipeForCreationDto recipeForCreation)
+    public async Task<ActionResult<RecipeDto>> AddRecipe([FromBody] RecipeForCreationDto recipeForCreation)
     {
 
         var addRecipeCommand = new AddRecipe.Command(recipeForCreation);
@@ -122,6 +129,15 @@ public sealed class RecipesController(IMediator mediator): ControllerBase
     [HttpPut("{recipeId:guid}", Name = "UpdateRecipe")]
     public async Task<IActionResult> UpdateRecipe(Guid recipeId, RecipeForUpdateDto recipeUpdate)
     {
+
+        try
+        {
+            await heimGuard.MustHaveRecipeOwnership(recipeId, dbContext, currentUserService);
+        }
+        catch (ForbiddenAccessException)
+        {
+            return Forbid();
+        }
         var updateRecipeCommand = new UpdateRecipe.Command(recipeId, recipeUpdate);
 
         // Prepare new recipe ingridients
@@ -193,30 +209,116 @@ public sealed class RecipesController(IMediator mediator): ControllerBase
     [HttpDelete("{recipeId:guid}", Name = "DeleteRecipe")]
     public async Task<ActionResult> DeleteRecipe(Guid recipeId)
     {
+        try
+        {
+            await heimGuard.MustHaveRecipeOwnership(recipeId, dbContext, currentUserService);
+        }
+        catch (ForbiddenAccessException)
+        {
+            return Forbid();
+        }
 
-        // Create comand to remove all recipe ingridients attached to recipe and send this
+        // Create command to remove all recipe ingridients attached to recipe and send this
         var deleteIngredientsCommand = new DeleteRecipeIngridientsByRecipeId.Command(recipeId);
         await mediator.Send(deleteIngredientsCommand);
 
-        // Create comand to remove all recipe food types attached to recipe and send this
+        // Create command to remove all recipe food types attached to recipe and send this
         var deleteFoodTypesCommand = new DeleteFoodTypeFromRecipe.Command(recipeId);
         await mediator.Send(deleteFoodTypesCommand);
 
-        // Create comand to remove all recipe diets attached to recipe and send this
+        // Create command to remove all recipe diets attached to recipe and send this
         var deleteDietsCommand = new DeleteDietsFromRecipe.Command(recipeId);
         await mediator.Send(deleteDietsCommand);
 
-        // Create comand to remove all recipe seasons attached to recipe and send this
+        // Create command to remove all recipe seasons attached to recipe and send this
         var deleteSeasonsCommand = new DeleteSeasonsFromRecipe.Command(recipeId);
         await mediator.Send(deleteSeasonsCommand);
 
-        // Create comand to remove all recipe dishTypes attached to recipe and send this
+        // Create command to remove all recipe dishTypes attached to recipe and send this
         var deleteDishTypesCommand = new DeleteDishTypesFromRecipe.Command(recipeId);
         await mediator.Send(deleteDishTypesCommand);
+
+        // Create command to remove all comments attached to recipe and send this
+        var deleteCommentsCommand = new DeleteCommentsFromRecipe.Command(recipeId);
+        await mediator.Send(deleteCommentsCommand);
+
+        // Create command to remove all likes attached to recipe and send this
+        var delteteLikesCommand = new DeleteLikesFromRecipe.Command(recipeId);
+        await mediator.Send(delteteLikesCommand);
 
         // Remove recipe
         var deleteRecipeCommand = new DeleteRecipe.Command(recipeId);
         await mediator.Send(deleteRecipeCommand);
         return NoContent();
     }
+
+    /// <summary>
+    /// Creates a comment in Recipe
+    /// </summary>
+    [Authorize]
+    [HttpPost("{recipeId:guid}/addComment", Name = "AddCommentToRecipe")]
+    public async Task<ActionResult<CommentDto>> AddCommentToRecipe(Guid recipeId, CommentForCreationDto commentForCreation)
+    {
+        var addCommentToRecipeCommand = new AddCommentToRecipe.Command(recipeId, commentForCreation);
+        var commandResponse = await mediator.Send(addCommentToRecipeCommand);
+
+        return CreatedAtRoute("GetComment",
+            new { commentId = commandResponse.Id },
+            commandResponse);
+    }
+
+    /// <summary>
+    /// Gets a list of all Recipe Comments.
+    /// </summary>
+    [HttpGet("{recipeId:guid}/comments", Name = "GetRecipeComments")]
+    public async Task<IActionResult> GetRecipeComments(Guid recipeId, [FromQuery] CommentParametersDto commentParametersDto)
+    {
+        var query = new GetCommentList.Query(commentParametersDto, recipeId);
+        var queryResponse = await mediator.Send(query);
+
+        var paginationMetadata = new
+        {
+            totalCount = queryResponse.TotalCount,
+            pageSize = queryResponse.PageSize,
+            currentPageSize = queryResponse.CurrentPageSize,
+            currentStartIndex = queryResponse.CurrentStartIndex,
+            currentEndIndex = queryResponse.CurrentEndIndex,
+            pageNumber = queryResponse.PageNumber,
+            totalPages = queryResponse.TotalPages,
+            hasPrevious = queryResponse.HasPrevious,
+            hasNext = queryResponse.HasNext
+        };
+
+        Response.Headers.Append("X-Pagination",
+            JsonSerializer.Serialize(paginationMetadata));
+
+        return Ok(queryResponse);
+    }
+
+    /// <summary>
+    /// Add like to Recipe
+    /// </summary>
+    [Authorize]
+    [HttpPost("{recipeId:guid}/like", Name = "AddLikeToRecipe")]
+    public async Task<ActionResult> AddLikeToRecipe(Guid recipeId)
+    {
+        var likeRecipeCommand = new AddLikeToRecipe.Command(recipeId);
+        await mediator.Send(likeRecipeCommand);
+
+        return NoContent();
+    }
+
+    /// <summary>
+    /// Add like to Recipe
+    /// </summary>
+    [Authorize]
+    [HttpDelete("{recipeId:guid}/unlike", Name = "UnlikeRecipe")]
+    public async Task<ActionResult> UnlikeRecipe(Guid recipeId)
+    {
+        var unlikeRecipeComman = new UnlikeRecipe.Command(recipeId);
+        await mediator.Send(unlikeRecipeComman);
+
+        return NoContent();
+    }
+
 }

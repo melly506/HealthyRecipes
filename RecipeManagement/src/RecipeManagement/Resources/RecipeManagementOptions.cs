@@ -8,7 +8,9 @@ public class RecipeManagementOptions
     public ConnectionStringOptions ConnectionStrings { get; set; } = new ConnectionStringOptions();
     public AuthOptions Auth { get; set; } = new AuthOptions();
     public string JaegerHost { get; set; } = String.Empty;
-    
+    public string CloudinaryUrl { get; set; } = string.Empty;
+
+
     public class RabbitMqOptions
     {
         public const string SectionName = $"{RecipeManagementOptions.SectionName}:RabbitMq";
@@ -32,8 +34,15 @@ public class RecipeManagementOptions
             
         public string RecipeManagement { get; set; } = String.Empty;
     }
-    
-    
+
+    public class CloudinaryUrlOptions
+    {
+        public const string SectionName = $"{RecipeManagementOptions.SectionName}:CloudinaryUrl";
+        public string CloudinaryUrl { get; set; } = String.Empty;
+    }
+
+
+
     public class AuthOptions
     {
         public const string SectionName = $"{RecipeManagementOptions.SectionName}:Auth";
@@ -82,5 +91,12 @@ public static class RecipeManagementOptionsExtensions
         return configuration
             .GetSection(RecipeManagementOptions.SectionName)
             .GetSection(nameof(RecipeManagementOptions.JaegerHost)).Value;
+    }
+
+    public static string GetCloudinaryUrl(this IConfiguration configuration)
+    {
+        return configuration
+            .GetSection(RecipeManagementOptions.SectionName)
+            .GetSection(nameof(RecipeManagementOptions.CloudinaryUrl)).Value;
     }
 }

@@ -158,6 +158,12 @@ public class Recipe : BaseEntity
         return this;
     }
 
+    public Recipe SetLikesCount(int likesCount)
+    {
+        LikesCount = likesCount;
+        return this;
+    }
+
     // Add Prop Methods Marker -- Deleting this comment will cause the add props utility to be incomplete
     
     protected Recipe() { } // For EF + Mocking
