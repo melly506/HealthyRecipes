@@ -10,23 +10,6 @@ header {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Додаємо тінь для кращого вигляду */
 }
 
-/* Стилі для навігації */
-nav {
-    display: flex;
-    gap: 20px;
-}
-
-nav a {
-    text-decoration: none;
-    color: #333333;
-    font-weight: bold;
-    font-size: 22px;
-    transition: color 0.3s ease;
-
-    &:hover {
-        color: #ff6b6b;
-    }
-}
 
 /* Стилі для логотипу */
 .logo {
@@ -57,19 +40,3 @@ nav a {
     }
 }
 
-/* Стилі для іконок */
-.icons {
-    display: flex;
-    gap: 15px; /* Відступ між іконками */
-
-    .material-symbols-outlined {
-        font-size: 30px; /* Розмір іконок */
-        color: #333333; /* Колір іконок */
-        cursor: pointer; /* Змінюємо курсор при наведенні */
-        transition: color 0.3s ease;
-
-        &:hover {
-            color: #ff6b6b; /* Колір іконок при наведенні */
-        }
-    }
-}

@@ -1,8 +1,29 @@
 /* You can add global styles to this file, and also import other style files */  
+@use "sass:color";
+
 body {
   font-family: "P22 Underground W01 Medium";
-  
+}
+
+/* Стилі для навігації */
+nav {
+  display: flex;
+  gap: 20px;
+  font-family: "Oswald", sans-serif;
+  font-weight: 5; /* Можна змінювати на 200, 300, 500, 700 */
+}
+
+nav a {
+  text-decoration: none;
+  color: #333333;
+  font-weight: 5;
+  font-size: 22px;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: #ff6b6b;
   }
+}
 
 /* Глобальні стилі для іконок */
 .material-symbols-outlined {
@@ -11,3 +32,33 @@ body {
   font-variation-settings: 'FILL' 0, 'wght' 200, 'GRAD' 0, 'opsz' 72;
 }
 
+/* Стилі для навігації */
+nav {
+  display: flex;
+  gap: 20px;
+  text-decoration: none;
+  color: #333333;
+  font-weight: 5;
+  font-size: 22px;
+  transition: color 0.3s ease;
+
+  &:hover {
+      color: #ff6b6b;
+  }
+} 
+/* Стилі для іконок */
+.icons {
+  display: flex;
+  gap: 15px; /* Відступ між іконками */
+
+  .material-symbols-outlined {
+      font-size: 30px; /* Розмір іконок */
+      color: #333333; /* Колір іконок */
+      cursor: pointer; /* Змінюємо курсор при наведенні */
+      transition: color 0.3s ease;
+
+      &:hover {
+          color: #ff6b6b; /* Колір іконок при наведенні */
+      }
+  }
+}
