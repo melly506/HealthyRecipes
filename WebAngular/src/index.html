@@ -16,8 +16,81 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300..700&display=swap" rel="stylesheet">
+
+    <style>
+        #app-initial-loading {
+            position: fixed;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            width: 100vw;
+            z-index: 999;
+            transition: opacity 0.2s ease-out, visibility 0.2s;
+            pointer-events: none;
+            opacity: 1;
+        }
+        #app-initial-loading.hidden {
+            opacity: 0;
+        }
+        .app-initial-loading-logo-image {
+            max-width: 72px;
+            height: auto;
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+
+        .loading-dots {
+            display: flex;
+            margin-top: 20px;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* Individual dot styling */
+        .dot {
+            width: 10px;
+            height: 10px;
+            background-color: #459b65;
+            border-radius: 50%;
+        }
+
+        /* Animation for each dot with delay */
+        .dot:nth-child(1) {
+            animation: dotPulse 1.5s infinite ease-in-out;
+        }
+        .dot:nth-child(2) {
+            animation: dotPulse 1.5s infinite ease-in-out 0.5s;
+        }
+        .dot:nth-child(3) {
+            animation: dotPulse 1.5s infinite ease-in-out 1s;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.9; }
+            50% { opacity: 0.5; }
+            100% { opacity: 0.9; }
+        }
+
+        @keyframes dotPulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(0.7); opacity: 0.5; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+
 </head>
 <body>
-  <app-root></app-root>
+<div id="app-initial-loading">
+    <img class="app-initial-loading-logo-image" src="/logo.svg" alt="logo"/>
+
+    <div class="loading-dots">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+    </div>
+</div>
+
+<app-root></app-root>
 </body>
 </html>

@@ -1,0 +1,30 @@
+.app-loading-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    min-height: 60px;
+    align-items: center;
+}
+
+.app-dot {
+    width: 10px;
+    height: 10px;
+    background-color: var(--color-primary-green);
+    border-radius: 50%;
+}
+
+.app-dot:nth-child(1) {
+    animation: dotPulse 1.5s infinite ease-in-out;
+}
+.app-dot:nth-child(2) {
+    animation: dotPulse 1.5s infinite ease-in-out 0.5s;
+}
+.app-dot:nth-child(3) {
+    animation: dotPulse 1.5s infinite ease-in-out 1s;
+}
+
+@keyframes dotPulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(0.7); opacity: 0.5; }
+    100% { transform: scale(1); opacity: 1; }
+}

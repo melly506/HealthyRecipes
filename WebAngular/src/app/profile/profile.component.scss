@@ -1,0 +1,97 @@
+.profile-container {
+    padding: 48px 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.profile-header {
+    display: flex;
+    margin-bottom: 32px;
+
+    .avatar-column {
+        flex: 0 0 300px;
+        margin-right: 32px;
+        display: flex;
+        justify-content: flex-start;
+
+        app-user-picture {
+            display: block;
+        }
+    }
+
+    .info-column {
+        flex: 1;
+        position: relative;
+        width: calc(300px + 32px);
+
+        .header-actions {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+    }
+}
+
+.view-mode {
+    display: flex;
+    flex-direction: column;
+    font-family: "Oswald", sans-serif;
+
+    font-weight: 300;
+    letter-spacing: 0.04rem;
+    gap: 20px;
+    width: 100%;
+
+    p {
+        margin: 0;
+    }
+
+    .user-name {
+        font-weight: 600;
+        font-size: 48px;
+        margin: 0 0 0 0;
+        color: var(--color-secondary-dark);
+        text-transform: uppercase;
+        letter-spacing: 0.1rem;
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .username, .email {
+        color: var(--color-gray-dark);
+        font-size: 24px;
+    }
+
+    .gender {
+        font-size: 18px;
+    }
+
+    .bio {
+        white-space: pre-line;
+        line-height: 1.5;
+        font-size: 18px;
+        letter-spacing: 0.04rem;
+        color: var(--color-tertiary);
+    }
+
+    .no-bio {
+        margin-top: 16px;
+        color: var(--color-gray-dark);
+        font-style: italic;
+        font-size: 18px;
+    }
+}
+
+.edit-mode-form-container {
+    form {
+        .bio-field {
+            width: 100%;
+        }
+    }
+}
+
+.tab-content {
+    padding: 24px 0;
+    min-height: 200px;
+}

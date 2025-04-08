@@ -1,4 +1,8 @@
 export const environment = {
-    //TODO Replase to server url
-    baseUrl: 'https://localhost:5009/api/v1/'
+  baseUrl: 'https://localhost:5009',
+  apiVersion: 'api/v1',
+  angularUrl: 'http://localhost:4378',
+  keycloakUrl: 'http://localhost:3255',
+  keycloakRealm: 'DevRealm',
+  keycloakClientId: 'recipe_management.web',
 };

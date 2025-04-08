@@ -1,0 +1,55 @@
+.user-picture-container {
+    position: relative;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &.editable {
+        cursor: pointer;
+    }
+
+    &.hovered .user-profile-picture {
+        filter: brightness(70%);
+        transition: filter 0.3s ease;
+    }
+}
+
+.user-profile-picture {
+    object-fit: cover;
+    border-radius: 50%;
+    transition: filter 0.3s ease;
+}
+
+.overlay {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    color: white;
+    pointer-events: none;
+
+    .upload-icon {
+        font-size: calc(min(24px, 50%));
+    }
+}
+
+.loading-overlay {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: var(--color-white);
+}
+
+.user-picture-icon {
+    color: var(--color-white);
+    transform: scale(2);
+    opacity: .4;
+}

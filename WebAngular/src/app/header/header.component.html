@@ -1,17 +1,51 @@
 <header>
-  <nav>
-    <!-- Посилання для навігації -->
-    <a>ШВИДКІ РЕЦЕПТИ</a>
-    <a>СТАТТІ</a>
-  </nav>
-  <div class="logo">
-     <span class="material-symbols-outlined">chef_hat</span>
-    <a routerLink="/">GREEN RECIPES</a> <!-- Посилання на головну сторінку -->
-  </div>
-  <div class="icons">
-    <!-- Кнопки з використанням Angular Router -->
-    <span routerLink="/profile" routerLinkActive="active" class="material-symbols-outlined">person</span>
-    <span class="material-symbols-outlined">favorite</span>
-    <span class="material-symbols-outlined">contract_edit</span>
-  </div>
+    <nav>
+        <!-- Посилання для навігації -->
+        <a>ШВИДКІ РЕЦЕПТИ</a>
+        <a>СТАТТІ</a>
+    </nav>
+    <div class="logo">
+        <!-- Посилання на головну сторінку -->
+        <a routerLink="/">
+            <img class="logo-image" src="/logo.svg" alt="logo"/>
+            <span class="logo-text">
+                GREEN RECIPES
+                <span class="logo-sub-title">by Valentina Melnyk</span>
+            </span>
+        </a>
+    </div>
+    <div class="icons">
+        <!-- Кнопки з використанням Angular Router -->
+        @if (authenticated) {
+            <button class="medium-icon-button" [matMenuTriggerFor]="profileMenu" mat-icon-button>
+                <mat-icon class="material-symbols-outlined">person_outlined</mat-icon>
+            </button>
+        } @else {
+            <button class="medium-icon-button" (click)="login()" mat-icon-button>
+                <mat-icon class="material-symbols-outlined">person_outlined</mat-icon>
+            </button>
+        }
+
+
+        <button class="medium-icon-button" mat-icon-button>
+            <mat-icon class="material-symbols-outlined">favorite_outlined</mat-icon>
+        </button>
+
+        <button class="medium-icon-button" mat-icon-button>
+            <mat-icon class="material-symbols-outlined">contract_edit_outlined</mat-icon>
+        </button>
+    </div>
 </header>
+
+<mat-menu #profileMenu="matMenu">
+    <button mat-menu-item routerLink="/profile" routerLinkActive="active">
+        <div class="user-info">
+            <app-user-picture [user]="user"></app-user-picture>
+            <span class="user-info-name">{{user?.firstName}} {{user?.lastName}}</span>
+        </div>
+    </button>
+    <button mat-menu-item (click)="logout()">
+        <mat-icon class="logout-button material-symbols-outlined">power_settings_new_outlined</mat-icon>
+        Вийти з акаунту
+    </button>
+</mat-menu>

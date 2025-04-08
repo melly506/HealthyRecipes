@@ -1,35 +1,131 @@
-<h1>authenticated: {{authenticated}}</h1>
+<div class="page-container">
+    @if (!authenticated) {
+        <app-unauthorized message="Авторизуйтесь щоб мати можливіть працювати зі своїм профілем"></app-unauthorized>
+    } @else {
+        <div class="profile-header">
+            <div class="avatar-column">
+                <app-user-picture (pictureUpdated)="updateProfilePicture($event)"
+                                  [editable]="authenticated"
+                                  [user]="currentUser()"
+                                  [size]="220"></app-user-picture>
+            </div>
+            <div class="info-column">
+                @if (!editMode()) {
+                    @if (currentUserLoading()) {
+                        <app-progress-loader></app-progress-loader>
+                    } @else {
+                        <div class="view-mode">
+                            <div class="header-actions" *ngIf="authenticated">
+                                <button mat-fab
+                                        aria-label="Edit profile"
+                                        (click)="toggleEditMode()">
+                                    <mat-icon class="material-symbols-outlined">tune_outlined</mat-icon>
+                                </button>
+                            </div>
+                            <h1 class="user-name">{{ currentUser()?.firstName }} {{ currentUser()?.lastName }}</h1>
+                            <p class="username">{{ '@' }}{{ currentUser()?.username }}</p>
+                            <p class="email">{{ currentUser()?.email }}</p>
+                            @if (currentUser()?.gender) {
+                                <p class="gender">Стать: {{ currentUser()?.gender | gender }}</p>
+                            }
+                            @if (currentUser()?.bio) {
+                                <p class="bio">{{ currentUser()?.bio }}</p>
+                            } @else {
+                                <p class="no-bio">Біографія ще не додана</p>
+                            }
+                        </div>
+                    }
+                } @else {
+                    <div class="edit-mode-form-container">
+                        <form [formGroup]="userForm">
+                            <div class="form-row">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Ім'я</mat-label>
+                                    <input matInput formControlName="firstName">
+                                    <mat-error *ngIf="userForm.get('firstName')?.hasError('required')">
+                                        Будь ласка вкажіть ім'я
+                                    </mat-error>
+                                    <mat-error *ngIf="userForm.get('firstName')?.hasError('maxlength')">
+                                        Ім'я не повинно перевищувати 25 символів
+                                    </mat-error>
+                                </mat-form-field>
 
-@if (!authenticated) {
-    <button type="button" (click)="login()">LOGIN</button>
-}
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Прізвище</mat-label>
+                                    <input matInput formControlName="lastName">
+                                    <mat-error *ngIf="userForm.get('lastName')?.hasError('required')">
+                                        Будь ласка вкажіть прізвище
+                                    </mat-error>
+                                    <mat-error *ngIf="userForm.get('lastName')?.hasError('maxlength')">
+                                        Прізвище не повинно перевищувати 30 символів
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
 
+                            <div class="form-row">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Email</mat-label>
+                                    <input matInput formControlName="email">
+                                </mat-form-field>
 
-<br>
-<br>
-<br>
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Нікнейм</mat-label>
+                                    <input matInput formControlName="username">
+                                </mat-form-field>
+                            </div>
 
-@if (authenticated) {
-    <button type="button" (click)="logout()">LOGOUT</button>
-}
+                            <div class="form-row">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Стать</mat-label>
+                                    <mat-select formControlName="gender">
+                                        <mat-option value="male">{{ 'male' | gender }}</mat-option>
+                                        <mat-option value="female">{{ 'female' | gender }}</mat-option>
+                                        <mat-option value="">Не вказувати</mat-option>
+                                    </mat-select>
+                                    <mat-icon class="material-symbols-outlined" matSuffix>keyboard_arrow_down_outlined
+                                    </mat-icon>
+                                </mat-form-field>
+                            </div>
 
+                            <mat-form-field appearance="outline" class="bio-field">
+                                <mat-label>Біографія</mat-label>
+                                <textarea matInput formControlName="bio" rows="4"></textarea>
+                                <mat-error *ngIf="userForm.get('bio')?.hasError('maxlength')">
+                                    Біографія не повинна перевищувати 2000 символів
+                                </mat-error>
+                            </mat-form-field>
 
-<br>
-<br>
-<br>
-@if (authenticated) {
+                            <div class="form-actions">
+                                <button mat-button (click)="toggleEditMode()">Скасувати</button>
+                                <button mat-raised-button (click)="saveProfile()">Зберегти</button>
+                            </div>
+                        </form>
+                    </div>
+                }
+            </div>
+        </div>
 
-    <button type="button" (click)="test()">TEST</button>
-
-
-    <h1>{{userInfo().firstName}} {{userInfo().lastName}}</h1>
-}
-
-
-<h2>рецепт з бази {{item?.name}}</h2>
-
-@for(item of items; track item.id){
-    <p>
-        {{item.name}} / {{item.calories}}
-    </p>
-}
+        <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+            <mat-tab label="Мої рецепти">
+                <div class="tab-content">
+                    <p>My recipes content goes here</p>
+                </div>
+            </mat-tab>
+            <mat-tab label="Мої коментарі">
+                <div class="tab-content">
+                    <p>My comments content goes here</p>
+                </div>
+            </mat-tab>
+            <mat-tab label="Мої інгридієнти">
+                <div class="tab-content">
+                    <p>My ingredients content goes here</p>
+                </div>
+            </mat-tab>
+            <mat-tab label="Улюблені рецепти">
+                <div class="tab-content">
+                    <p>My favorite recipes content goes here</p>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+    }
+</div>
