@@ -13,9 +13,8 @@ import { MatIcon } from '@angular/material/icon';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { User } from '../../core/interfaces';
-import { ImagesService } from '../../core/services/images.service';
+import { ImagesService, UsersService } from '../../core/services';
 import { ProgressLoaderComponent } from '../progress-loader/progress-loader.component';
-import { UsersService } from '../../core/services';
 
 @Component({
   selector: 'app-user-picture',

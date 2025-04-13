@@ -11,7 +11,6 @@ import { UsersService } from '../core/services';
 import { User } from '../core/interfaces';
 import { UserPictureComponent } from '../shared/user-picture/user-picture.component';
 
-
 @Component({
   selector: 'app-header',
   standalone: true,

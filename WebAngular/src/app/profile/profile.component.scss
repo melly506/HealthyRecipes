@@ -22,7 +22,7 @@
     .info-column {
         flex: 1;
         position: relative;
-        width: calc(300px + 32px);
+        width: calc(100% - (300px + 32px));
 
         .header-actions {
             position: absolute;

@@ -1,0 +1,45 @@
+<form class="cooking-time-picker" [formGroup]="form">
+    <div class="cooking-time-picker-header">
+        <label class="app-default-label">Час приготування</label>
+        <div class="cooking-time-picker-value">
+            {{ totalMinutes | cookingTimeFormat }}
+        </div>
+    </div>
+
+    <div class="cooking-time-sliders">
+        <div class="cooking-time-slider">
+            <mat-slider
+                    [max]="55"
+                    [min]="0"
+                    [step]="5"
+                    [discrete]="true"
+                    [showTickMarks]="true">
+                <input matSliderThumb formControlName="cookingTimeMinutes">
+            </mat-slider>
+            <label class="app-small-label">Хвилин</label>
+        </div>
+        <div class="cooking-time-slider">
+            <mat-slider
+                    [max]="23"
+                    [min]="0"
+                    [step]="1"
+                    [discrete]="true"
+                    [showTickMarks]="true">
+                <input matSliderThumb formControlName="cookingTimeHours">
+            </mat-slider>
+            <label class="app-small-label">Годин</label>
+        </div>
+
+        <div class="cooking-time-slider">
+            <mat-slider
+                    [max]="7"
+                    [min]="0"
+                    [step]="1"
+                    [discrete]="true"
+                    [showTickMarks]="true">
+                <input matSliderThumb formControlName="cookingTimeDays">
+            </mat-slider>
+            <label class="app-small-label">Діб</label>
+        </div>
+    </div>
+</form>

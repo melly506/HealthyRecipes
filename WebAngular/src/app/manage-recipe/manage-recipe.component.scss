@@ -1,0 +1,36 @@
+.recipe-header {
+    display: flex;
+}
+
+.page-title {
+    margin: 0 0 40px;
+    line-height: 1;
+}
+
+.upload-picture-column {
+    flex: 0 0 305px;
+    margin-right: 32px;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.info-column {
+    flex: 1;
+    position: relative;
+    width: calc(305px + 32px);
+
+    .header-actions {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+}
+
+.cooking-time-picker {
+    display: block;
+    width: 100%;
+}
+
+.description-field {
+    width: 100%;
+}

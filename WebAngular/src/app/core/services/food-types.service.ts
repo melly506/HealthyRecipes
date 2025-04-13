@@ -3,30 +3,28 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
-import { Ingredient } from '../interfaces';
+import { FoodType } from '../interfaces';
 
 @Injectable({
   providedIn: 'root'
 })
-// name services 
-export class IngredientsService {
-  //#- ПРИВАТНИЙ МЕТОД
+export class FoodTypesService {
   #http = inject(HttpClient);
-  #baseUrl = `${environment.baseUrl}/${environment.apiVersion}/ingredients`;
+  #baseUrl = `${environment.baseUrl}/${environment.apiVersion}/foodtypes`;
 
-  getIngredients(
+  getFoodTypes(
     filters: string = '',
     sortOrder: string = 'name',
     pageNumber: number = 1,
     pageSize: number = 25
-  ): Observable<Ingredient[]> {
-    return this.#http.get<Ingredient[]>(`${this.#baseUrl}`, {
+  ): Observable<FoodType[]> {
+    return this.#http.get<FoodType[]>(this.#baseUrl, {
       params: {
         filters,
         sortOrder,
         pageNumber,
         pageSize
       }
-    })
+    });
   }
 }

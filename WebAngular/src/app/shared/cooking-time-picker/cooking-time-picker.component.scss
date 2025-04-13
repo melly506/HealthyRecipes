@@ -1,0 +1,29 @@
+.cooking-time-picker {
+    width: 100%;
+    padding-bottom: 32px;
+
+    .cooking-time-sliders {
+        display: flex;
+        gap: 32px;
+        width: 100%;
+    }
+    .cooking-time-slider {
+        display: flex;
+        flex-direction: column;
+        flex: 1 0 auto;
+    }
+    .cooking-time-picker-header {
+        display: flex;
+        align-items: flex-end;
+        margin-bottom: 16px;
+        gap: 24px;
+        line-height: 1;
+    }
+    .cooking-time-picker-value {
+        color: var(--color-secondary);
+        font-weight: 500;
+        font-family: "Oswald", sans-serif;
+        font-size: 24px;
+        line-height: 1;
+    }
+}
