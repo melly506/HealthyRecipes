@@ -44,40 +44,90 @@
 
             <div class="edit-mode-form-container">
                 <div class="form-row">
-                    <app-cooking-time-picker
-                            formControlName="cookingTime"
-                            class="cooking-time-picker"></app-cooking-time-picker>
+                    <div class="flex-column-wrapper">
+                        <app-cooking-time-picker
+                                formControlName="cookingTime"
+                                class="cooking-time-picker"></app-cooking-time-picker>
+                        @if (recipeForm.get('cookingTime')?.hasError('required')
+                            || recipeForm.get('cookingTime')?.hasError('min')) {
+                            <mat-error class="app-custom-control-error">Вкажіть час приготування</mat-error>
+                        }
+                    </div>
                 </div>
                 <div class="form-row">
-                    <app-chips-autocomplete-multiple
-                            formControlName="foodTypeIds"
-                            [items]="foodTypes"
-                            placeholder="Додати тип харчування..."
-                            label="Типи харчування">
-                    </app-chips-autocomplete-multiple>
+                    <div class="flex-column-wrapper">
+                        <app-manage-ingredients formControlName="ingredients"></app-manage-ingredients>
+                        @if (ingredientError) {
+                            <mat-error class="app-custom-control-error">{{ ingredientError }}</mat-error>
+                        }
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="flex-column-wrapper">
+                        <app-chips-autocomplete-multiple
+                                formControlName="foodTypeIds"
+                                icon="ramen_dining_outlined"
+                                [items]="foodTypes"
+                                placeholder="Додати тип харчування..."
+                                label="Типи харчування">
+                        </app-chips-autocomplete-multiple>
+                        @if (recipeForm.get('foodTypeIds')?.hasError('required')
+                            && recipeForm.get('foodTypeIds')?.touched) {
+                            <mat-error class="app-custom-control-error">
+                                Виберіть принаймні один тип харчування
+                            </mat-error>
+                        }
+                    </div>
 
-                    <app-chips-autocomplete-multiple
-                            formControlName="seasonIds"
-                            [items]="seasons"
-                            placeholder="Додати сезон..."
-                            label="Сезони">
-                    </app-chips-autocomplete-multiple>
+                    <div class="flex-column-wrapper">
+                        <app-chips-autocomplete-multiple
+                                formControlName="seasonIds"
+                                icon="sunny_snowing_outlined"
+                                [items]="seasons"
+                                placeholder="Додати сезон..."
+                                label="Сезони">
+                        </app-chips-autocomplete-multiple>
+                        @if (recipeForm.get('seasonIds')?.hasError('required')
+                            && recipeForm.get('seasonIds')?.touched) {
+                            <mat-error class="app-custom-control-error">
+                                Виберіть принаймні один сезон
+                            </mat-error>
+                        }
+                    </div>
                 </div>
 
                 <div class="form-row">
-                    <app-chips-autocomplete-multiple
-                            formControlName="dietIds"
-                            [items]="diets"
-                            placeholder="Додати дієту..."
-                            label="Дієти">
-                    </app-chips-autocomplete-multiple>
+                    <div class="flex-column-wrapper">
+                        <app-chips-autocomplete-multiple
+                                formControlName="dietIds"
+                                icon="medical_information_outlined"
+                                [items]="diets"
+                                placeholder="Додати дієту..."
+                                label="Дієти">
+                        </app-chips-autocomplete-multiple>
+                        @if (recipeForm.get('dietIds')?.hasError('required')
+                        && recipeForm.get('dietIds')?.touched) {
+                            <mat-error class="app-custom-control-error">
+                                Додайте принаймні одну дієту
+                            </mat-error>
+                        }
+                    </div>
 
-                    <app-chips-autocomplete-multiple
-                            formControlName="dishTypeIds"
-                            [items]="dishTypes"
-                            placeholder="Додати тип страви..."
-                            label="Типи страв">
-                    </app-chips-autocomplete-multiple>
+                    <div class="flex-column-wrapper">
+                        <app-chips-autocomplete-multiple
+                                formControlName="dishTypeIds"
+                                icon="chef_hat_outlined"
+                                [items]="dishTypes"
+                                placeholder="Додати тип страви..."
+                                label="Типи страв">
+                        </app-chips-autocomplete-multiple>
+                        @if (recipeForm.get('dishTypeIds')?.hasError('required')
+                        && recipeForm.get('dishTypeIds')?.touched) {
+                            <mat-error class="app-custom-control-error">
+                                Додайте мінімум один тип страви
+                            </mat-error>
+                        }
+                    </div>
                 </div>
                 <div class="form-actions">
                     <button mat-button (click)="cancel()">Скасувати</button>

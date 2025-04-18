@@ -36,6 +36,7 @@ export class ChipsAutocompleteMultipleComponent<T extends { name: string, id: st
   @ViewChild(MatAutocompleteTrigger) autocompleteTrigger!: MatAutocompleteTrigger;
   @Input() items: T[] = [];
   @Input() label: string = 'Виберіть варіанти';
+  @Input() icon: string = 'format_list_bulleted_outlined';
   @Input() placeholder: string = 'Додати...';
 
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];

@@ -1,5 +1,8 @@
 <form>
     <mat-form-field class="app-chip-list" (click)="autocompleteTrigger.openPanel()">
+        <mat-icon matPrefix class="material-symbols-outlined">
+            {{ icon }}
+        </mat-icon>
         <mat-label>{{ label }}</mat-label>
         <div class="app-chip-select">
             <mat-chip-grid #chipGrid>

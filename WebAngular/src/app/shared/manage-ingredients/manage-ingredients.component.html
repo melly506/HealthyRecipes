@@ -1,0 +1,100 @@
+<mat-form-field (click)="openPanel()">
+    <mat-icon matPrefix class="material-symbols-outlined">
+        grocery_outlined
+    </mat-icon>
+
+    <mat-label>Інгредієнти</mat-label>
+    <input matInput
+           #searchInput
+           placeholder="Пошук інгридієнтів..."
+           [formControl]="searchTermControl"
+           (focus)="openPanel()" />
+    <div class="app-spacer"></div>
+    <mat-icon matSuffix class="material-symbols-outlined">
+        search_outlined
+    </mat-icon>
+</mat-form-field>
+<div class="manage-recipe-selection" [class.selection-active]="isActive">
+    <div class="inner-selection-container"
+         #ingredientsContainer
+         (scroll)="onScroll()">
+        <mat-list role="list">
+            @for (ingredient of filteredIngredients; track ingredient.id) {
+                <mat-list-item
+                        [disabled]="isAdded(ingredient)"
+                        role="listitem"
+                        (click)="selectItem(ingredient)">
+                    {{ingredient.name}}
+                </mat-list-item>
+            }
+        </mat-list>
+
+        @if (isLoading) {
+            <app-progress-loader></app-progress-loader>
+        }
+
+        @if (filteredIngredients.length === 0 && !isLoading) {
+            <div class="no-results">
+                <mat-icon class="material-symbols-outlined">fmd_bad_outlined</mat-icon>
+                Інгредієнти не знайдено
+            </div>
+        }
+    </div>
+</div>
+
+<table class="ingredients-table"
+       [hidden]="!selectedIngredients.length"
+       mat-table
+       matSort
+       [dataSource]="selectedIngredients">
+    <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Інгредієнт</th>
+        <td mat-cell *matCellDef="let row">
+            <span class="ingredient-name">{{row.name}}</span>
+        </td>
+    </ng-container>
+    <ng-container matColumnDef="calories" >
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Калорії</th>
+        <td mat-cell *matCellDef="let row">{{row.calories}}</td>
+    </ng-container>
+    <ng-container matColumnDef="fat">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Жири</th>
+        <td mat-cell *matCellDef="let row">{{row.fat}}</td>
+    </ng-container>
+    <ng-container matColumnDef="protein">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Білки</th>
+        <td mat-cell *matCellDef="let row">{{row.protein}}</td>
+    </ng-container>
+    <ng-container matColumnDef="carbs">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Вуглеводи</th>
+        <td mat-cell *matCellDef="let row">{{row.carbs}}</td>
+    </ng-container>
+    <ng-container matColumnDef="sugar">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Цукри</th>
+        <td mat-cell *matCellDef="let row">{{row.sugar}}</td>
+    </ng-container>
+    <ng-container matColumnDef="unit">
+        <th mat-header-cell *matHeaderCellDef>Кількість</th>
+        <td mat-cell *matCellDef="let row">
+            @if (getInputFormControl(row); as inputFormControl) {
+                <input class="app-small-input"
+                       mask="09999"
+                       matInput
+                       [formControl]="inputFormControl"
+                       (input)="updateIngredientCount(row.id, $event)"
+                       placeholder="Кількість...">
+            }
+            {{ row.unit | unit }}
+        </td>
+    </ng-container>
+    <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let row">
+            <button mat-icon-button (click)="removeIngredient(row)">
+                <mat-icon class="material-symbols-outlined">close_outlined</mat-icon>
+            </button>
+        </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>

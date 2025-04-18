@@ -8,6 +8,7 @@ import {
   INCLUDE_BEARER_TOKEN_INTERCEPTOR_CONFIG,
   includeBearerTokenInterceptor
 } from 'keycloak-angular';
+import { provideEnvironmentNgxMask } from 'ngx-mask';
 
 import { routes } from './app.routes';
 import { environment } from '../environments/environment';
@@ -41,6 +42,7 @@ export const appConfig: ApplicationConfig = {
       provide: INCLUDE_BEARER_TOKEN_INTERCEPTOR_CONFIG,
       useValue: [angularUrlsCondition, apiUrlsCondition]
     },
+    provideEnvironmentNgxMask(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideHttpClient(withInterceptors([includeBearerTokenInterceptor]))

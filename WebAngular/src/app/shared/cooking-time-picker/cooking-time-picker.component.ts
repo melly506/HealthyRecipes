@@ -1,5 +1,12 @@
 import { Component, DestroyRef, forwardRef, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import {
+  ControlValueAccessor,
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  NG_VALUE_ACCESSOR,
+  ReactiveFormsModule
+} from '@angular/forms';
 import { MatSlider, MatSliderThumb } from '@angular/material/slider';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
@@ -26,7 +33,7 @@ import { debounceTime } from 'rxjs';
     }
   ]
 })
-export class CookingTimePickerComponent implements OnInit {
+export class CookingTimePickerComponent implements OnInit, ControlValueAccessor {
   #fb = inject(FormBuilder);
   #dr = inject(DestroyRef);
   form!: FormGroup;

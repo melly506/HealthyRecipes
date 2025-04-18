@@ -1,8 +1,5 @@
-@use "sass:color";
-@use 'sass:map';
-@use 'sass:meta';
-@use '@angular/material' as mat;
 @use "styles/theme-colors" as colors;
+@use "styles/material-custom-theme";
 
 :root {
     --color-white: #ffffff;
@@ -10,6 +7,8 @@
     --color-primary-green-darken: #076842;
     --color-gray-dark: #3b4a3f;
     --color-red-hover: #ff6b6b;
+    --color-error: #b34848;
+    --color-error-darken: #6c2c38;
     --color-secondary: #006a74;
     --color-secondary-lighter: #1a8290;
     --color-secondary-lighten: #65b5c6;
@@ -19,202 +18,8 @@
     --color-tertiary-darken: #27414e;
     --color-tertiary: #486070;
     --color-tertiary-lighten: #7d93a3;
-
     --color-secondary-dark: #001f23;
 }
-
-// Material menu styles
-:root {
-    --mat-menu-container-color: var(--color-white);
-    --mat-menu-item-label-text-size: 14px;
-    --mat-menu-item-leading-spacing: 24px;
-    --mat-menu-item-trailing-spacing: 24px;
-    --mat-menu-item-label-text-font: "Oswald", sans-serif;
-    --mat-menu-item-label-text-tracking: 0.04rem;
-    --mat-menu-item-with-icon-leading-spacing: 26px;
-    --mat-menu-item-with-icon-trailing-spacing: 26px;
-    --mat-menu-item-label-text-weight: 300;
-    --mat-menu-item-icon-size: 20px;
-    .mat-mdc-menu-item .mat-icon {
-        font-size: 20px;
-    }
-}
-
-// Mat select styles
-:root {
-    --mat-select-panel-background-color: var(--color-white);
-    .mat-mdc-select-arrow-wrapper {
-        .mat-mdc-select-arrow {
-            display: none;
-        }
-    }
-}
-
-:root {
-    .mat-mdc-chip-remove::after {
-        top: -4px;
-    }
-}
-
-// Material fab styles
-:root {
-    --mdc-fab-container-color: var(--color-secondary-lighten);
-    --mat-fab-foreground-color: white;
-    --mdc-fab-container-shape: 50%;
-    --mdc-fab-container-elevation-shadow: rgba(0, 0, 0, 0.12) 0px 1px 4px;
-    --mdc-fab-hover-container-elevation-shadow: rgba(0, 0, 0, 0.12) 0px 4px 12px;
-}
-
-// Material button styles
-:root {
-    --mdc-protected-button-label-text-color: var(--color-white);
-    --mdc-protected-button-container-color: var(--color-secondary-lighten);
-    --mdc-protected-button-label-text-font: "Oswald", sans-serif;
-    --mdc-protected-button-label-text-transform: uppercase;
-    --mdc-protected-button-label-text-tracking: 0.06rem;
-    --mat-protected-button-horizontal-padding: 32px;
-    --mdc-protected-button-container-height: 48px;
-    --mdc-protected-button-label-text-size: 16px;
-    --mdc-protected-button-container-elevation-shadow: rgba(0, 0, 0, 0.12) 0px 1px 4px;
-    --mdc-protected-button-hover-container-elevation-shadow: rgba(0, 0, 0, 0.12) 0px 4px 12px;
-
-    --mdc-text-button-label-text-size: 16px;
-    --mdc-text-button-container-height: 48px;
-    --mdc-text-button-label-text-font: "Oswald", sans-serif;
-    --mdc-text-button-label-text-transform: uppercase;
-    --mat-text-button-horizontal-padding: 32px;
-    --mdc-text-button-label-text-tracking: 0.06rem;
-    --mdc-text-button-label-text-color: var(--color-secondary-lighter);
-}
-
-// Material tabs styles
-:root {
-    --mat-tab-header-label-text-font: "Oswald", sans-serif;
-    --mat-tab-header-label-text-size: 20px;
-    --mat-tab-header-label-text-tracking: 0.04rem;
-    --mat-tab-header-active-label-text-color: var(--color-tertiary);
-    --mat-tab-header-inactive-label-text-color: var(--color-tertiary);
-}
-
-// Material field styles
-:root {
-    --mdc-filled-text-field-container-color: var(--color-white);
-    --mat-form-field-filled-with-label-container-padding-top: 28px;
-    --mat-form-field-filled-with-label-container-padding-bottom: 16px;
-    --mat-form-field-hover-state-layer-opacity: 0;
-    --mdc-filled-text-field-label-text-font: "Oswald", sans-serif;
-    --mat-form-field-container-text-font: "Oswald", sans-serif;
-    --mdc-filled-text-field-label-text-weight: 400;
-    --mdc-filled-text-field-label-text-tracking:  0.04rem;
-    --mdc-filled-text-field-label-text-color: var(--color-tertiary);
-    --mdc-filled-text-field-focus-label-text-color: var(--color-tertiary-dark);
-    --mdc-filled-text-field-hover-label-text-color: var(--color-tertiary-darken);
-
-    .mat-mdc-text-field-wrapper .mat-mdc-form-field-flex .mat-mdc-floating-label {
-        top: calc((var(--mat-form-field-container-height, 56px) / 2) - 2px);
-    }
-    .mdc-line-ripple {
-        display: none;
-    }
-    .mat-mdc-form-field  {
-        .mat-mdc-form-field-icon-suffix {
-            cursor: pointer;
-        }
-    }
-    .mdc-text-field.mdc-text-field--filled {
-        border: 1px solid var(--color-border-bright);
-        border-radius: 16px;
-        .mat-mdc-chip-input {
-            margin: 6px 0 0 0;
-        }
-        &.mat-mdc-text-field-wrapper .mat-mdc-form-field-flex .mat-mdc-floating-label {
-            top: calc((var(--mat-form-field-container-height, 56px) / 2) + 8px);
-        }
-        &:hover {
-            border-color: var(--color-border);
-        }
-        &.mdc-text-field--focused {
-            border-color: var(--color-border);
-        }
-    }
-}
-
-html {
-    color-scheme: light;
-    @include mat.theme((
-            color: (
-                    theme-type: light,
-                    primary: colors.$primary-palette,
-                    tertiary: colors.$tertiary-palette
-            ),
-            typography: Roboto,
-            density: 0
-    ));
-    @include mat.form-field-overrides((
-            outlined-container-shape: 16px,
-            outlined-focus-outline-color: var(--color-border),
-            outlined-outline-color: var(--color-border-bright),
-            outlined-hover-outline-color: var(--color-border),
-            outlined-label-text-font: "Oswald, sans-serif",
-            outlined-label-text-tracking: 0.04rem,
-            outlined-focus-outline-width: 1px,
-            outlined-label-text-weight: 400,
-            outlined-input-text-placeholder-color: var(--color-tertiary),
-            outlined-focus-label-text-color: var(--color-tertiary-dark),
-            outlined-label-text-color: var(--color-tertiary),
-            outlined-hover-label-text-color: var(--color-tertiary-darken)
-    ));
-    @include mat.chips-overrides((
-            outline-color: var(--color-secondary-lighten),
-            elevated-container-color: var(--color-secondary-lighten),
-            label-text-size: 15px,
-            label-text-color: var(--color-white),
-            with-trailing-icon-trailing-icon-color: var(--color-white),
-            label-text-weight: 300,
-            label-text-tracking: 0.04rem,
-            focus-outline-color: var(--color-secondary-lighten),
-            trailing-action-state-layer-color: var(--color-white),
-            container-shape-radius: 14px
-    ));
-    @include mat.autocomplete-overrides((
-            background-color: var(--color-white),
-            container-shape: 8px
-    ));
-}
-
-/* Глобальні стилі для іконок */
-.material-symbols-outlined {
-    color: var(--black);
-    font-variation-settings: 'FILL' 0, 'wght' 200, 'GRAD' 0, 'opsz' 72;
-}
-.mat-mdc-icon-button:hover .mat-mdc-button-persistent-ripple::before {
-    background-color: transparent;
-}
-.medium-icon-button {
-    width: 64px !important;
-    height: 64px !important;
-    padding: 0 !important;
-    display: inline-flex !important;
-    align-items: center;
-    justify-content: center;
-
-    & > *[role=img] {
-        width: 32px;
-        height: 32px;
-        font-size: 32px;
-
-        svg {
-            width: 32px;
-            height: 32px;
-        }
-    }
-
-    .mat-mdc-button-touch-target {
-        width: 32px !important;
-        height: 32px !important;
-    }
-}
-
 
 html, body {
     height: 100%;
@@ -236,6 +41,30 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 14px !important;
     letter-spacing: 0.04rem !important;
     font-weight: 300 !important;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track-piece {
+    border-radius: 5px;
+    background-color: var(--color-white);
+}
+
+::-webkit-scrollbar-track {
+    background-color: var(--color-white);
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: var(--color-border-bright);
+    outline: 2px solid var(--color-white);
+    outline-offset: -2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-border);
 }
 
 input.app-has-value {
@@ -270,11 +99,24 @@ input.app-has-value {
         }
     }
 
+    .flex-column-wrapper {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
     .form-actions {
         display: flex;
         justify-content: flex-end;
         gap: 16px;
         margin-top: 16px;
+    }
+
+    .app-custom-control-error.mat-mdc-form-field-error {
+        font-size: var(--mat-sys-body-small-size);
+        margin-top: -1.25rem;
+        padding-left: 16px;
+        line-height: 1rem;
     }
 }
 
@@ -289,4 +131,47 @@ input.app-has-value {
 .app-small-label {
     color: var(--color-tertiary-lighten);
     font-size: 14px;
+}
+
+.app-spacer {
+    height: 6px;
+    pointer-events: none;
+}
+
+.app-small-input {
+    padding: 5px 12px;
+    border: 1px solid var(--color-border-bright);
+    border-radius: 12px;
+    display: inline-block;
+    width: 100px;
+    margin-right: 10px;
+    font-family: "Oswald", sans-serif;
+    outline: none;
+    outline-width: 0;
+    box-shadow: none;
+    background-color: transparent;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    box-sizing: border-box;
+    &:focus {
+        border-color: var(--color-border);
+        outline: none;
+    }
+    &:hover {
+        border-color: var(--color-border);
+    }
+    &.ng-invalid.ng-touched {
+        border-color: var(--mat-sys-error);
+    }
+    &.ng-invalid.ng-touched:hover, &.ng-invalid.ng-touched:focus {
+        border-color: var(--color-error-darken);
+    }
+}
+
+.app-snackbar-default {
+    letter-spacing: 0.04rem;
+}
+
+.app-snackbar-error {
+    letter-spacing: 0.04rem;
+    --mdc-snackbar-container-color: var(--mat-sys-error);
 }

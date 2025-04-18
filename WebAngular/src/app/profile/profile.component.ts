@@ -9,6 +9,8 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { catchError, mergeMap, Observable, of, tap } from 'rxjs';
 
 import { KEYCLOAK_EVENT_SIGNAL, KeycloakEventType, ReadyArgs, typeEventArgs } from 'keycloak-angular';
 import { UsersService } from '../core/services';
@@ -17,6 +19,7 @@ import { UserPictureComponent } from '../shared/user-picture/user-picture.compon
 import { GenderPipe } from '../shared/pipes/gender.pipe';
 import { ProgressLoaderComponent } from '../shared/progress-loader/progress-loader.component';
 import { UnauthorizedComponent } from '../shared/unauthorized/unauthorized.component';
+import { sbConfig, sbError } from '../app.constant';
 
 @Component({
   selector: 'app-profile',
@@ -41,6 +44,7 @@ import { UnauthorizedComponent } from '../shared/unauthorized/unauthorized.compo
 })
 export class ProfileComponent implements OnInit {
   #usersService = inject(UsersService);
+  #snackBar = inject(MatSnackBar);
 
   #fb = inject(FormBuilder);
   #dr = inject(DestroyRef);
@@ -61,7 +65,9 @@ export class ProfileComponent implements OnInit {
       if (keycloakEvent.type === KeycloakEventType.Ready) {
         this.authenticated = typeEventArgs<ReadyArgs>(keycloakEvent.args);
         if (this.authenticated) {
-          this.#loadCurrentUser();
+          this.#loadCurrentUser()
+            .pipe(takeUntilDestroyed(this.#dr))
+            .subscribe();
         }
       }
 
@@ -75,23 +81,25 @@ export class ProfileComponent implements OnInit {
     this.initForm();
   }
 
-  #loadCurrentUser(): void {
-    if (this.authenticated) {
-      this.currentUserLoading.set(true);
-      this.#usersService.getCurrentUser()
-        .pipe(takeUntilDestroyed(this.#dr))
-        .subscribe({
-          next: user => {
-            this.currentUser.set(user);
-            this.currentUserLoading.set(false);
-            this.updateForm(user);
-          },
-          error: error => {
-            this.currentUserLoading.set(false);
-            console.error('Error loading user:', error);
-          }
-        });
+  #loadCurrentUser(): Observable<User | null> {
+    if (!this.authenticated) {
+      return of(null);
     }
+    this.currentUserLoading.set(true);
+    return this.#usersService.getCurrentUser()
+      .pipe(
+        tap(user => {
+          this.currentUser.set(user);
+          this.currentUserLoading.set(false);
+          this.updateForm(user);
+        }),
+        catchError(error => {
+          this.currentUserLoading.set(false);
+          this.#snackBar.open('Помилка завантаження користувача', '', sbError);
+          return of(null);
+        }),
+        takeUntilDestroyed(this.#dr)
+      );
   }
 
   initForm(): void {
@@ -140,13 +148,16 @@ export class ProfileComponent implements OnInit {
       };
 
       this.#usersService.updateCurrentUser(userForUpdate)
-        .pipe(takeUntilDestroyed(this.#dr))
+        .pipe(
+          mergeMap(() => this.#loadCurrentUser()),
+          takeUntilDestroyed(this.#dr)
+        )
         .subscribe({
           next: () => {
-            this.#loadCurrentUser();
+            this.#snackBar.open('Ваш аватар успішно оновлено', '', sbConfig);
           },
           error: (error) => {
-            console.error('Error updating profile picture:', error);
+            this.#snackBar.open('Помилка оновлення аватара', '', sbError);
           }
         });
     }
@@ -166,14 +177,17 @@ export class ProfileComponent implements OnInit {
       };
 
       this.#usersService.updateCurrentUser(userForUpdate)
-        .pipe(takeUntilDestroyed(this.#dr))
+        .pipe(
+          mergeMap(() => this.#loadCurrentUser()),
+          takeUntilDestroyed(this.#dr)
+        )
         .subscribe({
           next: () => {
-            this.#loadCurrentUser();
+            this.#snackBar.open('Ваш профіль успішно оновлено', '', sbConfig);
             this.editMode.set(false);
           },
-          error: (error) => {
-            console.error('Error updating user:', error);
+          error: () => {
+            this.#snackBar.open('Помилка оновлення користувача', '', sbError);
           }
         });
     }
