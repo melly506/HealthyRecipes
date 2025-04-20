@@ -98,3 +98,8 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
+
+@if (selectedIngredients.length) {
+    <app-nutrition-calculator class="ingredients-calculator" [hidden]="!selectedIngredients.length" [ingredients]="getCurrentValue()"></app-nutrition-calculator>
+}
+

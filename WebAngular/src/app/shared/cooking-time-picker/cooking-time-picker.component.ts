@@ -9,9 +9,9 @@ import {
 } from '@angular/forms';
 import { MatSlider, MatSliderThumb } from '@angular/material/slider';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { debounceTime } from 'rxjs';
 
 import { CookingTimeFormatPipe } from '../pipes/cooking-time-format.pipe';
-import { debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-cooking-time-picker',

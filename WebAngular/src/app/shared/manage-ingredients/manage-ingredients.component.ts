@@ -1,5 +1,6 @@
 import {
-  AfterViewInit, ChangeDetectorRef,
+  AfterViewInit,
+  ChangeDetectorRef,
   Component,
   DestroyRef,
   ElementRef,
@@ -28,14 +29,15 @@ import { MatList, MatListItem } from '@angular/material/list';
 import { MatTableModule } from '@angular/material/table';
 import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { MatIconButton } from '@angular/material/button';
-import { debounceTime, distinctUntilChanged, finalize, switchMap, tap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, finalize, Subject, switchMap, tap } from 'rxjs';
 import { NgxMaskDirective } from 'ngx-mask';
 
 import { IngredientsService } from '../../core/services';
 import { Ingredient } from '../../core/interfaces';
 import { ProgressLoaderComponent } from '../progress-loader/progress-loader.component';
 import { UnitPipe } from '../pipes/unit.pipe';
-import { RecipeIngredientDetails } from '../../core/interfaces/recipe-ingredient';
+import { RecipeIngredientDetails } from '../../core/interfaces';
+import { NutritionCalculatorComponent } from '../nutrition-calculator';
 
 @Component({
   selector: 'app-manage-ingredients',
@@ -56,7 +58,8 @@ import { RecipeIngredientDetails } from '../../core/interfaces/recipe-ingredient
     MatSortModule,
     UnitPipe,
     MatIconButton,
-    NgxMaskDirective
+    NgxMaskDirective,
+    NutritionCalculatorComponent
   ],
   templateUrl: './manage-ingredients.component.html',
   styleUrl: './manage-ingredients.component.scss',
@@ -77,6 +80,7 @@ export class ManageIngredientsComponent implements OnInit, AfterViewInit, Contro
   @ViewChild('searchInput') searchInput!: ElementRef<HTMLInputElement>;
   @ViewChild('ingredientsContainer') ingredientsContainer!: ElementRef<HTMLDivElement>;
   @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(NutritionCalculatorComponent) nutritionCalculatorComponent!: NutritionCalculatorComponent;
 
   #ingredientsService = inject(IngredientsService);
   #dr = inject(DestroyRef);
@@ -94,8 +98,9 @@ export class ManageIngredientsComponent implements OnInit, AfterViewInit, Contro
   filteredIngredients: Ingredient[] = [];
   selectedIngredients: Ingredient[] = [];
   ingredientCounts: Map<string, number | null> = new Map<string, number | null>();
+  updateFormValue$ = new Subject<void>();
 
-  displayedColumns = ['name', 'calories', 'fat', 'protein', 'carbs', 'sugar', 'unit', 'actions'];
+  readonly displayedColumns = ['name', 'calories', 'fat', 'protein', 'carbs', 'sugar', 'unit', 'actions'];
 
   onChange: any = () => {};
   onTouched: any = () => {};
@@ -140,13 +145,17 @@ export class ManageIngredientsComponent implements OnInit, AfterViewInit, Contro
       this.hasMoreItems = ingredients.length === this.pageSize;
     });
 
-    this.searchTermControl.setValue('');
+    this.updateFormValue$
+      .pipe(
+        tap(() => this.onChange(this.getCurrentValue())),
+        debounceTime(150),
+        takeUntilDestroyed(this.#dr)
+      )
+      .subscribe(() => {
+        this.nutritionCalculatorComponent.calculateNutrition();
+      });
 
-    this.ingredientsForm.valueChanges.pipe(
-      takeUntilDestroyed(this.#dr)
-    ).subscribe(() => {
-      this.#updateFormValue();
-    });
+    this.searchTermControl.setValue('');
   }
 
   ngAfterViewInit() {
@@ -179,7 +188,7 @@ export class ManageIngredientsComponent implements OnInit, AfterViewInit, Contro
         ingredient.id,
         new FormControl(null, [Validators.required, Validators.min(1)])
       );
-      this.#updateFormValue();
+      this.updateFormValue$.next();
     }
   }
 
@@ -229,7 +238,7 @@ export class ManageIngredientsComponent implements OnInit, AfterViewInit, Contro
     if (this.ingredientsForm.get(ingredient.id)) {
       this.ingredientsForm.removeControl(ingredient.id);
     }
-    this.#updateFormValue();
+    this.updateFormValue$.next();
   }
 
   updateIngredientCount(ingredientId: string, event: Event): void {
@@ -249,7 +258,7 @@ export class ManageIngredientsComponent implements OnInit, AfterViewInit, Contro
       }
     }
 
-    this.#updateFormValue();
+    this.updateFormValue$.next();
   }
 
   writeValue(ingredientDetails: RecipeIngredientDetails[]): void {
@@ -348,10 +357,6 @@ export class ManageIngredientsComponent implements OnInit, AfterViewInit, Contro
           sugar: ingredient.sugar
         };
       });
-  }
-
-  #updateFormValue(): void {
-    this.onChange(this.getCurrentValue());
   }
 
   #getSearchFilter(term: string | null = ''): string {

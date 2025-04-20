@@ -14,6 +14,7 @@
     --color-secondary-lighten: #65b5c6;
     --color-border: #99aebe;
     --color-border-bright: #c1ccd5;
+    --color-light: #e8ebef;
     --color-tertiary-dark: #233a47;
     --color-tertiary-darken: #27414e;
     --color-tertiary: #486070;
@@ -121,11 +122,18 @@ input.app-has-value {
 }
 
 .app-default-label {
+    display: flex;
+    gap: 16px;
+    align-items: center;
     font-family: "Oswald", sans-serif;
     font-size: 16px;
     letter-spacing: 0.04rem;
     text-transform: uppercase;
     color: var(--color-secondary-dark);
+    .mat-icon {
+        color: var(--color-tertiary);
+        transform: scale(1.26);
+    }
 }
 
 .app-small-label {
@@ -174,4 +182,9 @@ input.app-has-value {
 .app-snackbar-error {
     letter-spacing: 0.04rem;
     --mdc-snackbar-container-color: var(--mat-sys-error);
+}
+
+.app-white-field .mat-mdc-text-field-wrapper {
+    background-color: var(--color-white);
+    border-radius: 16px;
 }

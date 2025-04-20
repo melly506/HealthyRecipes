@@ -155,11 +155,15 @@ html {
             label-text-tracking: 0.04rem,
             focus-outline-color: var(--color-secondary-lighten),
             trailing-action-state-layer-color: var(--color-white),
-            container-shape-radius: 14px
+            container-shape-radius: 24px
     ));
     @include mat.autocomplete-overrides((
             background-color: var(--color-white),
             container-shape: 8px
+    ));
+    @include mat.card-overrides((
+            outlined-container-color: var(--color-white),
+            outlined-container-elevation: rgba(0, 0, 0, 0.03) 0 4px 10px
     ));
     @include mat.list-overrides((
             list-item-one-line-container-height: 60px,

@@ -179,6 +179,7 @@ export class ManageRecipeComponent implements OnInit {
   }
 
   save(): void {
+    console.log('Form', this.recipeForm.value);
     this.recipeForm.markAllAsTouched();
     if (this.ingredientsComponent) {
       this.ingredientsComponent.markAllAsTouched();
@@ -187,8 +188,6 @@ export class ManageRecipeComponent implements OnInit {
       this.#snackBar.open('Переконайтесь, що всі поля заповнено коректно', '', sbError);
       return;
     }
-
-    console.log('Form is valid', this.recipeForm.value);
   }
 
   #validateIngredients(control: AbstractControl): ValidationErrors | null {

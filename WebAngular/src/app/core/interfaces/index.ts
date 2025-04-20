@@ -6,3 +6,6 @@ export * from './diet.interface';
 export * from './dish-type.interface';
 export * from './season.interface';
 export * from './food-type.interface';
+export * from './cooking-method.interface';
+export * from './recipe-ingredient';
+export * from './nutrition.interface';

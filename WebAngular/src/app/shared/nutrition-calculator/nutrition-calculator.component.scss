@@ -1,0 +1,25 @@
+.calculator-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.calculator-method-wrapper {
+    width: 300px;
+    margin: 0;
+}
+
+.calculator-cards-wrapper {
+    display: flex;
+    gap: 32px;
+    app-info-card {
+        flex: 1;
+    }
+}
+
+.calculator-wrapper {
+    padding: 24px;
+    background-color: var(--color-light);
+    border-radius: 16px;
+    box-shadow: rgba(0, 0, 0, 0.03) 0 4px 10px;
+}
