@@ -1,4 +1,13 @@
-import { Component, DestroyRef, ElementRef, EventEmitter, inject, Input, Output, ViewChild } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  ElementRef,
+  forwardRef,
+  inject,
+  Input,
+  ViewChild
+} from '@angular/core';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ProgressLoaderComponent } from '../progress-loader/progress-loader.component';
 import { MatIcon } from '@angular/material/icon';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -13,7 +22,14 @@ import { ImagesService } from '../../core/services';
   ],
   standalone: true,
   templateUrl: './recipe-picture.component.html',
-  styleUrl: './recipe-picture.component.scss'
+  styleUrl: './recipe-picture.component.scss',
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => RecipePictureComponent),
+      multi: true
+    }
+  ]
 })
 export class RecipePictureComponent {
   #imagesService = inject(ImagesService);
@@ -21,13 +37,17 @@ export class RecipePictureComponent {
 
   @ViewChild('fileInput') fileInput!: ElementRef;
   @Input() editable = false;
-  @Input() recipePicture = '';
-  @Output() pictureUpdated = new EventEmitter<string>();
 
+  recipePicture = '';
   isUploading = false;
+  disabled = false;
+  touched = false;
+
+  onChange: (value: string) => void = () => {};
+  onTouched: () => void = () => {};
 
   triggerFileInput() {
-    if (this.editable) {
+    if (this.editable && !this.disabled) {
       this.fileInput.nativeElement.click();
     }
   }
@@ -51,13 +71,39 @@ export class RecipePictureComponent {
       .subscribe({
         next: (response) => {
           this.isUploading = false;
-          this.pictureUpdated.emit(response.secureUrl);
+          this.recipePicture = response.secureUrl;
+          this.onChange(this.recipePicture);
+          this.onTouched();
         },
         error: (error) => {
           this.isUploading = false;
           console.error('Error uploading image:', error);
         }
       });
+  }
+
+  writeValue(url: string): void {
+    this.recipePicture = url || '';
+  }
+
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.disabled = isDisabled;
+  }
+
+  // Helper method to mark control as touched
+  markAsTouched(): void {
+    if (!this.touched) {
+      this.onTouched();
+      this.touched = true;
+    }
   }
 
 }

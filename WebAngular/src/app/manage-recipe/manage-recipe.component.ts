@@ -9,8 +9,8 @@ import {
   ValidationErrors,
   Validators
 } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatError, MatFormField, MatInput, MatLabel } from '@angular/material/input';
-import { NgIf } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButton } from '@angular/material/button';
 import { KEYCLOAK_EVENT_SIGNAL, KeycloakEventType, ReadyArgs, typeEventArgs } from 'keycloak-angular';
@@ -22,10 +22,8 @@ import {
   ChipsAutocompleteMultipleComponent
 } from '../shared/chips-autocomplete-multiple/chips-autocomplete-multiple.component';
 import { DietsService, DishTypesService, FoodTypesService, SeasonsService } from '../core/services';
-import { Diet, DishType, FoodType, Season } from '../core/interfaces';
+import { Diet, DishType, FoodType, Season, RecipeIngredientDetails } from '../core/interfaces';
 import { ManageIngredientsComponent } from '../shared/manage-ingredients/manage-ingredients.component';
-import { RecipeIngredientDetails } from '../core/interfaces/recipe-ingredient';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { sbError } from '../app.constant';
 
 @Component({
@@ -39,7 +37,6 @@ import { sbError } from '../app.constant';
     MatFormField,
     MatInput,
     MatLabel,
-    NgIf,
     ReactiveFormsModule,
     CookingTimePickerComponent,
     CdkTextareaAutosize,
@@ -146,7 +143,9 @@ export class ManageRecipeComponent implements OnInit {
     this.recipeForm = this.#fb.group({
       name: ['', [Validators.required, Validators.maxLength(55)]],
       cookingTime: [30, [Validators.required, Validators.min(1)]],
-      description:  ['', [Validators.maxLength(10000)]],
+      description:  ['', [Validators.maxLength(1000 )]],
+      imageUrl: ['', [Validators.required]],
+      instructions: ['', [Validators.required, Validators.maxLength(8000 )]],
       foodTypeIds: [
         [],
         [Validators.required]
@@ -168,10 +167,6 @@ export class ManageRecipeComponent implements OnInit {
         [Validators.required, this.#validateIngredients]
       ]
     });
-  }
-
-  updateRecipePicture(pictureUrl: string): void {
-
   }
 
   cancel(): void {

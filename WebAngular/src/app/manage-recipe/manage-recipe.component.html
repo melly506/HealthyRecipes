@@ -4,10 +4,14 @@
     } @else {
         <form [formGroup]="recipeForm" class="recipe-container">
             <div class="recipe-header">
-                <div class="upload-picture-column">
+                <div class="upload-picture-column edit-mode-form-container">
                     <app-recipe-picture
                             [editable]="true"
-                            (pictureUpdated)="updateRecipePicture($event)"></app-recipe-picture>
+                            formControlName="imageUrl"></app-recipe-picture>
+                    @if (recipeForm.get('imageUrl')?.hasError('required')
+                        && recipeForm.get('imageUrl')?.touched) {
+                        <mat-error class="app-custom-control-error">Додайте зображення рецепта</mat-error>
+                    }
                 </div>
                 <div class="info-column">
                     <h1 class="page-title user-name">Створити рецепт</h1>
@@ -16,12 +20,16 @@
                             <mat-form-field appearance="outline">
                                 <mat-label>Назва рецепта</mat-label>
                                 <input matInput formControlName="name">
-                                <mat-error *ngIf="recipeForm.get('name')?.hasError('required')">
-                                    Будь ласка вкажіть назву рецепта
-                                </mat-error>
-                                <mat-error *ngIf="recipeForm.get('name')?.hasError('maxlength')">
-                                    Назва не повинна перевищувати 50 символів
-                                </mat-error>
+                                @if (recipeForm.get('name')?.hasError('required')) {
+                                    <mat-error>
+                                        Будь ласка вкажіть назву рецепта
+                                    </mat-error>
+                                }
+                                @if (recipeForm.get('name')?.hasError('maxlength')) {
+                                    <mat-error>
+                                        Назва не повинна перевищувати 50 символів
+                                    </mat-error>
+                                }
                             </mat-form-field>
                         </div>
                         <div class="form-row">
@@ -33,9 +41,11 @@
                                           rows="7"
                                           #autosize="cdkTextareaAutosize"
                                           formControlName="description"></textarea>
-                                <mat-error *ngIf="recipeForm.get('description')?.hasError('maxlength')">
-                                    Опис не повинен бути більше 10000 символів
-                                </mat-error>
+                                @if (recipeForm.get('description')?.hasError('maxlength')) {
+                                    <mat-error>
+                                        Опис не повинен бути більше 500 символів
+                                    </mat-error>
+                                }
                             </mat-form-field>
                         </div>
                     </div>
@@ -128,6 +138,27 @@
                             </mat-error>
                         }
                     </div>
+                </div>
+                <div class="form-row">
+                    <mat-form-field appearance="outline" class="description-field">
+                        <mat-label>Метод приготування</mat-label>
+                        <textarea matInput
+                                  cdkTextareaAutosize
+                                  cdkAutosizeMinRows="7"
+                                  rows="7"
+                                  #autosize="cdkTextareaAutosize"
+                                  formControlName="instructions"></textarea>
+                        @if (recipeForm.get('instructions')?.hasError('required')) {
+                            <mat-error>
+                                Опишіть, як саме готується страва
+                            </mat-error>
+                        }
+                        @if (recipeForm.get('instructions')?.hasError('maxlength')) {
+                            <mat-error>
+                                Метод приготування не повинен бути більше 5000 символів
+                            </mat-error>
+                        }
+                    </mat-form-field>
                 </div>
                 <div class="form-actions">
                     <button mat-button (click)="cancel()">Скасувати</button>

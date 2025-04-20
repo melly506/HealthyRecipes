@@ -1,5 +1,6 @@
 .recipe-header {
     display: flex;
+    margin-bottom: 15px;
 }
 
 .page-title {
@@ -12,6 +13,11 @@
     margin-right: 32px;
     display: flex;
     justify-content: flex-start;
+    flex-direction: column;
+    .app-custom-control-error {
+        margin-top: 4px;
+        text-align: center;
+    }
 }
 
 .info-column {
