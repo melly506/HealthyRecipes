@@ -7,12 +7,12 @@ import { QuickRecipesComponent } from './quick-recipes/quick-recipes.component';
 import { ArticlesComponent } from './articles/articles.component'; // Додайте компонент для статей
 import { HomeComponent } from './home/home.component'; // Додайте компонент для головної сторінки
 
-
 export const routes: Routes = [
   { path: '', component: HomeComponent }, // Головна сторінка
   { path: 'profile', component: ProfileComponent },// Реєстрація 
   { path: 'favorites', component: FavoritesComponent },// Вподобання-Збережені рецепти 
-  { path: 'manage-recipe', component: ManageRecipeComponent },// Створення рецепту
+  { path: 'manage-recipe', component: ManageRecipeComponent }, // Створення рецепта
+  { path: 'manage-recipe/:id', component: ManageRecipeComponent }, // Редагування рецепта
   { path: 'quick-recipes', component: QuickRecipesComponent }, // Швидкі рецепти
   { path: 'articles', component: ArticlesComponent }, // Статті
 ];

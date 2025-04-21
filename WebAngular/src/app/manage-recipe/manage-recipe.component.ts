@@ -1,4 +1,5 @@
 import { Component, DestroyRef, effect, inject, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import {
   AbstractControl,
@@ -14,6 +15,7 @@ import { MatError, MatFormField, MatInput, MatLabel } from '@angular/material/in
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButton } from '@angular/material/button';
 import { KEYCLOAK_EVENT_SIGNAL, KeycloakEventType, ReadyArgs, typeEventArgs } from 'keycloak-angular';
+import { of, switchMap } from 'rxjs';
 
 import { UnauthorizedComponent } from '../shared/unauthorized/unauthorized.component';
 import { RecipePictureComponent } from '../shared/recipe-picture/recipe-picture.component';
@@ -21,10 +23,19 @@ import { CookingTimePickerComponent } from '../shared/cooking-time-picker/cookin
 import {
   ChipsAutocompleteMultipleComponent
 } from '../shared/chips-autocomplete-multiple/chips-autocomplete-multiple.component';
-import { DietsService, DishTypesService, FoodTypesService, SeasonsService } from '../core/services';
-import { Diet, DishType, FoodType, Season, RecipeIngredientDetails } from '../core/interfaces';
+import { DietsService, DishTypesService, FoodTypesService, RecipesService, SeasonsService } from '../core/services';
+import {
+  Diet,
+  DishType,
+  FoodType,
+  Season,
+  RecipeIngredientDetails,
+  RecipeDetailed,
+  RecipeForUpdate
+} from '../core/interfaces';
 import { ManageIngredientsComponent } from '../shared/manage-ingredients/manage-ingredients.component';
-import { sbError } from '../app.constant';
+import { sbConfig, sbError } from '../app.constant';
+import { ProgressLoaderComponent } from '../shared/progress-loader/progress-loader.component';
 
 @Component({
   selector: 'app-manage-recipe',
@@ -42,7 +53,8 @@ import { sbError } from '../app.constant';
     CdkTextareaAutosize,
     ChipsAutocompleteMultipleComponent,
     MatButton,
-    ManageIngredientsComponent
+    ManageIngredientsComponent,
+    ProgressLoaderComponent
   ],
   templateUrl: './manage-recipe.component.html',
   styleUrl: './manage-recipe.component.scss'
@@ -56,6 +68,9 @@ export class ManageRecipeComponent implements OnInit {
   #seasonsService = inject(SeasonsService);
   #dietsService = inject(DietsService);
   #dishTypesService = inject(DishTypesService);
+  #route = inject(ActivatedRoute);
+  #router = inject(Router);
+  #recipesService = inject(RecipesService);
 
   authenticated = false;
   recipeForm!: FormGroup;
@@ -63,6 +78,9 @@ export class ManageRecipeComponent implements OnInit {
   seasons: Season[] = [];
   diets: Diet[] = [];
   dishTypes: DishType[] = [];
+  recipeId: string | null = null;
+  isLoading = false;
+  isSaving = false;
 
   get ingredientsControl() {
     return this.recipeForm.get('ingredients');
@@ -107,6 +125,64 @@ export class ManageRecipeComponent implements OnInit {
   ngOnInit(): void {
     this.#initForm();
     this.#loadLookups();
+    this.#handleRouter();
+  }
+
+  cancel(): void {
+    this.#router.navigate(['/']);
+  }
+
+  save(): void {
+    this.recipeForm.markAllAsTouched();
+    if (this.ingredientsComponent) {
+      this.ingredientsComponent.markAllAsTouched();
+    }
+    if (this.recipeForm.invalid) {
+      this.#snackBar.open('Переконайтесь, що всі поля заповнено коректно', '', sbError);
+      return;
+    }
+
+    const formValue = this.recipeForm.value;
+
+    const recipeForSubmit: RecipeForUpdate = {
+      name: formValue.name,
+      imageUrl: formValue.imageUrl,
+      cookingTime: formValue.cookingTime,
+      description: formValue.description,
+      instructions: formValue.instructions,
+      recipeIngridientsAssign: formValue.ingredients.map((ingredient: RecipeIngredientDetails) => ({
+        count: ingredient.count,
+        ingridientId: ingredient.ingredientId
+      })),
+      foodTypeIds: formValue.foodTypeIds,
+      dietIds: formValue.dietIds,
+      seasonIds: formValue.seasonIds,
+      dishTypeIds: formValue.dishTypeIds
+    };
+
+    this.isSaving = true;
+
+    const saveAction = this.recipeId
+      ? this.#recipesService.updateRecipe(this.recipeId, recipeForSubmit)
+      : this.#recipesService.createRecipe(recipeForSubmit);
+
+    saveAction
+      .pipe(takeUntilDestroyed(this.#dr))
+      .subscribe({
+        next: () => {
+          this.isSaving = false;
+          const message = this.recipeId
+            ? 'Рецепт успішно змінено'
+            : 'Рецепт успішно створено';
+          this.#snackBar.open(message, '', sbConfig);
+          this.#router.navigate(['/']);
+        },
+        error: (error) => {
+          this.isSaving = false;
+          this.#snackBar.open('Рецепт успішно створений', '', sbError);
+          console.error('Error saving recipe:', error);
+        }
+      });
   }
 
   #loadLookups(): void {
@@ -169,20 +245,47 @@ export class ManageRecipeComponent implements OnInit {
     });
   }
 
-  cancel(): void {
-
+  #populateForm(recipe: RecipeDetailed, ingredients: RecipeIngredientDetails[]): void {
+    this.recipeForm.patchValue({
+      name: recipe.name,
+      cookingTime: recipe.cookingTime,
+      description: recipe.description,
+      imageUrl: recipe.imageUrl,
+      instructions: recipe.instructions,
+      foodTypeIds: (recipe.foodType || []).map(foodType => foodType.id),
+      seasonIds: (recipe.season || []).map(season => season.id),
+      dietIds: (recipe.diet || []).map(diet => diet.id),
+      dishTypeIds: (recipe.dishType || []).map(dishType => dishType.id),
+      ingredients
+    });
   }
 
-  save(): void {
-    console.log('Form', this.recipeForm.value);
-    this.recipeForm.markAllAsTouched();
-    if (this.ingredientsComponent) {
-      this.ingredientsComponent.markAllAsTouched();
-    }
-    if (this.recipeForm.invalid) {
-      this.#snackBar.open('Переконайтесь, що всі поля заповнено коректно', '', sbError);
-      return;
-    }
+  #handleRouter() {
+    this.#route.paramMap
+      .pipe(
+        takeUntilDestroyed(this.#dr),
+        switchMap(params => {
+          const id = params.get('id');
+          if (id) {
+            this.recipeId = id;
+            this.isLoading = true;
+            return this.#recipesService.getRecipeById(id);
+          }
+          return of(null);
+        })
+      )
+      .subscribe({
+        next: response => {
+          if (response?.recipe) {
+            this.#populateForm(response.recipe, response?.ingridientsDetails || []);
+          }
+          this.isLoading = false;
+        },
+        error: (error) => {
+          this.isLoading = false;
+          console.error('Error loading recipe:', error);
+        }
+      });
   }
 
   #validateIngredients(control: AbstractControl): ValidationErrors | null {

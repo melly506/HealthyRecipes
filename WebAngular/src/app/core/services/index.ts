@@ -5,3 +5,4 @@ export * from './dish-types.service';
 export * from './images.service';
 export * from './seasons.service';
 export * from './food-types.service';
+export * from './recipes.service';

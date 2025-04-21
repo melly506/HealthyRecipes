@@ -113,8 +113,17 @@
                             </mat-form-field>
 
                             <div class="form-actions">
-                                <button mat-button (click)="toggleEditMode()">Скасувати</button>
-                                <button mat-raised-button (click)="saveProfile()">Зберегти</button>
+                                @if (isSaving) {
+                                    <app-progress-loader [minHeight]="48"></app-progress-loader>
+                                }
+                                <button mat-button (click)="toggleEditMode()">
+                                    Скасувати
+                                </button>
+                                <button mat-raised-button
+                                        [disabled]="isSaving"
+                                        (click)="saveProfile()">
+                                    Зберегти
+                                </button>
                             </div>
                         </form>
                     </div>

@@ -148,7 +148,7 @@ export class ManageIngredientsComponent implements OnInit, AfterViewInit, Contro
     this.updateFormValue$
       .pipe(
         tap(() => this.onChange(this.getCurrentValue())),
-        debounceTime(150),
+        debounceTime(10),
         takeUntilDestroyed(this.#dr)
       )
       .subscribe(() => {
@@ -161,7 +161,7 @@ export class ManageIngredientsComponent implements OnInit, AfterViewInit, Contro
   ngAfterViewInit() {
     this.sort.sortChange
       .pipe(
-        debounceTime(20),
+        debounceTime(10),
         takeUntilDestroyed(this.#dr)
       )
       .subscribe(sort => {

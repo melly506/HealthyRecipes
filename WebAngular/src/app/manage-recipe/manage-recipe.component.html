@@ -14,7 +14,16 @@
                     }
                 </div>
                 <div class="info-column">
-                    <h1 class="page-title user-name">Створити рецепт</h1>
+                    @if (recipeId) {
+                        <h1 class="page-title">
+                            Редагування рецепта
+                            @if (isLoading) {
+                                <app-progress-loader [minHeight]="25"></app-progress-loader>
+                            }
+                        </h1>
+                    } @else {
+                        <h1 class="page-title">Створити рецепт</h1>
+                    }
                     <div class="edit-mode-form-container">
                         <div class="form-row">
                             <mat-form-field appearance="outline">
@@ -161,8 +170,15 @@
                     </mat-form-field>
                 </div>
                 <div class="form-actions">
+                    @if (isSaving) {
+                        <app-progress-loader [minHeight]="48"></app-progress-loader>
+                    }
                     <button mat-button (click)="cancel()">Скасувати</button>
-                    <button mat-raised-button (click)="save()">Зберегти</button>
+                    <button mat-raised-button
+                            [disabled]="isSaving"
+                            (click)="save()">
+                        Зберегти
+                    </button>
                 </div>
             </div>
         </form>

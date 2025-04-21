@@ -9,3 +9,4 @@ export * from './food-type.interface';
 export * from './cooking-method.interface';
 export * from './recipe-ingredient';
 export * from './nutrition.interface';
+export * from './recipe.interface';

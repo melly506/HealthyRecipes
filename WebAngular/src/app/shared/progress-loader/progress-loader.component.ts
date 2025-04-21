@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-progress-loader',
@@ -8,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './progress-loader.component.scss'
 })
 export class ProgressLoaderComponent {
-
+  @Input() minHeight = 60;
 }

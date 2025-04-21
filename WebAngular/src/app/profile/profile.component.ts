@@ -54,6 +54,7 @@ export class ProfileComponent implements OnInit {
   editMode = signal<boolean>(false);
   currentUserLoading = signal<boolean>(false);
   userForm!: FormGroup;
+  isSaving = false;
 
   constructor() {
     const keycloakSignal = inject(KEYCLOAK_EVENT_SIGNAL);
@@ -176,6 +177,7 @@ export class ProfileComponent implements OnInit {
         picture: this.currentUser()?.picture || ''
       };
 
+      this.isSaving = true;
       this.#usersService.updateCurrentUser(userForUpdate)
         .pipe(
           mergeMap(() => this.#loadCurrentUser()),
@@ -183,10 +185,12 @@ export class ProfileComponent implements OnInit {
         )
         .subscribe({
           next: () => {
+            this.isSaving = false;
             this.#snackBar.open('Ваш профіль успішно оновлено', '', sbConfig);
             this.editMode.set(false);
           },
           error: () => {
+            this.isSaving = false;
             this.#snackBar.open('Помилка оновлення користувача', '', sbError);
           }
         });
