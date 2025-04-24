@@ -11,3 +11,5 @@ export const sbError: MatSnackBarConfig = {
   panelClass: 'app-snackbar-error',
   horizontalPosition: 'left'
 };
+
+export const projectName = 'Green spoon';

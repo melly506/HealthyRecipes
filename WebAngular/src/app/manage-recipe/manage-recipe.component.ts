@@ -34,8 +34,9 @@ import {
   RecipeForUpdate
 } from '../core/interfaces';
 import { ManageIngredientsComponent } from '../shared/manage-ingredients/manage-ingredients.component';
-import { sbConfig, sbError } from '../app.constant';
+import { projectName, sbConfig, sbError } from '../app.constant';
 import { ProgressLoaderComponent } from '../shared/progress-loader/progress-loader.component';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-manage-recipe',
@@ -70,6 +71,7 @@ export class ManageRecipeComponent implements OnInit {
   #dishTypesService = inject(DishTypesService);
   #route = inject(ActivatedRoute);
   #router = inject(Router);
+  #title = inject(Title);
   #recipesService = inject(RecipesService);
 
   authenticated = false;
@@ -81,6 +83,7 @@ export class ManageRecipeComponent implements OnInit {
   recipeId: string | null = null;
   isLoading = false;
   isSaving = false;
+  pageTitle = '';
 
   get ingredientsControl() {
     return this.recipeForm.get('ingredients');
@@ -268,9 +271,13 @@ export class ManageRecipeComponent implements OnInit {
           const id = params.get('id');
           if (id) {
             this.recipeId = id;
+            this.pageTitle = 'Редагування рецепта';
+            this.#title.setTitle(`${projectName} • ${this.pageTitle}`);
             this.isLoading = true;
             return this.#recipesService.getRecipeById(id);
           }
+          this.pageTitle = 'Створити рецепт';
+          this.#title.setTitle(`${projectName} • ${this.pageTitle}`);
           return of(null);
         })
       )

@@ -1,4 +1,5 @@
 import { Component, DestroyRef, effect, inject, OnInit, signal } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -19,7 +20,7 @@ import { UserPictureComponent } from '../shared/user-picture/user-picture.compon
 import { GenderPipe } from '../shared/pipes/gender.pipe';
 import { ProgressLoaderComponent } from '../shared/progress-loader/progress-loader.component';
 import { UnauthorizedComponent } from '../shared/unauthorized/unauthorized.component';
-import { sbConfig, sbError } from '../app.constant';
+import { projectName, sbConfig, sbError } from '../app.constant';
 
 @Component({
   selector: 'app-profile',
@@ -45,6 +46,7 @@ import { sbConfig, sbError } from '../app.constant';
 export class ProfileComponent implements OnInit {
   #usersService = inject(UsersService);
   #snackBar = inject(MatSnackBar);
+  #title = inject(Title);
 
   #fb = inject(FormBuilder);
   #dr = inject(DestroyRef);
@@ -79,6 +81,7 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.#title.setTitle(`${projectName} • Профіль`);
     this.initForm();
   }
 

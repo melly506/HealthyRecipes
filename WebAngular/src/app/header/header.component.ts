@@ -10,6 +10,7 @@ import Keycloak from 'keycloak-js';
 import { UsersService } from '../core/services';
 import { User } from '../core/interfaces';
 import { UserPictureComponent } from '../shared/user-picture/user-picture.component';
+import { projectName } from '../app.constant';
 
 @Component({
   selector: 'app-header',
@@ -24,6 +25,7 @@ export class HeaderComponent implements OnInit {
   #dr = inject(DestroyRef);
   public authenticated = false;
   public user?: User;
+  public readonly projectName = projectName;
   
   constructor() {
     const keycloakSignal = inject(KEYCLOAK_EVENT_SIGNAL);

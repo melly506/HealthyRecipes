@@ -16,13 +16,13 @@
                 <div class="info-column">
                     @if (recipeId) {
                         <h1 class="page-title">
-                            Редагування рецепта
+                            {{ pageTitle }}
                             @if (isLoading) {
                                 <app-progress-loader [minHeight]="25"></app-progress-loader>
                             }
                         </h1>
                     } @else {
-                        <h1 class="page-title">Створити рецепт</h1>
+                        <h1 class="page-title">{{ pageTitle }}</h1>
                     }
                     <div class="edit-mode-form-container">
                         <div class="form-row">

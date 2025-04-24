@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-home',
@@ -7,5 +8,10 @@ import { Component } from '@angular/core';
     templateUrl: './home.component.html',
     styleUrl: './home.component.scss'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
+    #title = inject(Title);
+
+    ngOnInit(): void {
+        this.#title.setTitle('Green Spoon');
+    }
 }
