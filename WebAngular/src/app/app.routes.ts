@@ -11,8 +11,8 @@ export const routes: Routes = [
   { path: '', component: HomeComponent }, // Головна сторінка
   { path: 'profile', component: ProfileComponent },// Реєстрація 
   { path: 'favorites', component: FavoritesComponent },// Вподобання-Збережені рецепти 
-  { path: 'manage-recipe', component: ManageRecipeComponent }, // Створення рецепта
-  { path: 'manage-recipe/:id', component: ManageRecipeComponent }, // Редагування рецепта
+  { path: 'recipe', component: ManageRecipeComponent }, // Створення рецепта
+  { path: 'recipe/:id', component: ManageRecipeComponent }, // Редагування рецепта
   { path: 'quick-recipes', component: QuickRecipesComponent }, // Швидкі рецепти
   { path: 'articles', component: ArticlesComponent }, // Статті
 ];

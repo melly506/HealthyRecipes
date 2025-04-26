@@ -1,0 +1,34 @@
+<div class="recipe-container">
+    <div class="recipe-header">
+        <div class="recipe-picture-column">
+            <app-recipe-picture
+                    [editable]="false"
+                    [recipePicture]="recipeResponse?.recipe?.imageUrl || ''"></app-recipe-picture>
+        </div>
+        <div class="info-column">
+            <h1 class="page-title">{{ recipeResponse?.recipe?.name }}</h1>
+            <div class="row">
+                <app-recipe-tag-icons class="recipe-tags" [recipe]="recipeResponse?.recipe"></app-recipe-tag-icons>
+            </div>
+
+            @if (recipeResponse?.recipe?.cookingTime; as cookingTime) {
+                <div class="row">
+                    <div class="cooking-time">
+                        <mat-icon class="material-symbols-outlined">schedule_outlined</mat-icon>
+                        <span>{{ cookingTime | cookingTimeFormat }}</span>
+                    </div>
+                </div>
+            }
+            <div class="row">
+                <p class="description-field">
+                    {{ recipeResponse?.recipe?.description }}
+                </p>
+            </div>
+        </div>
+    </div>
+    @if (recipeResponse?.ingridientsDetails; as ingredients) {
+        <div class="row">
+            <app-manage-ingredients [editable]="false" [ingredients]="ingredients"></app-manage-ingredients>
+        </div>
+    }
+</div>

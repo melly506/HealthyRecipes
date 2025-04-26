@@ -1,10 +1,12 @@
 @use "styles/theme-colors" as colors;
 @use "styles/material-custom-theme";
+@use 'sass:color';
 
 :root {
     --color-white: #ffffff;
     --color-primary-green: #459b65;
     --color-primary-green-darken: #076842;
+    --color-green-light: #5db07b;
     --color-gray-dark: #3b4a3f;
     --color-red-hover: #ff6b6b;
     --color-error: #b34848;
@@ -182,6 +184,11 @@ input.app-has-value {
 .app-snackbar-error {
     letter-spacing: 0.04rem;
     --mdc-snackbar-container-color: var(--mat-sys-error);
+}
+
+.app-zero-link {
+    all: unset;
+    cursor: pointer;
 }
 
 .app-white-field .mat-mdc-text-field-wrapper {

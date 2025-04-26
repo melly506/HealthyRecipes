@@ -1,19 +1,21 @@
-<mat-form-field (click)="openPanel()">
-    <mat-icon matPrefix class="material-symbols-outlined">
-        grocery_outlined
-    </mat-icon>
+@if (editable) {
+    <mat-form-field (click)="openPanel()">
+        <mat-icon matPrefix class="material-symbols-outlined">
+            grocery_outlined
+        </mat-icon>
 
-    <mat-label>Інгредієнти</mat-label>
-    <input matInput
-           #searchInput
-           placeholder="Пошук інгридієнтів..."
-           [formControl]="searchTermControl"
-           (focus)="openPanel()" />
-    <div class="app-spacer"></div>
-    <mat-icon matSuffix class="material-symbols-outlined">
-        search_outlined
-    </mat-icon>
-</mat-form-field>
+        <mat-label>Інгредієнти</mat-label>
+        <input matInput
+               #searchInput
+               placeholder="Пошук інгридієнтів..."
+               [formControl]="searchTermControl"
+               (focus)="openPanel()" />
+        <div class="app-spacer"></div>
+        <mat-icon matSuffix class="material-symbols-outlined">
+            search_outlined
+        </mat-icon>
+    </mat-form-field>
+}
 <div class="manage-recipe-selection" [class.selection-active]="isActive">
     <div class="inner-selection-container"
          #ingredientsContainer
@@ -77,29 +79,39 @@
         <th mat-header-cell *matHeaderCellDef>Кількість</th>
         <td mat-cell *matCellDef="let row">
             @if (getInputFormControl(row); as inputFormControl) {
-                <input class="app-small-input"
-                       mask="09999"
-                       matInput
-                       [formControl]="inputFormControl"
-                       (input)="updateIngredientCount(row.id, $event)"
-                       placeholder="Кількість...">
+                @if (editable) {
+                    <input class="app-small-input"
+                           mask="09999"
+                           matInput
+                           [formControl]="inputFormControl"
+                           (input)="updateIngredientCount(row.id, $event)"
+                           placeholder="Кількість...">
+                } @else {
+                    <span class="count-readonly-value">{{inputFormControl.value}}</span>
+                }
             }
             {{ row.unit | unit }}
         </td>
     </ng-container>
-    <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef></th>
-        <td mat-cell *matCellDef="let row">
-            <button mat-icon-button (click)="removeIngredient(row)">
-                <mat-icon class="material-symbols-outlined">close_outlined</mat-icon>
-            </button>
-        </td>
-    </ng-container>
+    @if (editable) {
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let row">
+                <button mat-icon-button (click)="removeIngredient(row)">
+                    <mat-icon class="material-symbols-outlined">close_outlined</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+    }
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
 
 @if (selectedIngredients.length) {
-    <app-nutrition-calculator class="ingredients-calculator" [hidden]="!selectedIngredients.length" [ingredients]="getCurrentValue()"></app-nutrition-calculator>
+    <app-nutrition-calculator
+            class="ingredients-calculator"
+            [hidden]="!selectedIngredients.length"
+            [counts]="ingredientsForm.value"
+            [ingredients]="selectedIngredients"></app-nutrition-calculator>
 }
 

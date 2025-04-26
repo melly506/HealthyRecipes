@@ -51,7 +51,7 @@ export class HeaderComponent implements OnInit {
         if (userCache && userCache?.id === this.user?.id) {
           this.user = userCache;
         }
-      })
+      });
   }
 
   async logout() {

@@ -1,4 +1,6 @@
 import { Component, DestroyRef, effect, inject, OnInit, ViewChild } from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import {
@@ -15,15 +17,21 @@ import { MatError, MatFormField, MatInput, MatLabel } from '@angular/material/in
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButton } from '@angular/material/button';
 import { KEYCLOAK_EVENT_SIGNAL, KeycloakEventType, ReadyArgs, typeEventArgs } from 'keycloak-angular';
-import { of, switchMap } from 'rxjs';
+import { catchError, Observable, of, switchMap, tap } from 'rxjs';
 
-import { UnauthorizedComponent } from '../shared/unauthorized/unauthorized.component';
 import { RecipePictureComponent } from '../shared/recipe-picture/recipe-picture.component';
 import { CookingTimePickerComponent } from '../shared/cooking-time-picker/cooking-time-picker.component';
 import {
   ChipsAutocompleteMultipleComponent
 } from '../shared/chips-autocomplete-multiple/chips-autocomplete-multiple.component';
-import { DietsService, DishTypesService, FoodTypesService, RecipesService, SeasonsService } from '../core/services';
+import {
+  DietsService,
+  DishTypesService,
+  FoodTypesService,
+  RecipesService,
+  SeasonsService,
+  UsersService
+} from '../core/services';
 import {
   Diet,
   DishType,
@@ -31,18 +39,20 @@ import {
   Season,
   RecipeIngredientDetails,
   RecipeDetailed,
-  RecipeForUpdate
+  RecipeForUpdate,
+  User,
+  RecipeResponse
 } from '../core/interfaces';
 import { ManageIngredientsComponent } from '../shared/manage-ingredients/manage-ingredients.component';
 import { projectName, sbConfig, sbError } from '../app.constant';
 import { ProgressLoaderComponent } from '../shared/progress-loader/progress-loader.component';
-import { Title } from '@angular/platform-browser';
+import { RecipeDetailsComponent } from './recipe-details/recipe-details.component';
+import { UnauthorizedComponent } from '../shared/unauthorized/unauthorized.component';
 
 @Component({
   selector: 'app-manage-recipe',
   standalone: true,
   imports: [
-    UnauthorizedComponent,
     RecipePictureComponent,
     FormsModule,
     MatError,
@@ -55,13 +65,17 @@ import { Title } from '@angular/platform-browser';
     ChipsAutocompleteMultipleComponent,
     MatButton,
     ManageIngredientsComponent,
-    ProgressLoaderComponent
+    ProgressLoaderComponent,
+    RecipeDetailsComponent,
+    UnauthorizedComponent,
+    NgTemplateOutlet
   ],
   templateUrl: './manage-recipe.component.html',
   styleUrl: './manage-recipe.component.scss'
 })
 export class ManageRecipeComponent implements OnInit {
   @ViewChild(ManageIngredientsComponent) ingredientsComponent!: ManageIngredientsComponent;
+  #usersService = inject(UsersService);
   #snackBar = inject(MatSnackBar);
   #fb = inject(FormBuilder);
   #dr = inject(DestroyRef);
@@ -84,6 +98,9 @@ export class ManageRecipeComponent implements OnInit {
   isLoading = false;
   isSaving = false;
   pageTitle = '';
+  user?: User | null;
+  currentUserLoading = false;
+  recipeResponse?: RecipeResponse;
 
   get ingredientsControl() {
     return this.recipeForm.get('ingredients');
@@ -117,6 +134,11 @@ export class ManageRecipeComponent implements OnInit {
 
       if (keycloakEvent.type === KeycloakEventType.Ready) {
         this.authenticated = typeEventArgs<ReadyArgs>(keycloakEvent.args);
+        if (this.authenticated) {
+          this.#loadCurrentUser()
+            .pipe(takeUntilDestroyed(this.#dr))
+            .subscribe();
+        }
       }
 
       if (keycloakEvent.type === KeycloakEventType.AuthLogout) {
@@ -284,6 +306,7 @@ export class ManageRecipeComponent implements OnInit {
       .subscribe({
         next: response => {
           if (response?.recipe) {
+            this.recipeResponse = response;
             this.#populateForm(response.recipe, response?.ingridientsDetails || []);
           }
           this.isLoading = false;
@@ -305,4 +328,23 @@ export class ManageRecipeComponent implements OnInit {
     return null;
   }
 
+  #loadCurrentUser(): Observable<User | null> {
+    if (!this.authenticated) {
+      return of(null);
+    }
+    this.currentUserLoading = true;
+    return this.#usersService.userCache
+      .pipe(
+        tap(user => {
+          this.user = user;
+          this.currentUserLoading = false;
+        }),
+        catchError(error => {
+          this.currentUserLoading = false;
+          console.error(error);
+          return of(null);
+        }),
+        takeUntilDestroyed(this.#dr)
+      );
+  }
 }

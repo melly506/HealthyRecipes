@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
-import { Recipe, RecipeForUpdate, RecipeResponse } from '../interfaces';
+import { RecipeDetailed, RecipeForUpdate, RecipeResponse } from '../interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +20,8 @@ export class RecipesService {
     sortOrder: string = 'name',
     pageNumber: number = 1,
     pageSize: number = 20
-  ): Observable<Recipe[]> {
-    return this.#http.get<Recipe[]>(this.#baseUrl, {
+  ): Observable<RecipeDetailed[]> {
+    return this.#http.get<RecipeDetailed[]>(this.#baseUrl, {
       params: {
         filters,
         sortOrder,

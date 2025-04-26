@@ -1,0 +1,22 @@
+<div class="recipe-tags">
+    @if (vegetarianism) {
+        <div class="recipe-tag" [matTooltip]="vegetarianism">
+            <mat-icon class="material-symbols-outlined">eco_outlined</mat-icon>
+        </div>
+    }
+    @if (protein) {
+        <div class="recipe-tag" [matTooltip]="protein">
+            <mat-icon class="material-symbols-outlined">exercise_outlined</mat-icon>
+        </div>
+    }
+    @if (diet5) {
+        <div class="recipe-tag" [matTooltip]="diet5">
+            <mat-icon class="material-symbols-outlined">health_metrics_outlined</mat-icon>
+        </div>
+    }
+    @if (diabetes) {
+        <div class="recipe-tag" [matTooltip]="diabetes">
+            <mat-icon class="material-symbols-outlined">glucose_outlined</mat-icon>
+        </div>
+    }
+</div>

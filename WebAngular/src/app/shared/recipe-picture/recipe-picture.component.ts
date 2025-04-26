@@ -37,8 +37,8 @@ export class RecipePictureComponent {
 
   @ViewChild('fileInput') fileInput!: ElementRef;
   @Input() editable = false;
+  @Input() recipePicture = '';
 
-  recipePicture = '';
   isUploading = false;
   disabled = false;
   touched = false;

@@ -1,7 +1,7 @@
 import { Component, inject, Input, OnInit } from '@angular/core';
-import { CookingMethod, RecipeIngredientDetails, StructuredNutritionInfo } from '../../core/interfaces';
+import { CookingMethod, Ingredient, RecipeIngredientDetails, StructuredNutritionInfo } from '../../core/interfaces';
 import { NutritionCalculatorService } from './nutrition-calculator.service';
-import { MatFormField, MatInputModule, MatLabel } from '@angular/material/input';
+import { MatFormField, MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -10,7 +10,6 @@ import { DecimalPipe, PercentPipe } from '@angular/common';
 
 import { cookingMethods } from './nutrition-calculator.constant';
 import { InfoCardComponent } from '../info-card/info-card.component';
-
 
 @Component({
   selector: 'app-nutrition-calculator',
@@ -31,7 +30,8 @@ import { InfoCardComponent } from '../info-card/info-card.component';
 })
 export class NutritionCalculatorComponent implements OnInit {
   // Вхідні дані: інгредієнти рецепту
-  @Input() ingredients: RecipeIngredientDetails[] = [];
+  @Input() ingredients: Ingredient[] = [];
+  @Input() counts: { [key: string]: number } = { };
   #nutritionCalculator = inject(NutritionCalculatorService);
 
   // Доступні методи приготування
@@ -64,10 +64,24 @@ export class NutritionCalculatorComponent implements OnInit {
       return;
     }
 
+    const ingredientDetails: RecipeIngredientDetails[] = this.ingredients.map(ingredient => {
+      return {
+        ingredientId: ingredient.id,
+        ingredientName: ingredient.name,
+        carbs: ingredient.carbs,
+        protein: ingredient.protein,
+        sugar: ingredient.sugar,
+        fat: ingredient.fat,
+        calories: ingredient.calories,
+        unit: ingredient.unit,
+        count: this.counts[ingredient.id] || 0
+      }
+    });
+
     // Якщо обрано метод приготування, розраховуємо харчову цінність
     if (this.selectedMethod) {
       this.nutritionInfo = this.#nutritionCalculator.calculateFullNutrition(
-        this.ingredients,
+        ingredientDetails,
         this.selectedMethod
       );
     } else {

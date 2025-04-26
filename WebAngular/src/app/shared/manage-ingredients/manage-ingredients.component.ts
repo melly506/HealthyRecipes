@@ -7,6 +7,7 @@ import {
   forwardRef,
   HostListener,
   inject,
+  Input,
   OnInit,
   ViewChild
 } from '@angular/core';
@@ -81,6 +82,14 @@ export class ManageIngredientsComponent implements OnInit, AfterViewInit, Contro
   @ViewChild('ingredientsContainer') ingredientsContainer!: ElementRef<HTMLDivElement>;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(NutritionCalculatorComponent) nutritionCalculatorComponent!: NutritionCalculatorComponent;
+  @Input() editable = true;
+  @Input() set ingredients(items: RecipeIngredientDetails[]) {
+    this.selectedIngredients = items.map(item => {
+      this.#setCountControl(item);
+      return this.#mapIngredient(item);
+    });
+    setTimeout(() =>  this.nutritionCalculatorComponent?.calculateNutrition());
+  }
 
   #ingredientsService = inject(IngredientsService);
   #dr = inject(DestroyRef);
@@ -100,7 +109,7 @@ export class ManageIngredientsComponent implements OnInit, AfterViewInit, Contro
   ingredientCounts: Map<string, number | null> = new Map<string, number | null>();
   updateFormValue$ = new Subject<void>();
 
-  readonly displayedColumns = ['name', 'calories', 'fat', 'protein', 'carbs', 'sugar', 'unit', 'actions'];
+  readonly displayedColumns = ['name', 'calories', 'fat', 'protein', 'carbs', 'sugar', 'unit'];
 
   onChange: any = () => {};
   onTouched: any = () => {};
@@ -126,6 +135,9 @@ export class ManageIngredientsComponent implements OnInit, AfterViewInit, Contro
   }
 
   ngOnInit(): void {
+    if (this.editable) {
+      this.displayedColumns.push('actions')
+    }
     this.searchTermControl.valueChanges.pipe(
       debounceTime(60),
       distinctUntilChanged(),
@@ -152,7 +164,7 @@ export class ManageIngredientsComponent implements OnInit, AfterViewInit, Contro
         takeUntilDestroyed(this.#dr)
       )
       .subscribe(() => {
-        this.nutritionCalculatorComponent.calculateNutrition();
+        this.nutritionCalculatorComponent?.calculateNutrition();
       });
 
     this.searchTermControl.setValue('');
@@ -175,6 +187,9 @@ export class ManageIngredientsComponent implements OnInit, AfterViewInit, Contro
   }
 
   selectItem(ingredient: Ingredient): void {
+    if (!this.editable) {
+      return;
+    }
     this.closePanel();
     this.searchTermControl.setValue('');
     const existingIngredient = this.selectedIngredients.find(selectedIngredient => {
@@ -221,6 +236,9 @@ export class ManageIngredientsComponent implements OnInit, AfterViewInit, Contro
   }
 
   openPanel(): void {
+    if (!this.editable) {
+      return;
+    }
     setTimeout(() => {
       this.isActive = true;
     });
@@ -231,6 +249,9 @@ export class ManageIngredientsComponent implements OnInit, AfterViewInit, Contro
   }
 
   removeIngredient(ingredient: Ingredient): void {
+    if (!this.editable) {
+      return;
+    }
     this.selectedIngredients = this.selectedIngredients.filter(selectedIngredient => {
       return selectedIngredient.id !== ingredient.id;
     });
@@ -382,5 +403,27 @@ export class ManageIngredientsComponent implements OnInit, AfterViewInit, Contro
 
     // Handle number comparison
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  }
+
+  #setCountControl(item: RecipeIngredientDetails) {
+    setTimeout(() => {
+      this.ingredientsForm.addControl(
+        item.ingredientId,
+        new FormControl(item.count, [])
+      );
+    });
+  }
+
+  #mapIngredient(item: RecipeIngredientDetails): Ingredient {
+    return {
+      id: item.ingredientId,
+      unit: item.unit,
+      calories: item.calories,
+      carbs: item.carbs,
+      fat: item.fat,
+      sugar: item.sugar,
+      protein: item.protein,
+      name: item.ingredientName
+    };
   }
 }

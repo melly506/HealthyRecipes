@@ -1,0 +1,32 @@
+<div class="recipes-container">
+    @if (noRecipesFound && !isLoading) {
+        <div class="no-recipes-message">
+            <p>Рецептів не знайдено</p>
+        </div>
+    }
+
+    @if (recipes.length > 0) {
+        <div class="recipes-grid">
+            @for (recipe of recipes; track recipe.id) {
+                <a class="recipe-card app-zero-link" [routerLink]="['/recipe', recipe.id]">
+                    <div class="recipe-image-container">
+                        <img [src]="recipe.imageUrl" [alt]="recipe.name" class="recipe-image">
+                        <app-recipe-tag-icons class="recipe-tags" [recipe]="recipe"></app-recipe-tag-icons>
+                    </div>
+                    <div class="recipe-details">
+                        <h2 class="recipe-title">{{ recipe.name }}</h2>
+                        <div class="cooking-time">
+                            <mat-icon class="material-symbols-outlined">schedule_outlined</mat-icon>
+                            <span>{{ recipe.cookingTime | cookingTimeFormat }}</span>
+                        </div>
+                    </div>
+                </a>
+            }
+        </div>
+    }
+
+
+    @if (isLoading) {
+        <app-progress-loader></app-progress-loader>
+    }
+</div>

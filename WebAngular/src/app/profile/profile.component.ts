@@ -54,7 +54,7 @@ export class ProfileComponent implements OnInit {
   authenticated = false;
   currentUser = signal<User | null>(null);
   editMode = signal<boolean>(false);
-  currentUserLoading = signal<boolean>(false);
+  currentUserLoading = false;
   userForm!: FormGroup;
   isSaving = false;
 
@@ -89,16 +89,16 @@ export class ProfileComponent implements OnInit {
     if (!this.authenticated) {
       return of(null);
     }
-    this.currentUserLoading.set(true);
+    this.currentUserLoading = true;
     return this.#usersService.getCurrentUser()
       .pipe(
         tap(user => {
           this.currentUser.set(user);
-          this.currentUserLoading.set(false);
+          this.currentUserLoading = false;
           this.updateForm(user);
         }),
         catchError(error => {
-          this.currentUserLoading.set(false);
+          this.currentUserLoading = false;
           this.#snackBar.open('Помилка завантаження користувача', '', sbError);
           return of(null);
         }),

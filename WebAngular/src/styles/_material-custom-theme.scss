@@ -165,6 +165,15 @@ html {
             outlined-container-color: var(--color-white),
             outlined-container-elevation: rgba(0, 0, 0, 0.03) 0 4px 10px
     ));
+    @include mat.tooltip-overrides((
+            container-color: var(--color-secondary),
+            supporting-text-color: var(--color-white),
+            supporting-text-line-height: 1.6rem,
+            supporting-text-font: "Oswald, sans-serif",
+            supporting-text-tracking: 0.08rem,
+            supporting-text-weight: 300,
+            supporting-text-size: 15px
+    ));
     @include mat.list-overrides((
             list-item-one-line-container-height: 60px,
             list-item-hover-state-layer-color: var(--color-secondary),
@@ -230,4 +239,7 @@ html {
     opacity: .8;
     position: relative;
     top: 1px !important;
+}
+.mat-mdc-tooltip-show {
+    box-shadow: rgba(38, 57, 77, 0.8) 0 15px 21px -8px;
 }

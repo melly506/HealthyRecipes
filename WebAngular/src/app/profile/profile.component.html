@@ -1,19 +1,19 @@
 <div class="page-container">
-    @if (!authenticated) {
-        <app-unauthorized message="Авторизуйтесь щоб мати можливіть працювати зі своїм профілем"></app-unauthorized>
+    @if (currentUserLoading) {
+        <app-progress-loader></app-progress-loader>
     } @else {
-        <div class="profile-header">
-            <div class="avatar-column">
-                <app-user-picture (pictureUpdated)="updateProfilePicture($event)"
-                                  [editable]="authenticated"
-                                  [user]="currentUser()"
-                                  [size]="220"></app-user-picture>
-            </div>
-            <div class="info-column">
-                @if (!editMode()) {
-                    @if (currentUserLoading()) {
-                        <app-progress-loader></app-progress-loader>
-                    } @else {
+        @if (!authenticated) {
+            <app-unauthorized message="Авторизуйтесь щоб мати можливіть працювати зі своїм профілем"></app-unauthorized>
+        } @else {
+            <div class="profile-header">
+                <div class="avatar-column">
+                    <app-user-picture (pictureUpdated)="updateProfilePicture($event)"
+                                      [editable]="authenticated"
+                                      [user]="currentUser()"
+                                      [size]="220"></app-user-picture>
+                </div>
+                <div class="info-column">
+                    @if (!editMode()) {
                         <div class="view-mode">
                             @if (authenticated) {
                                 <div class="header-actions">
@@ -36,122 +36,122 @@
                                 <p class="no-bio">Біографія ще не додана</p>
                             }
                         </div>
+                    } @else {
+                        <div class="edit-mode-form-container">
+                            <form [formGroup]="userForm">
+                                <div class="form-row">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Ім'я</mat-label>
+                                        <input matInput formControlName="firstName">
+                                        @if (userForm.get('firstName')?.hasError('required')) {
+                                            <mat-error>
+                                                Будь ласка вкажіть ім'я
+                                            </mat-error>
+                                        }
+                                        @if (userForm.get('firstName')?.hasError('maxlength')) {
+                                            <mat-error>
+                                                Ім'я не повинно перевищувати 25 символів
+                                            </mat-error>
+                                        }
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Прізвище</mat-label>
+                                        <input matInput formControlName="lastName">
+                                        @if (userForm.get('lastName')?.hasError('required')) {
+                                            <mat-error>
+                                                Будь ласка вкажіть прізвище
+                                            </mat-error>
+                                        }
+                                        @if (userForm.get('lastName')?.hasError('maxlength')) {
+                                            <mat-error>
+                                                Прізвище не повинно перевищувати 30 символів
+                                            </mat-error>
+                                        }
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="form-row">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Email</mat-label>
+                                        <input matInput formControlName="email">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Нікнейм</mat-label>
+                                        <input matInput formControlName="username">
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="form-row">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Стать</mat-label>
+                                        <mat-select formControlName="gender">
+                                            <mat-option value="male">{{ 'male' | gender }}</mat-option>
+                                            <mat-option value="female">{{ 'female' | gender }}</mat-option>
+                                            <mat-option value="">Не вказувати</mat-option>
+                                        </mat-select>
+                                        <mat-icon class="material-symbols-outlined" matSuffix>keyboard_arrow_down_outlined
+                                        </mat-icon>
+                                    </mat-form-field>
+                                </div>
+
+                                <mat-form-field appearance="outline" class="bio-field">
+                                    <mat-label>Біографія</mat-label>
+                                    <textarea matInput
+                                              formControlName="bio"
+                                              cdkTextareaAutosize
+                                              cdkAutosizeMinRows="4"
+                                              rows="4"
+                                              #autosize="cdkTextareaAutosize"></textarea>
+                                    @if (userForm.get('bio')?.hasError('maxlength')) {
+                                        <mat-error>
+                                            Біографія не повинна перевищувати 2000 символів
+                                        </mat-error>
+                                    }
+                                </mat-form-field>
+
+                                <div class="form-actions">
+                                    @if (isSaving) {
+                                        <app-progress-loader [minHeight]="48"></app-progress-loader>
+                                    }
+                                    <button mat-button (click)="toggleEditMode()">
+                                        Скасувати
+                                    </button>
+                                    <button mat-raised-button
+                                            [disabled]="isSaving"
+                                            (click)="saveProfile()">
+                                        Зберегти
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     }
-                } @else {
-                    <div class="edit-mode-form-container">
-                        <form [formGroup]="userForm">
-                            <div class="form-row">
-                                <mat-form-field appearance="outline">
-                                    <mat-label>Ім'я</mat-label>
-                                    <input matInput formControlName="firstName">
-                                    @if (userForm.get('firstName')?.hasError('required')) {
-                                        <mat-error>
-                                            Будь ласка вкажіть ім'я
-                                        </mat-error>
-                                    }
-                                    @if (userForm.get('firstName')?.hasError('maxlength')) {
-                                        <mat-error>
-                                            Ім'я не повинно перевищувати 25 символів
-                                        </mat-error>
-                                    }
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline">
-                                    <mat-label>Прізвище</mat-label>
-                                    <input matInput formControlName="lastName">
-                                    @if (userForm.get('lastName')?.hasError('required')) {
-                                        <mat-error>
-                                            Будь ласка вкажіть прізвище
-                                        </mat-error>
-                                    }
-                                    @if (userForm.get('lastName')?.hasError('maxlength')) {
-                                        <mat-error>
-                                            Прізвище не повинно перевищувати 30 символів
-                                        </mat-error>
-                                    }
-                                </mat-form-field>
-                            </div>
-
-                            <div class="form-row">
-                                <mat-form-field appearance="outline">
-                                    <mat-label>Email</mat-label>
-                                    <input matInput formControlName="email">
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline">
-                                    <mat-label>Нікнейм</mat-label>
-                                    <input matInput formControlName="username">
-                                </mat-form-field>
-                            </div>
-
-                            <div class="form-row">
-                                <mat-form-field appearance="outline">
-                                    <mat-label>Стать</mat-label>
-                                    <mat-select formControlName="gender">
-                                        <mat-option value="male">{{ 'male' | gender }}</mat-option>
-                                        <mat-option value="female">{{ 'female' | gender }}</mat-option>
-                                        <mat-option value="">Не вказувати</mat-option>
-                                    </mat-select>
-                                    <mat-icon class="material-symbols-outlined" matSuffix>keyboard_arrow_down_outlined
-                                    </mat-icon>
-                                </mat-form-field>
-                            </div>
-
-                            <mat-form-field appearance="outline" class="bio-field">
-                                <mat-label>Біографія</mat-label>
-                                <textarea matInput
-                                          formControlName="bio"
-                                          cdkTextareaAutosize
-                                          cdkAutosizeMinRows="4"
-                                          rows="4"
-                                          #autosize="cdkTextareaAutosize"></textarea>
-                                @if (userForm.get('bio')?.hasError('maxlength')) {
-                                    <mat-error>
-                                        Біографія не повинна перевищувати 2000 символів
-                                    </mat-error>
-                                }
-                            </mat-form-field>
-
-                            <div class="form-actions">
-                                @if (isSaving) {
-                                    <app-progress-loader [minHeight]="48"></app-progress-loader>
-                                }
-                                <button mat-button (click)="toggleEditMode()">
-                                    Скасувати
-                                </button>
-                                <button mat-raised-button
-                                        [disabled]="isSaving"
-                                        (click)="saveProfile()">
-                                    Зберегти
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                }
+                </div>
             </div>
-        </div>
 
-        <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
-            <mat-tab label="Мої рецепти">
-                <div class="tab-content">
-                    <p>My recipes content goes here</p>
-                </div>
-            </mat-tab>
-            <mat-tab label="Мої коментарі">
-                <div class="tab-content">
-                    <p>My comments content goes here</p>
-                </div>
-            </mat-tab>
-            <mat-tab label="Мої інгридієнти">
-                <div class="tab-content">
-                    <p>My ingredients content goes here</p>
-                </div>
-            </mat-tab>
-            <mat-tab label="Улюблені рецепти">
-                <div class="tab-content">
-                    <p>My favorite recipes content goes here</p>
-                </div>
-            </mat-tab>
-        </mat-tab-group>
+            <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+                <mat-tab label="Мої рецепти">
+                    <div class="tab-content">
+                        <p>My recipes content goes here</p>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Мої коментарі">
+                    <div class="tab-content">
+                        <p>My comments content goes here</p>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Мої інгридієнти">
+                    <div class="tab-content">
+                        <p>My ingredients content goes here</p>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Улюблені рецепти">
+                    <div class="tab-content">
+                        <p>My favorite recipes content goes here</p>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        }
     }
 </div>
