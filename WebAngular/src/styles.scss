@@ -9,6 +9,7 @@
     --color-green-light: #5db07b;
     --color-gray-dark: #3b4a3f;
     --color-red-hover: #ff6b6b;
+    --color-red-light: #ffb9b9;
     --color-error: #b34848;
     --color-error-darken: #6c2c38;
     --color-secondary: #006a74;
@@ -113,6 +114,15 @@ input.app-has-value {
         justify-content: flex-end;
         gap: 16px;
         margin-top: 16px;
+        .cancel-button {
+            margin-right: 30px;
+        }
+        .remove-button  {
+            color: var(--color-error);
+            &:hover {
+                background-color: var(--color-red-light);
+            }
+        }
     }
 
     .app-custom-control-error.mat-mdc-form-field-error {

@@ -14,6 +14,7 @@ import {
 } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatError, MatFormField, MatInput, MatLabel } from '@angular/material/input';
+import { MatDialog } from '@angular/material/dialog';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButton } from '@angular/material/button';
 import { KEYCLOAK_EVENT_SIGNAL, KeycloakEventType, ReadyArgs, typeEventArgs } from 'keycloak-angular';
@@ -48,6 +49,7 @@ import { projectName, sbConfig, sbError } from '../app.constant';
 import { ProgressLoaderComponent } from '../shared/progress-loader/progress-loader.component';
 import { RecipeDetailsComponent } from './recipe-details/recipe-details.component';
 import { UnauthorizedComponent } from '../shared/unauthorized/unauthorized.component';
+import { ConfirmDeleteModalComponent } from '../shared/confirm-delete-modal/confirm-delete-modal.component';
 
 @Component({
   selector: 'app-manage-recipe',
@@ -87,6 +89,7 @@ export class ManageRecipeComponent implements OnInit {
   #router = inject(Router);
   #title = inject(Title);
   #recipesService = inject(RecipesService);
+  #dialog = inject(MatDialog);
 
   authenticated = false;
   recipeForm!: FormGroup;
@@ -157,6 +160,25 @@ export class ManageRecipeComponent implements OnInit {
     this.#router.navigate(['/']);
   }
 
+  remove(): void {
+    const dialogRef = this.#dialog.open(ConfirmDeleteModalComponent, {
+      width: '350px',
+      data: {
+        title: 'Видалити рецепт',
+        description: 'Ви дійсно бажаєте видалити рецепт?'
+      }
+    });
+    dialogRef.afterClosed()
+      .pipe(
+        takeUntilDestroyed(this.#dr)
+      )
+      .subscribe(result => {
+        if (result === true) {
+          this.#deleteRecipe();
+        }
+      });
+  }
+
   save(): void {
     this.recipeForm.markAllAsTouched();
     if (this.ingredientsComponent) {
@@ -204,7 +226,10 @@ export class ManageRecipeComponent implements OnInit {
         },
         error: (error) => {
           this.isSaving = false;
-          this.#snackBar.open('Рецепт успішно створений', '', sbError);
+          const message = this.recipeId
+            ? 'Помилка оновлення рецепта'
+            : 'Помилка створення рецепта';
+          this.#snackBar.open(message, '', sbError);
           console.error('Error saving recipe:', error);
         }
       });
@@ -326,6 +351,29 @@ export class ManageRecipeComponent implements OnInit {
     }
 
     return null;
+  }
+
+  #deleteRecipe() {
+    if (this.recipeId) {
+      this.isSaving = true;
+      this.#recipesService.deleteRecipe(this.recipeId)
+        .pipe(
+          takeUntilDestroyed(this.#dr)
+        )
+        .subscribe( {
+          next: () => {
+            this.isSaving = false;
+            this.#snackBar.open('Рецепт успішно видалено', '', sbConfig);
+            this.#router.navigate(['/']);
+          },
+          error: (error) => {
+            this.isSaving = false;
+            this.#snackBar.open('Помилка видалення рецепта', '', sbError);
+            console.error('Error saving recipe:', error);
+          }
+        })
+    }
+
   }
 
   #loadCurrentUser(): Observable<User | null> {

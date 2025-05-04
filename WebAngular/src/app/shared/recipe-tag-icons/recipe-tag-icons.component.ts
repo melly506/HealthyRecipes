@@ -22,6 +22,10 @@ export class RecipeTagIconsComponent implements OnInit {
   protein = '';
   diabetes = '';
 
+  get hasItems(): boolean {
+    return Boolean(this.diet5 || this.diabetes || this.vegetarianism || this.protein);
+  }
+
   ngOnInit(): void {
     if (this.recipe) {
       this.diet5 = this.#getName<Diet>(this.recipe.diet, '5');

@@ -1,11 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatIcon } from '@angular/material/icon';
+import { MatChip, MatChipSet } from '@angular/material/chips';
 
 import { RecipePictureComponent } from '../../shared/recipe-picture/recipe-picture.component';
 import { CookingTimeFormatPipe } from '../../shared/pipes/cooking-time-format.pipe';
 import { RecipeResponse, User } from '../../core/interfaces';
-import { RecipeTagIconsComponent } from '../../shared/recipe-tag-icons/recipe-tag-icons.component';
 import { ManageIngredientsComponent } from '../../shared/manage-ingredients/manage-ingredients.component';
 
 @Component({
@@ -17,8 +17,9 @@ import { ManageIngredientsComponent } from '../../shared/manage-ingredients/mana
     RecipePictureComponent,
     CookingTimeFormatPipe,
     MatIcon,
-    RecipeTagIconsComponent,
-    ManageIngredientsComponent
+    ManageIngredientsComponent,
+    MatChipSet,
+    MatChip
   ],
   styleUrl: './recipe-details.component.scss'
 })

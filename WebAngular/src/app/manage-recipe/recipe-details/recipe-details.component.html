@@ -7,28 +7,73 @@
         </div>
         <div class="info-column">
             <h1 class="page-title">{{ recipeResponse?.recipe?.name }}</h1>
-            <div class="row">
-                <app-recipe-tag-icons class="recipe-tags" [recipe]="recipeResponse?.recipe"></app-recipe-tag-icons>
-            </div>
 
-            @if (recipeResponse?.recipe?.cookingTime; as cookingTime) {
-                <div class="row">
+            <div class="recipe-specifications-wrapper">
+                <label class="app-default-label">
+                    Типи харчування
+                </label>
+                <mat-chip-set>
+                    @for (item of recipeResponse?.recipe?.foodType; track item.id) {
+                        <mat-chip>{{item.name}}</mat-chip>
+                    }
+                </mat-chip-set>
+            </div>
+            <div class="recipe-specifications-wrapper">
+                <label class="app-default-label">
+                    Сезони
+                </label>
+                <mat-chip-set>
+                    @for (item of recipeResponse?.recipe?.season; track item.id) {
+                        <mat-chip>{{item.name}}</mat-chip>
+                    }
+                </mat-chip-set>
+            </div>
+            <div class="recipe-specifications-wrapper">
+                <label class="app-default-label">
+                    Дієти
+                </label>
+                <mat-chip-set>
+                    @for (item of recipeResponse?.recipe?.diet; track item.id) {
+                        <mat-chip>{{item.name}}</mat-chip>
+                    }
+                </mat-chip-set>
+            </div>
+            <div class="recipe-specifications-wrapper">
+                <label class="app-default-label">
+                    Типи страв
+                </label>
+                <mat-chip-set>
+                    @for (item of recipeResponse?.recipe?.dishType; track item.id) {
+                        <mat-chip>{{item.name}}</mat-chip>
+                    }
+                </mat-chip-set>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        @if (recipeResponse?.recipe?.cookingTime; as cookingTime) {
+            <div class="row">
+                <div class="cooking-time-wrapper">
+                    <label class="app-default-label">
+                        Час приготування
+                    </label>
                     <div class="cooking-time">
                         <mat-icon class="material-symbols-outlined">schedule_outlined</mat-icon>
                         <span>{{ cookingTime | cookingTimeFormat }}</span>
                     </div>
                 </div>
-            }
-            <div class="row">
-                <p class="description-field">
-                    {{ recipeResponse?.recipe?.description }}
-                </p>
             </div>
-        </div>
+        }
+        <p class="description-field">
+            {{ recipeResponse?.recipe?.description }}
+        </p>
     </div>
     @if (recipeResponse?.ingridientsDetails; as ingredients) {
         <div class="row">
             <app-manage-ingredients [editable]="false" [ingredients]="ingredients"></app-manage-ingredients>
         </div>
     }
+    <p class="description-field">
+        {{ recipeResponse?.recipe?.instructions }}
+    </p>
 </div>

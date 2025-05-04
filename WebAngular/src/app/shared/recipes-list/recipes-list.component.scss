@@ -4,18 +4,24 @@
 
 .recipes-grid {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 20px;
+    gap: 42px;
+    grid-template-columns: repeat(4, 1fr);
 
-    // Tablet view (2 recipes per row)
-    @media (min-width: 768px) {
+    // Small
+    @media (max-width: 992px) {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    // Tablet
+    @media (max-width: 768px) {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    // Desktop view (4 recipes per row)
-    @media (min-width: 1200px) {
-        grid-template-columns: repeat(4, 1fr);
+    // Mobile
+    @media (max-width: 576px) {
+        grid-template-columns: repeat(1, 1fr);
     }
+
 }
 
 .recipe-tags {

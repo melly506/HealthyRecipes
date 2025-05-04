@@ -1,6 +1,6 @@
 .recipe-header {
     display: flex;
-    margin-bottom: 15px;
+    margin-bottom: 30px;
 }
 
 .page-title {
@@ -31,16 +31,44 @@
         font-size: 16px;
     }
 }
+.cooking-time-wrapper {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 16px;
+    gap: 24px;
+    line-height: 1;
+}
 .cooking-time {
     display: flex;
     align-items: center;
     font-family: "Oswald", sans-serif;
     letter-spacing: 0.04rem;
-    color: var(--color-tertiary);
+    color: var(--color-secondary);
+    font-weight: 500;
     gap: 8px;
 
     span {
-        font-size: 16px;
+        font-size: 24px;
+    }
+}
+
+.description-field {
+    font-family: "Oswald", sans-serif;
+    letter-spacing: 0.04rem;
+    color: var(--color-tertiary);
+    font-weight: 300;
+    padding: 0 2px;
+    margin: 0;
+}
+
+.recipe-specifications-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    margin-bottom: 30px;
+    height: 48px;
+    .app-default-label {
+        width: 180px;
     }
 }
 
