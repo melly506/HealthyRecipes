@@ -318,7 +318,7 @@ export class ManageRecipeComponent implements OnInit {
           const id = params.get('id');
           if (id) {
             this.recipeId = id;
-            this.pageTitle = 'Редагування рецепта';
+            this.pageTitle = 'Рецепт';
             this.#title.setTitle(`${projectName} • ${this.pageTitle}`);
             this.isLoading = true;
             return this.#recipesService.getRecipeById(id);

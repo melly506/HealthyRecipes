@@ -11,6 +11,7 @@ import { UsersService } from '../core/services';
 import { User } from '../core/interfaces';
 import { UserPictureComponent } from '../shared/user-picture/user-picture.component';
 import { projectName } from '../app.constant';
+import { HeaderService } from '../core/services/header.service';
 
 @Component({
   selector: 'app-header',
@@ -22,7 +23,9 @@ import { projectName } from '../app.constant';
 export class HeaderComponent implements OnInit {
   #usersService = inject(UsersService);
   #keycloakService = inject(Keycloak);
+  #headerService = inject(HeaderService);
   #dr = inject(DestroyRef);
+  public isInvisible = false;
   public authenticated = false;
   public user?: User;
   public readonly projectName = projectName;
@@ -51,6 +54,12 @@ export class HeaderComponent implements OnInit {
         if (userCache && userCache?.id === this.user?.id) {
           this.user = userCache;
         }
+      });
+
+    this.#headerService.visibility$
+      .pipe(takeUntilDestroyed(this.#dr))
+      .subscribe(visible => {
+        this.isInvisible = !visible;
       });
   }
 

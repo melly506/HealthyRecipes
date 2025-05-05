@@ -193,7 +193,9 @@
                 @if (isSaving) {
                     <app-progress-loader [minHeight]="48"></app-progress-loader>
                 }
-                <button mat-button class="remove-button" (click)="remove()">Видалити</button>
+                @if (recipeId) {
+                    <button mat-button class="remove-button" (click)="remove()">Видалити</button>
+                }
                 <button mat-button class="cancel-button" (click)="cancel()">Скасувати</button>
                 <button mat-raised-button
                         [disabled]="isSaving"

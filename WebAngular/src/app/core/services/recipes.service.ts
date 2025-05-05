@@ -19,14 +19,22 @@ export class RecipesService {
     filters: string = '',
     sortOrder: string = 'name',
     pageNumber: number = 1,
-    pageSize: number = 20
+    pageSize: number = 20,
+    foodTypeId: string = '',
+    seasonId: string = '',
+    dietId: string = '',
+    dishTypeId: string = '',
   ): Observable<RecipeDetailed[]> {
     return this.#http.get<RecipeDetailed[]>(this.#baseUrl, {
       params: {
         filters,
         sortOrder,
         pageNumber,
-        pageSize
+        pageSize,
+        foodTypeId,
+        seasonId,
+        dietId,
+        dishTypeId
       }
     });
   }

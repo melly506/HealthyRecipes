@@ -1,0 +1,87 @@
+<div class="search-filters-panel"
+     [class.panel-active]="isActive"
+     [class.has-filters]="hasFilters">
+    <mat-form-field class="app-page-search-fields recipe-search-field" (click)="openPanel()">
+        <mat-label>Пошук рецептів</mat-label>
+        <mat-icon matPrefix class="material-symbols-outlined">
+            search_outlined
+        </mat-icon>
+        <input matInput
+               #searchInput
+               [formControl]="searchTermControl"
+               (focus)="openPanel()"/>
+        <div class="app-spacer"></div>
+    </mat-form-field>
+    @if (!isActive) {
+        <div class="search-applied-filters">
+            <ng-container *ngTemplateOutlet="chipset"></ng-container>
+        </div>
+    }
+
+    <div class="search-filters-panel-inner">
+        <div class="search-dropdown-filters">
+            @for (recipeSearchFilter of recipeSearchFilters; track $index) {
+                <mat-form-field appearance="outline">
+                    <mat-label>{{ recipeSearchFilter.title}} </mat-label>
+                    <mat-icon
+                            matPrefix
+                            class="material-symbols-outlined"
+                            [class.app-color-secondary]="recipeSearchFilter.control.value">
+                        {{recipeSearchFilter.icon}}
+                    </mat-icon>
+                    <mat-select [formControl]="recipeSearchFilter.control">
+                        @for (value of recipeSearchFilter.items(); track value.id) {
+                            <mat-option [value]="value">{{ value.name }}</mat-option>
+                        }
+                    </mat-select>
+                    @if (recipeSearchFilter.control.value) {
+                        <mat-icon class="app-color-secondary material-symbols-outlined" matSuffix>
+                            check_outlined
+                        </mat-icon>
+                    } @else {
+                        <mat-icon class="material-symbols-outlined" matSuffix>
+                            keyboard_arrow_down_outlined
+                        </mat-icon>
+                    }
+                </mat-form-field>
+            }
+        </div>
+        @if (isActive) {
+            <div class="close-search">
+                <div class="page-container">
+                    @if (hasFilters) {
+                        <ng-container *ngTemplateOutlet="chipset"></ng-container>
+                        <button mat-button class="pull-right" (click)="clearSearchAndFilters()">
+                            Очистити пошук та фільтри
+                        </button>
+                    } @else {
+                        <h2 class="recipes-search-header-title">Пошук рецептів</h2>
+                        <div class="pull-right"></div>
+                    }
+                    <button mat-fab
+                            class="close-search-button"
+                            (click)="closePanel()">
+                        <mat-icon class="material-symbols-outlined">close_outlined</mat-icon>
+                    </button>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="search-filters-panel-overlay"></div>
+</div>
+
+<ng-template #chipset>
+    <mat-chip-set>
+        @for (recipeSearchFilter of recipeSearchFilters; track $index) {
+            @if (recipeSearchFilter.control.value?.name; as label) {
+                <mat-chip>
+                    {{ label }}
+                    <button matChipRemove (click)="recipeSearchFilter.control.reset()">
+                        <mat-icon class="material-symbols-outlined">close</mat-icon>
+                    </button>
+                </mat-chip>
+            }
+        }
+    </mat-chip-set>
+</ng-template>

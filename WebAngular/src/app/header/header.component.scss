@@ -3,9 +3,15 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 14px 25px;
+    padding: 10px 25px;
     background-color: var(--color-white);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Додаємо тінь для кращого вигляду */
+    opacity: 1;
+    transition: opacity 0.12s ease-in-out;
+    &.header-invisible {
+        opacity: 0;
+        pointer-events: none;
+    }
 }
 
 nav {
@@ -15,7 +21,7 @@ nav {
     text-decoration: none;
     color: var(--dark-gray);
     font-weight: 200;
-    font-size: 22px;
+    font-size: 20px;
     transition: color 0.3s ease;
     letter-spacing: 0.04rem;
 
@@ -37,9 +43,9 @@ nav {
         text-decoration: none;
         color: var(--color-primary-green);
         font-weight: bold;
-        font-size: 48px;
-        transition: color 0.15s ease;
-        line-height: 1;
+        font-size: 42px;
+        transition: color 50ms ease-in-out;
+        line-height: 1.05;
         letter-spacing: 0.04rem;
 
         &:hover {
@@ -66,7 +72,7 @@ nav {
     .logo-image {
         position: relative;
         top: -3px;
-        width: 64px;
+        width: 56px;
     }
 }
 

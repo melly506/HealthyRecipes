@@ -1,15 +1,14 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, effect, inject, input, OnInit } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { RouterLink } from '@angular/router';
 import { debounceTime, distinctUntilChanged, fromEvent } from 'rxjs';
 
 import { RecipesService } from '../../core/services';
-import { RecipeDetailed } from '../../core/interfaces';
+import { RecipeDetailed, RecipeSearchParams } from '../../core/interfaces';
 import { CookingTimeFormatPipe } from '../pipes/cooking-time-format.pipe';
 import { RecipeTagIconsComponent } from '../recipe-tag-icons/recipe-tag-icons.component';
-import { RouterLink } from '@angular/router';
 import { ProgressLoaderComponent } from '../progress-loader/progress-loader.component';
-
 
 @Component({
   selector: 'app-recipes-list',
@@ -32,22 +31,34 @@ export class RecipesListComponent implements OnInit {
   isLoading = false;
   noRecipesFound = false;
 
+  searchParams  = input<RecipeSearchParams>({
+    searchTerm: '',
+    foodType: null,
+    season: null,
+    diet: null,
+    dishType: null
+  });
+
   currentPage = 1;
-  pageSize = 20;
+  pageSize = 12;
   hasMoreRecipes = true;
 
-  filters = '';
   sortOrder = '';
 
+  constructor() {
+    effect(() => {
+      const params = this.searchParams();
+      this.loadRecipes(params);
+    });
+  }
+
   ngOnInit(): void {
-    this.loadRecipes();
     this.#setupScrollListener();
   }
 
-  loadRecipes(loadMore = false): void {
+  loadRecipes(params: RecipeSearchParams, loadMore = false): void {
     if (!loadMore) {
       this.currentPage = 1;
-      this.recipes = [];
       this.hasMoreRecipes = true;
     }
 
@@ -58,10 +69,14 @@ export class RecipesListComponent implements OnInit {
     this.isLoading = true;
 
     this.#recipesService.getRecipes(
-      this.filters,
+      params.searchTerm,
       this.sortOrder,
       this.currentPage,
-      this.pageSize
+      this.pageSize,
+      params.foodType?.id || '',
+      params.season?.id || '',
+      params.diet?.id || '',
+      params.dishType?.id || '',
     )
       .pipe(takeUntilDestroyed(this.#dr))
       .subscribe({
@@ -74,10 +89,12 @@ export class RecipesListComponent implements OnInit {
           if (recipes.length === 0) {
             if (this.currentPage === 1) {
               this.noRecipesFound = true;
+              this.recipes = [];
             }
           } else {
             this.noRecipesFound = false;
-            this.recipes = [...this.recipes, ...recipes];
+            const currentRecipes = loadMore ? [...this.recipes] : [];
+            this.recipes = [...currentRecipes, ...recipes];
             this.currentPage++;
           }
 
@@ -104,7 +121,7 @@ export class RecipesListComponent implements OnInit {
         // Load more when user scrolls to bottom (with 200px threshold)
         if (windowHeight + scrollTop >= documentHeight - 200) {
           if (!this.isLoading && this.hasMoreRecipes) {
-            this.loadRecipes(true);
+            this.loadRecipes(this.searchParams(), true);
           }
         }
       });

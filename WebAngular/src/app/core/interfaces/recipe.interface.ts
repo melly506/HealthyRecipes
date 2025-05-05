@@ -36,3 +36,11 @@ export interface RecipeForUpdate extends Recipe {
   seasonIds: string[];
   dishTypeIds: string[];
 }
+
+export interface RecipeSearchParams {
+  searchTerm: string;
+  foodType: FoodType | null;
+  season: Season | null;
+  diet: Diet | null;
+  dishType: DishType | null;
+}
