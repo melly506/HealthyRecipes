@@ -229,3 +229,11 @@ input.app-has-value {
 .app-color-secondary {
     color: var(--color-secondary);
 }
+
+.app-raised-icon-button {
+    .mat-icon {
+        color: var(--color-white);
+        transform: scale(1.4);
+        margin-right: 20px;
+    }
+}

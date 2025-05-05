@@ -2,6 +2,7 @@ import { Component, DestroyRef, effect, inject, input, OnInit } from '@angular/c
 import { MatIcon } from '@angular/material/icon';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
+import { MatButton } from '@angular/material/button';
 import { debounceTime, distinctUntilChanged, fromEvent } from 'rxjs';
 
 import { RecipesService } from '../../core/services';
@@ -9,6 +10,7 @@ import { RecipeDetailed, RecipeSearchParams } from '../../core/interfaces';
 import { CookingTimeFormatPipe } from '../pipes/cooking-time-format.pipe';
 import { RecipeTagIconsComponent } from '../recipe-tag-icons/recipe-tag-icons.component';
 import { ProgressLoaderComponent } from '../progress-loader/progress-loader.component';
+
 
 @Component({
   selector: 'app-recipes-list',
@@ -18,7 +20,8 @@ import { ProgressLoaderComponent } from '../progress-loader/progress-loader.comp
     CookingTimeFormatPipe,
     RecipeTagIconsComponent,
     RouterLink,
-    ProgressLoaderComponent
+    ProgressLoaderComponent,
+    MatButton
   ],
   templateUrl: './recipes-list.component.html',
   styleUrl: './recipes-list.component.scss'
