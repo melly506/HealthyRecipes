@@ -78,7 +78,7 @@ public class ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider) : 
             {
                 Version = description.ApiVersion.ToString(),
                 Title = "Healthy Recipes - API Documentation",
-                Description = "Melnik Valya"
+                Description = "by Valentina Melnyk"
             });
         }
     }

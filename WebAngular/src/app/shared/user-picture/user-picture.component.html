@@ -1,0 +1,42 @@
+<div class="user-picture-container"
+     [class.editable]="editable"
+     [class.hovered]="isHovered"
+     [style.width.px]="size"
+     [style.height.px]="size"
+     (mouseenter)="onMouseEnter()"
+     (mouseleave)="onMouseLeave()"
+     (click)="triggerFileInput()">
+
+    @if (user?.picture) {
+        <img class="user-profile-picture"
+             [src]="user?.picture"
+             alt="Profile"
+             [style.width.px]="size"
+             [style.height.px]="size" />
+    } @else {
+        <img class="user-profile-picture"
+             src="/no-profile-picture.svg"
+             alt="Empty profile"
+             [style.width.px]="size"
+             [style.height.px]="size" />
+    }
+
+    @if (editable && isHovered) {
+        <div class="overlay">
+            @if (!isUploading) {
+                <mat-icon class="user-picture-icon material-symbols-outlined">add_a_photo_outlined</mat-icon>
+            }
+        </div>
+    }
+    @if (isUploading) {
+        <div class="loading-overlay">
+            <app-progress-loader></app-progress-loader>
+        </div>
+    }
+    <input #fileInput type="file"
+           accept="image/*"
+           style="display: none;"
+           (change)="onFileSelected($event)">
+
+</div>
+

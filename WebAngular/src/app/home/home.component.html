@@ -1,0 +1,4 @@
+<div class="page-container">
+    <app-recipe-search (searchParamsChange)="updateSearchParams($event)"></app-recipe-search>
+    <app-recipes-list [searchParams]="searchParamsSignal()"></app-recipes-list>
+</div>

@@ -1,64 +1,239 @@
-/* You can add global styles to this file, and also import other style files */  
-@use "sass:color";
+@use "styles/theme-colors" as colors;
+@use "styles/material-custom-theme";
+@use 'sass:color';
+
+:root {
+    --color-white: #ffffff;
+    --color-primary-green: #459b65;
+    --color-primary-green-darken: #076842;
+    --color-green-light: #5db07b;
+    --color-gray-dark: #3b4a3f;
+    --color-red-hover: #ff6b6b;
+    --color-red-light: #ffb9b9;
+    --color-error: #b34848;
+    --color-error-darken: #6c2c38;
+    --color-secondary: #006a74;
+    --color-secondary-lighter: #1a8290;
+    --color-secondary-lighten: #65b5c6;
+    --color-border: #99aebe;
+    --color-border-bright: #c1ccd5;
+    --color-light: #e8ebef;
+    --color-tertiary-dark: #233a47;
+    --color-tertiary-darken: #27414e;
+    --color-tertiary: #486070;
+    --color-tertiary-lighten: #7d93a3;
+    --color-secondary-dark: #001f23;
+}
+
+html, body {
+    height: 100%;
+}
 
 body {
-  font-family: "P22 Underground W01 Medium";
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-/* Стилі для навігації */
-nav {
-  display: flex;
-  gap: 20px;
-  font-family: "Oswald", sans-serif;
-  font-weight: 5; /* Можна змінювати на 200, 300, 500, 700 */
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Oswald", sans-serif;
+    letter-spacing: 0.04rem;
+    color: var(--color-tertiary-dark);
 }
 
-nav a {
-  text-decoration: none;
-  color: #333333;
-  font-weight: 5;
-  font-size: 22px;
-  transition: color 0.3s ease;
-
-  &:hover {
-    color: #ff6b6b;
-  }
+::placeholder {
+    color: var(--color-tertiary-lighten) !important;
+    font-size: 14px !important;
+    letter-spacing: 0.04rem !important;
+    font-weight: 300 !important;
 }
 
-/* Глобальні стилі для іконок */
-.material-symbols-outlined {
-  font-size: 40px; 
-  color: #000000; 
-  font-variation-settings: 'FILL' 0, 'wght' 200, 'GRAD' 0, 'opsz' 72;
+::-webkit-scrollbar {
+    width: 10px;
 }
 
-/* Стилі для навігації */
-nav {
-  display: flex;
-  gap: 20px;
-  text-decoration: none;
-  color: #333333;
-  font-weight: 5;
-  font-size: 22px;
-  transition: color 0.3s ease;
+::-webkit-scrollbar-track-piece {
+    border-radius: 5px;
+    background-color: var(--color-white);
+}
 
-  &:hover {
-      color: #ff6b6b;
-  }
-} 
-/* Стилі для іконок */
-.icons {
-  display: flex;
-  gap: 15px; /* Відступ між іконками */
+::-webkit-scrollbar-track {
+    background-color: var(--color-white);
+}
 
-  .material-symbols-outlined {
-      font-size: 30px; /* Розмір іконок */
-      color: #333333; /* Колір іконок */
-      cursor: pointer; /* Змінюємо курсор при наведенні */
-      transition: color 0.3s ease;
+::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: var(--color-border-bright);
+    outline: 2px solid var(--color-white);
+    outline-offset: -2px;
+}
 
-      &:hover {
-          color: #ff6b6b; /* Колір іконок при наведенні */
-      }
-  }
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-border);
+}
+
+input.app-has-value {
+    &::placeholder {
+        opacity: 1 !important;
+    }
+}
+
+.page-container {
+    padding: 36px 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.page-title {
+    font-weight: 600;
+    font-size: 48px;
+    color: var(--color-secondary-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
+    width: 100%;
+}
+
+.edit-mode-form-container {
+    .form-row {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 16px;
+
+        mat-form-field {
+            flex: 1;
+        }
+    }
+
+    .flex-column-wrapper {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 16px;
+        margin-top: 16px;
+        .cancel-button {
+            margin-right: 30px;
+        }
+        .remove-button  {
+            color: var(--color-error);
+            &:hover {
+                background-color: var(--color-red-light);
+            }
+        }
+    }
+
+    .app-custom-control-error.mat-mdc-form-field-error {
+        font-size: var(--mat-sys-body-small-size);
+        margin-top: -1.25rem;
+        padding-left: 16px;
+        line-height: 1rem;
+    }
+}
+
+.app-default-label {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    font-family: "Oswald", sans-serif;
+    font-size: 16px;
+    letter-spacing: 0.04rem;
+    text-transform: uppercase;
+    color: var(--color-secondary-dark);
+    .mat-icon {
+        color: var(--color-tertiary);
+        transform: scale(1.26);
+    }
+}
+
+.app-small-label {
+    color: var(--color-tertiary-lighten);
+    font-size: 14px;
+}
+
+.app-spacer {
+    height: 6px;
+    pointer-events: none;
+}
+
+.app-small-input {
+    padding: 5px 12px;
+    border: 1px solid var(--color-border-bright);
+    border-radius: 12px;
+    display: inline-block;
+    width: 100px;
+    margin-right: 10px;
+    font-family: "Oswald", sans-serif;
+    outline: none;
+    outline-width: 0;
+    box-shadow: none;
+    background-color: transparent;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    box-sizing: border-box;
+    &:focus {
+        border-color: var(--color-border);
+        outline: none;
+    }
+    &:hover {
+        border-color: var(--color-border);
+    }
+    &.ng-invalid.ng-touched {
+        border-color: var(--mat-sys-error);
+    }
+    &.ng-invalid.ng-touched:hover, &.ng-invalid.ng-touched:focus {
+        border-color: var(--color-error-darken);
+    }
+}
+
+.app-snackbar-default {
+    letter-spacing: 0.04rem;
+}
+
+.app-snackbar-error {
+    letter-spacing: 0.04rem;
+    --mdc-snackbar-container-color: var(--mat-sys-error);
+}
+
+.app-zero-link {
+    all: unset;
+    cursor: pointer;
+}
+
+.app-white-field .mat-mdc-text-field-wrapper {
+    background-color: var(--color-white);
+    border-radius: 16px;
+}
+
+.app-page-search-fields {
+    .mat-mdc-form-field-icon-prefix > .mat-icon {
+        padding: 0 16px;
+    }
+    .mdc-text-field.mdc-text-field--filled {
+        border-radius: 32px;
+        border: 1px solid var(--color-border-bright);
+    }
+    &.mat-mdc-form-field.mat-form-field-animations-enabled .mdc-text-field__input {
+        transform: translateY(5px);
+    }
+    .mdc-text-field.mdc-text-field--filled.mat-mdc-text-field-wrapper .mat-mdc-form-field-flex .mat-mdc-floating-label {
+        top: calc(var(--mat-form-field-container-height, 56px) / 2 + 2px);
+    }
+    .mat-mdc-form-field-infix {
+        padding-top: 16px;
+        padding-bottom: 16px;
+    }
+}
+
+.app-color-secondary {
+    color: var(--color-secondary);
+}
+
+.app-raised-icon-button {
+    .mat-icon {
+        color: var(--color-white);
+        transform: scale(1.4);
+        margin-right: 20px;
+    }
 }

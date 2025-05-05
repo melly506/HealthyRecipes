@@ -1,0 +1,77 @@
+.search-filters-panel {
+    transition: opacity, height 0.2s ease-in-out;
+    height: 60px;
+    margin-bottom: 2.25rem;
+    &.has-filters {
+        height: 96px;
+    }
+    .search-filters-panel-inner {
+        opacity: 0;
+    }
+    .search-filters-panel-overlay {
+        transition: opacity 0.2s ease-in-out;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 0;
+        opacity: 0;
+        z-index: -1;
+        pointer-events: none;
+    }
+    &.panel-active {
+        height: 170px;
+        margin-bottom: 2.75rem;
+        .search-filters-panel-inner {
+            opacity: 1;
+        }
+        .search-filters-panel-overlay {
+            box-shadow: rgba(35, 58, 71, 0.12) 0 40px 30px -7px;
+            opacity: 1;
+            height: 310px;
+        }
+    }
+}
+
+.search-dropdown-filters {
+    display: flex;
+    gap: 24px;
+    mat-form-field {
+        flex: 1;
+    }
+}
+
+.recipe-search-field {
+    width: 100%;
+    margin-bottom: 12px;
+}
+
+.close-search {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 32px 0;
+    .page-container {
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 42px;
+    }
+}
+
+.pull-right {
+    margin-left: auto;
+}
+
+.recipes-search-header-title {
+   margin: 0;
+   color: var(--color-tertiary);
+}
+
+.search-applied-filters {
+    margin-top: -25px;
+    display: flex;
+    justify-content: center;
+}

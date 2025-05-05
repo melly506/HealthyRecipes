@@ -1,0 +1,17 @@
+.recipe-tags {
+    display: flex;
+    gap: 10px;
+    .recipe-tag {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--color-green-light);
+        border-radius: 12px;
+        width: 36px;
+        height: 36px;
+        box-shadow: rgba(17, 17, 26, 0.1) 0 0 12px;
+        mat-icon {
+            color: var(--color-white);
+        }
+    }
+}

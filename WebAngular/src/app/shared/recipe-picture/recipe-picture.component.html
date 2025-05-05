@@ -1,0 +1,31 @@
+<div class="recipe-picture-container"
+     [class.editable]="editable"
+     (click)="triggerFileInput()">
+
+    @if (recipePicture) {
+        <img class="recipe-picture"
+             [src]="recipePicture"
+             alt="Recipe picture" />
+    } @else {
+        <mat-icon class="empty-picture-icon material-symbols-outlined">imagesmode_outlined</mat-icon>
+    }
+
+    @if (editable) {
+        <div class="overlay">
+            @if (!isUploading) {
+                <mat-icon class="recipe-picture-icon material-symbols-outlined">add_a_photo_outlined</mat-icon>
+            }
+        </div>
+    }
+    @if (isUploading) {
+        <div class="loading-overlay">
+            <app-progress-loader></app-progress-loader>
+        </div>
+    }
+    <input #fileInput type="file"
+           accept="image/*"
+           style="display: none;"
+           (change)="onFileSelected($event)">
+
+</div>
+

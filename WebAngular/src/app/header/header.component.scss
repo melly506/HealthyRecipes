@@ -1,42 +1,105 @@
-@use "sass:color";
-
 /* Стилі для header */
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 20px;
-    background-color: #ffffff;
+    padding: 10px 25px;
+    background-color: var(--color-white);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Додаємо тінь для кращого вигляду */
+    opacity: 1;
+    transition: opacity 0.12s ease-in-out;
+    &.header-invisible {
+        opacity: 0;
+        pointer-events: none;
+    }
+}
+
+nav {
+    display: flex;
+    gap: 20px;
+    font-family: "Oswald", sans-serif;
+    text-decoration: none;
+    color: var(--dark-gray);
+    font-weight: 200;
+    font-size: 20px;
+    transition: color 0.3s ease;
+    letter-spacing: 0.04rem;
+
+    a {
+        &:hover {
+            color: var(--color-red-hover);
+            cursor: pointer;
+        }
+    }
 }
 
 
 /* Стилі для логотипу */
 .logo {
-    display: flex;
-    align-items: center;
-    gap: 10px; /* Відступ між іконкою та текстом */
-
     a {
+        display: flex;
+        align-items: center;
+        gap: 20px; /* Відступ між іконкою та текстом */
         text-decoration: none;
-        color: #459b65;
+        color: var(--color-primary-green);
         font-weight: bold;
-        font-size: 50px;
-        transition: color 0.3s ease;
+        font-size: 42px;
+        transition: color 50ms ease-in-out;
+        line-height: 1.05;
+        letter-spacing: 0.04rem;
 
         &:hover {
-            color: color.adjust(#459b65, $lightness: -10%); /* Змінюємо колір при наведенні */
+            color: var(--color-primary-green-darken);
+            .logo-image {
+                filter: brightness(80%);
+            }
         }
     }
 
-    .material-symbols-outlined {
-        font-size: 40px; /* Розмір іконки */
-        color: #459b65; /* Колір іконки */
-        transition: color 0.3s ease;
+    .logo-text {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-transform: uppercase;
+    }
 
-        &:hover {
-            color: color.adjust(#459b65, $lightness: -10%);
-        }
+    .logo-sub-title {
+        font-size: 14px;
+        font-weight: 400;
+        text-transform: uppercase;
+    }
+
+    .logo-image {
+        position: relative;
+        top: -3px;
+        width: 56px;
     }
 }
 
+.icons {
+  display: flex;
+  gap: 6px; /* Відступ між іконками */
+
+  .mdc-icon-button {
+      color: var(--color-gray-dark); /* Колір іконок */
+      transition: color 0.15s ease;
+
+      &:hover {
+          color: var(--color-red-hover);
+      }
+  }
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    height: 64px;
+    .user-info-name {
+        font-size: 16px;
+    }
+}
+
+.logout-button  {
+    color: var(--color-red-hover);
+}

@@ -1,0 +1,30 @@
+<mat-card appearance="outlined">
+    <div class="info-card-icon color-{{color}}">
+        <mat-icon class="material-symbols-outlined">{{ cardIcon }}</mat-icon>
+    </div>
+    <mat-card-content class="info-card-primary-content">
+        <div class="info-card-tile">
+            {{cardTitle}}
+        </div>
+        <div class="info-card-value">
+            {{primaryValue || 0 }}
+            @if (subValue) {
+                <span class="info-card-unit">{{subValue}}</span>
+            }
+        </div>
+    </mat-card-content>
+    <mat-card-content class="info-card-secondary-content">
+        <div class="info-card-tile">
+            {{secondaryTitle }}
+        </div>
+        <div class="info-card-value">
+            {{secondaryValue || 0 }}
+            @if (secondarySubValue) {
+                <span class="info-card-unit">{{secondarySubValue}}</span>
+            }
+        </div>
+    </mat-card-content>
+    <mat-card-content class="info-card-footer-content">
+        {{footerText}}
+    </mat-card-content>
+</mat-card>

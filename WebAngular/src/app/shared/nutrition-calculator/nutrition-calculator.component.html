@@ -1,0 +1,84 @@
+<div class="calculator-wrapper">
+    <div class="calculator-header">
+        <label class="app-default-label">
+            <mat-icon class="material-symbols-outlined">calculate_outlined</mat-icon>
+            Калькулятор поживних речовин
+        </label>
+
+        <div class="calculator-method-wrapper form-row">
+            <mat-form-field class="app-white-field" appearance="outline">
+                <mat-icon class="material-symbols-outlined" matPrefix>outdoor_grill_outlined</mat-icon>
+                <mat-select [(ngModel)]="selectedMethod" (selectionChange)="onCookingMethodChange()">
+                    @for (method of cookingMethods; track method.id) {
+                        <mat-option [value]="method">
+                            {{ method.name }}
+                        </mat-option>
+                    }
+                </mat-select>
+                <mat-icon class="material-symbols-outlined" matSuffix>keyboard_arrow_down_outlined</mat-icon>
+            </mat-form-field>
+        </div>
+    </div>
+
+    <div class="calculator-cards-wrapper form-row">
+        <app-info-card
+                color="green"
+                cardIcon="balance_outlined"
+                cardTitle="Маса"
+                secondaryTitle="Маса після приготування"
+                subValue="Грам"
+                secondarySubValue="Грам"
+                footerText="Загальна маса страви"
+                [primaryValue]="nutritionInfo?.totalWeight | number:'1.0-0'"
+                [secondaryValue]="nutritionInfo?.cookedWeight | number:'1.0-0' ">
+        </app-info-card>
+        <app-info-card
+                color="purple"
+                cardIcon="bolt_outlined"
+                cardTitle="Калорії"
+                secondaryTitle="Калорії після приготування"
+                footerText="На 100 Грам страви"
+                [primaryValue]="nutritionInfo?.raw?.calories | number:'1.0-0'"
+                [secondaryValue]="nutritionInfo?.cooked?.calories | number:'1.0-0' ">
+        </app-info-card>
+    </div>
+
+    <div class="calculator-cards-wrapper form-row">
+        <app-info-card
+                color="blue"
+                cardIcon="genetics_outlined"
+                cardTitle="Білки"
+                secondaryTitle="Білки (Готовий)"
+                [subValue]="nutritionInfo?.raw?.proteinEnergyPercentage | percent"
+                [secondarySubValue]="nutritionInfo?.cooked?.proteinEnergyPercentage | percent"
+                footerText="На 100 Грам страви"
+                [primaryValue]="nutritionInfo?.raw?.protein | number:'1.0-1'"
+                [secondaryValue]="nutritionInfo?.cooked?.protein | number:'1.0-1'">
+        </app-info-card>
+
+        <app-info-card
+                color="orange"
+                cardIcon="grain_outlined"
+                cardTitle="Жири"
+                secondaryTitle="Жири (Готовий)"
+                [subValue]="nutritionInfo?.raw?.fatEnergyPercentage | percent"
+                [secondarySubValue]="nutritionInfo?.cooked?.fatEnergyPercentage | percent"
+                footerText="На 100 Грам страви"
+                [primaryValue]="nutritionInfo?.raw?.fat | number:'1.0-1'"
+                [secondaryValue]="nutritionInfo?.cooked?.fat | number:'1.0-1'">
+        </app-info-card>
+
+        <app-info-card
+                color="brown"
+                cardIcon="timeline_outlined"
+                cardTitle="Вуглеводи"
+                secondaryTitle="Вуглеводи (Готовий)"
+                [subValue]="nutritionInfo?.raw?.carbsEnergyPercentage | percent"
+                [secondarySubValue]="nutritionInfo?.cooked?.carbsEnergyPercentage | percent"
+                footerText="На 100 Грам страви, з них {{ (nutritionInfo?.cooked?.sugar | number:'1.0-0') || 0 }}г цукри"
+                [primaryValue]="nutritionInfo?.raw?.carbs | number:'1.0-1'"
+                [secondaryValue]="nutritionInfo?.cooked?.carbs | number:'1.0-1'">
+        </app-info-card>
+    </div>
+
+</div>

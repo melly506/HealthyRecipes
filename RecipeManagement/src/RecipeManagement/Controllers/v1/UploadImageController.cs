@@ -48,7 +48,6 @@ public sealed class ImageUploadController(IConfiguration configuration) : Contro
                 .Gravity("auto")                // Automatically focus on the most interesting part
                 .Quality("auto:best")           // Auto-optimize quality
                 .FetchFormat("auto")            // Auto-select best format (e.g., WebP if supported)
-                .Effect("art:hairspray")
         };
         var uploadResult = await _cloudinary.UploadAsync(uploadParams);
 
@@ -97,8 +96,7 @@ public sealed class ImageUploadController(IConfiguration configuration) : Contro
                 .Gravity("faces:auto")          // Focus on faces if present, else auto
                 .Quality("auto:good")           // Auto-optimize quality
                 .FetchFormat("auto")            // Auto-select best format (e.g., WebP)
-                .Radius(256)                    // Optional: Circular crop (512px diameter)
-                .Effect("art:hairspray:70")     
+                .Radius(256)                    // Optional: Circular crop (512px diameter)   
         };
         var uploadResult = await _cloudinary.UploadAsync(uploadParams);
 
