@@ -2,6 +2,8 @@
     <div class="recipe-header">
         <div class="recipe-picture-column">
             <app-recipe-picture
+                    [isLiked]="recipeResponse?.recipe?.isLiked"
+                    [recipeId]="recipeResponse?.recipe?.id"
                     [editable]="false"
                     [recipePicture]="recipeResponse?.recipe?.imageUrl || ''"></app-recipe-picture>
         </div>

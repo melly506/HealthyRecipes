@@ -73,3 +73,10 @@
     color: var(--color-border);
     opacity: .7;
 }
+
+.recipe-like {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 5;
+}

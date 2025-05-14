@@ -1,4 +1,5 @@
 import {
+  booleanAttribute,
   Component,
   DestroyRef,
   ElementRef,
@@ -13,12 +14,14 @@ import { MatIcon } from '@angular/material/icon';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { ImagesService } from '../../core/services';
+import { RecipeLikeComponent } from '../recipes-list/recipe-like/recipe-like.component';
 
 @Component({
   selector: 'app-recipe-picture',
   imports: [
     MatIcon,
-    ProgressLoaderComponent
+    ProgressLoaderComponent,
+    RecipeLikeComponent
   ],
   standalone: true,
   templateUrl: './recipe-picture.component.html',
@@ -38,6 +41,8 @@ export class RecipePictureComponent {
   @ViewChild('fileInput') fileInput!: ElementRef;
   @Input() editable = false;
   @Input() recipePicture = '';
+  @Input() recipeId? = '';
+  @Input({ transform: booleanAttribute }) isLiked = false;
 
   isUploading = false;
   disabled = false;

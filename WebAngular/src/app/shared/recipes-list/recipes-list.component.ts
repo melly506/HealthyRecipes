@@ -10,6 +10,7 @@ import { RecipeDetailed, RecipeSearchParams } from '../../core/interfaces';
 import { CookingTimeFormatPipe } from '../pipes/cooking-time-format.pipe';
 import { RecipeTagIconsComponent } from '../recipe-tag-icons/recipe-tag-icons.component';
 import { ProgressLoaderComponent } from '../progress-loader/progress-loader.component';
+import { RecipeLikeComponent } from './recipe-like/recipe-like.component';
 
 
 @Component({
@@ -21,7 +22,8 @@ import { ProgressLoaderComponent } from '../progress-loader/progress-loader.comp
     RecipeTagIconsComponent,
     RouterLink,
     ProgressLoaderComponent,
-    MatButton
+    MatButton,
+    RecipeLikeComponent
   ],
   templateUrl: './recipes-list.component.html',
   styleUrl: './recipes-list.component.scss'

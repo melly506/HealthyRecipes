@@ -66,4 +66,12 @@ export class RecipesService {
   deleteRecipe(recipeId: string): Observable<void> {
     return this.#http.delete<void>(`${this.#baseUrl}/${recipeId}`);
   }
+
+  likeRecipe(recipeId: string): Observable<void> {
+    return this.#http.post<void>(`${this.#baseUrl}/${recipeId}/like`, { });
+  }
+
+  unlikeRecipe(recipeId: string): Observable<void> {
+    return this.#http.delete<void>(`${this.#baseUrl}/${recipeId}/unlike`, { });
+  }
 }

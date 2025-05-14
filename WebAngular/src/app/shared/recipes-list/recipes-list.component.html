@@ -16,6 +16,7 @@
                     <div class="recipe-image-container">
                         <img [src]="recipe.imageUrl" [alt]="recipe.name" class="recipe-image">
                         <app-recipe-tag-icons class="recipe-tags" [recipe]="recipe"></app-recipe-tag-icons>
+                        <app-recipe-like class="recipe-like" [recipeId]="recipe.id" [isLiked]="recipe.isLiked"></app-recipe-like>
                     </div>
                     <div class="recipe-details">
                         <h2 class="recipe-title">{{ recipe.name }}</h2>
