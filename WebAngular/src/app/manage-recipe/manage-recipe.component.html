@@ -35,6 +35,8 @@
         <div class="recipe-header">
             <div class="upload-picture-column edit-mode-form-container">
                 <app-recipe-picture
+                        [recipeId]="recipeId"
+                        [isLiked]="recipeResponse?.recipe?.isLiked"
                         [editable]="true"
                         formControlName="imageUrl"></app-recipe-picture>
                 @if (recipeForm.get('imageUrl')?.hasError('required')
@@ -44,6 +46,25 @@
             </div>
             <div class="info-column">
                 <h1 class="page-title">{{ pageTitle }}</h1>
+                <app-created-by-wrapper #createdByWrapper [createdBy]="recipeResponse?.recipe?.createdBy">
+                    @if (createdByWrapper.createdByUser; as createdByUser) {
+                        <div class="row">
+                            <div class="recipe-author-wrapper">
+                                <label class="app-default-label">
+                                    Автор рецепта
+                                    @if (createdByUser.id === user?.id) {
+                                        <span class="manage-recipe-author-you">(Ви)</span>
+                                    }
+                                </label>
+                                <div class="recipe-author">
+                                    <app-user-picture [user]="createdByUser"></app-user-picture>
+                                    <span class="user-info-name">{{ createdByUser?.firstName }} {{ createdByUser?.lastName }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </app-created-by-wrapper>
+
                 <div class="edit-mode-form-container">
                     <div class="form-row">
                         <mat-form-field appearance="outline">
@@ -66,8 +87,8 @@
                             <mat-label>Опис</mat-label>
                             <textarea matInput
                                       cdkTextareaAutosize
-                                      cdkAutosizeMinRows="7"
-                                      rows="7"
+                                      [cdkAutosizeMinRows]="recipeId ? 7: 10"
+                                      [rows]="recipeId ? 7: 10"
                                       #autosize="cdkTextareaAutosize"
                                       formControlName="description"></textarea>
                             @if (recipeForm.get('description')?.hasError('maxlength')) {

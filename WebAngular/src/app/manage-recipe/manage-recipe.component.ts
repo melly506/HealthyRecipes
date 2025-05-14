@@ -50,6 +50,8 @@ import { ProgressLoaderComponent } from '../shared/progress-loader/progress-load
 import { RecipeDetailsComponent } from './recipe-details/recipe-details.component';
 import { UnauthorizedComponent } from '../shared/unauthorized/unauthorized.component';
 import { ConfirmDeleteModalComponent } from '../shared/confirm-delete-modal/confirm-delete-modal.component';
+import { CreatedByWrapperComponent } from '../shared/created-by-wrapper/created-by-wrapper.component';
+import { UserPictureComponent } from '../shared/user-picture/user-picture.component';
 
 @Component({
   selector: 'app-manage-recipe',
@@ -70,7 +72,9 @@ import { ConfirmDeleteModalComponent } from '../shared/confirm-delete-modal/conf
     ProgressLoaderComponent,
     RecipeDetailsComponent,
     UnauthorizedComponent,
-    NgTemplateOutlet
+    NgTemplateOutlet,
+    CreatedByWrapperComponent,
+    UserPictureComponent
   ],
   templateUrl: './manage-recipe.component.html',
   styleUrl: './manage-recipe.component.scss'

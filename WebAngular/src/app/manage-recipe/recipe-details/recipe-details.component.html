@@ -10,6 +10,22 @@
         <div class="info-column">
             <h1 class="page-title">{{ recipeResponse?.recipe?.name }}</h1>
 
+            <app-created-by-wrapper #createdByWrapper [createdBy]="recipeResponse?.recipe?.createdBy">
+                <div class="row">
+                    <div class="recipe-author-wrapper">
+                        <label class="app-default-label">
+                            Автор рецепта
+                        </label>
+                        <div class="recipe-author">
+                            @if (createdByWrapper.createdByUser; as createdByUser) {
+                                <app-user-picture [user]="createdByUser"></app-user-picture>
+                                <span class="user-info-name">{{createdByUser?.firstName}} {{createdByUser?.lastName}}</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </app-created-by-wrapper>
+
             <div class="recipe-specifications-wrapper">
                 <label class="app-default-label">
                     Типи харчування

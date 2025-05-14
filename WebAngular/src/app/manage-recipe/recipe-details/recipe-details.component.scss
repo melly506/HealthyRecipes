@@ -12,8 +12,8 @@
 }
 
 .recipe-picture-column {
-    flex: 0 0 305px;
-    margin-right: 32px;
+    flex: 0 0 360px;
+    margin-right: 40px;
     display: flex;
     justify-content: flex-start;
     flex-direction: column;
@@ -22,7 +22,7 @@
 .info-column {
     flex: 1;
     position: relative;
-    width: calc(305px + 32px);
+    width: calc(360px + 40px);
     p {
         font-family: "Oswald", sans-serif;
         color: var(--color-tertiary);
@@ -38,6 +38,30 @@
     gap: 24px;
     line-height: 1;
 }
+
+.recipe-author-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 16px;
+    .app-default-label {
+        width: 180px;
+    }
+}
+
+.recipe-author {
+    display: flex;
+    align-items: center;
+    font-family: "Oswald", sans-serif;
+    letter-spacing: 0.04rem;
+    color: var(--color-tertiary-darken);
+    gap: 12px;
+
+    span {
+        font-size: 18px;
+    }
+}
+
 .cooking-time {
     display: flex;
     align-items: center;

@@ -6,13 +6,13 @@
         <img class="recipe-picture"
              [src]="recipePicture"
              alt="Recipe picture" />
-        @if (recipeId) {
-            <app-recipe-like class="recipe-like"
-                             [recipeId]="recipeId"
-                             [isLiked]="isLiked"></app-recipe-like>
-        }
     } @else {
         <mat-icon class="empty-picture-icon material-symbols-outlined">imagesmode_outlined</mat-icon>
+    }
+    @if (recipeId && !isUploading) {
+        <app-recipe-like class="recipe-like"
+                         [recipeId]="recipeId"
+                         [isLiked]="isLiked"></app-recipe-like>
     }
 
     @if (editable) {

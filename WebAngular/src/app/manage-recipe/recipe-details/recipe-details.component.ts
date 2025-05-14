@@ -7,6 +7,8 @@ import { RecipePictureComponent } from '../../shared/recipe-picture/recipe-pictu
 import { CookingTimeFormatPipe } from '../../shared/pipes/cooking-time-format.pipe';
 import { RecipeResponse, User } from '../../core/interfaces';
 import { ManageIngredientsComponent } from '../../shared/manage-ingredients/manage-ingredients.component';
+import { UserPictureComponent } from '../../shared/user-picture/user-picture.component';
+import { CreatedByWrapperComponent } from '../../shared/created-by-wrapper/created-by-wrapper.component';
 
 @Component({
   selector: 'app-recipe-details',
@@ -19,7 +21,9 @@ import { ManageIngredientsComponent } from '../../shared/manage-ingredients/mana
     MatIcon,
     ManageIngredientsComponent,
     MatChipSet,
-    MatChip
+    MatChip,
+    UserPictureComponent,
+    CreatedByWrapperComponent
   ],
   styleUrl: './recipe-details.component.scss'
 })

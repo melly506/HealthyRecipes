@@ -41,7 +41,7 @@ export class RecipePictureComponent {
   @ViewChild('fileInput') fileInput!: ElementRef;
   @Input() editable = false;
   @Input() recipePicture = '';
-  @Input() recipeId? = '';
+  @Input() recipeId?: string | null = '';
   @Input({ transform: booleanAttribute }) isLiked = false;
 
   isUploading = false;
