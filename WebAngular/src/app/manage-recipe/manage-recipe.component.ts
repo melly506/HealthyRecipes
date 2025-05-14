@@ -1,7 +1,7 @@
 import { Component, DestroyRef, effect, inject, OnInit, ViewChild } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 import { Title } from '@angular/platform-browser';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import {
   AbstractControl,
@@ -74,7 +74,8 @@ import { UserPictureComponent } from '../shared/user-picture/user-picture.compon
     UnauthorizedComponent,
     NgTemplateOutlet,
     CreatedByWrapperComponent,
-    UserPictureComponent
+    UserPictureComponent,
+    RouterLink
   ],
   templateUrl: './manage-recipe.component.html',
   styleUrl: './manage-recipe.component.scss'

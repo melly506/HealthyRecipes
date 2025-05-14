@@ -2,6 +2,7 @@ import { Component, DestroyRef, effect, inject, OnInit, signal } from '@angular/
 import { Title } from '@angular/platform-browser';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -11,7 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { catchError, mergeMap, Observable, of, tap } from 'rxjs';
+import { catchError, mergeMap, Observable, of, switchMap, tap } from 'rxjs';
 
 import { KEYCLOAK_EVENT_SIGNAL, KeycloakEventType, ReadyArgs, typeEventArgs } from 'keycloak-angular';
 import { UsersService } from '../core/services';
@@ -47,6 +48,7 @@ export class ProfileComponent implements OnInit {
   #usersService = inject(UsersService);
   #snackBar = inject(MatSnackBar);
   #title = inject(Title);
+  #route = inject(ActivatedRoute);
 
   #fb = inject(FormBuilder);
   #dr = inject(DestroyRef);
@@ -57,6 +59,7 @@ export class ProfileComponent implements OnInit {
   currentUserLoading = false;
   userForm!: FormGroup;
   isSaving = false;
+  userId: string = '';
 
   constructor() {
     const keycloakSignal = inject(KEYCLOAK_EVENT_SIGNAL);
@@ -67,11 +70,7 @@ export class ProfileComponent implements OnInit {
 
       if (keycloakEvent.type === KeycloakEventType.Ready) {
         this.authenticated = typeEventArgs<ReadyArgs>(keycloakEvent.args);
-        if (this.authenticated) {
-          this.#loadCurrentUser()
-            .pipe(takeUntilDestroyed(this.#dr))
-            .subscribe();
-        }
+        this.#handleRouter();
       }
 
       if (keycloakEvent.type === KeycloakEventType.AuthLogout) {
@@ -97,7 +96,26 @@ export class ProfileComponent implements OnInit {
           this.currentUserLoading = false;
           this.updateForm(user);
         }),
-        catchError(error => {
+        catchError(() => {
+          this.currentUserLoading = false;
+          this.#snackBar.open('Помилка завантаження користувача', '', sbError);
+          return of(null);
+        }),
+        takeUntilDestroyed(this.#dr)
+      );
+  }
+
+  #loadUserById(userId: string): Observable<User | null> {
+    this.currentUserLoading = true;
+    return this.#usersService.getUserById(userId)
+      .pipe(
+        tap(user => {
+          this.currentUserLoading = false;
+          this.currentUser.set(user);
+          this.userId = user.id;
+          this.updateForm(user);
+        }),
+        catchError(() => {
           this.currentUserLoading = false;
           this.#snackBar.open('Помилка завантаження користувача', '', sbError);
           return of(null);
@@ -160,7 +178,7 @@ export class ProfileComponent implements OnInit {
           next: () => {
             this.#snackBar.open('Ваш аватар успішно оновлено', '', sbConfig);
           },
-          error: (error) => {
+          error: () => {
             this.#snackBar.open('Помилка оновлення аватара', '', sbError);
           }
         });
@@ -198,5 +216,20 @@ export class ProfileComponent implements OnInit {
           }
         });
     }
+  }
+
+  #handleRouter() {
+    this.#route.paramMap
+      .pipe(
+        switchMap(params => {
+          const id = params.get('id');
+          if (id) {
+            return this.#loadUserById(id);
+          }
+          return this.#loadCurrentUser();
+        }),
+        takeUntilDestroyed(this.#dr)
+      )
+      .subscribe();
   }
 }

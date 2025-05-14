@@ -56,10 +56,10 @@
                                         <span class="manage-recipe-author-you">(Ви)</span>
                                     }
                                 </label>
-                                <div class="recipe-author">
+                                <a [routerLink]="['/profile']" class="recipe-author">
                                     <app-user-picture [user]="createdByUser"></app-user-picture>
                                     <span class="user-info-name">{{ createdByUser?.firstName }} {{ createdByUser?.lastName }}</span>
-                                </div>
+                                </a>
                             </div>
                         </div>
                     }

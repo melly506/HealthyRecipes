@@ -11,19 +11,20 @@
             <h1 class="page-title">{{ recipeResponse?.recipe?.name }}</h1>
 
             <app-created-by-wrapper #createdByWrapper [createdBy]="recipeResponse?.recipe?.createdBy">
-                <div class="row">
-                    <div class="recipe-author-wrapper">
-                        <label class="app-default-label">
-                            Автор рецепта
-                        </label>
-                        <div class="recipe-author">
-                            @if (createdByWrapper.createdByUser; as createdByUser) {
+                @if (createdByWrapper.createdByUser; as createdByUser) {
+                    <div class="row">
+                        <div class="recipe-author-wrapper">
+                            <label class="app-default-label">
+                                Автор рецепта
+                            </label>
+                            <a [routerLink]="['/profile', createdByUser.id]" class="recipe-author">
                                 <app-user-picture [user]="createdByUser"></app-user-picture>
-                                <span class="user-info-name">{{createdByUser?.firstName}} {{createdByUser?.lastName}}</span>
-                            }
+                                <span class="user-info-name">{{ createdByUser?.firstName }} {{ createdByUser?.lastName }}</span>
+
+                            </a>
                         </div>
                     </div>
-                </div>
+                }
             </app-created-by-wrapper>
 
             <div class="recipe-specifications-wrapper">

@@ -8,14 +8,14 @@
             <div class="profile-header">
                 <div class="avatar-column">
                     <app-user-picture (pictureUpdated)="updateProfilePicture($event)"
-                                      [editable]="authenticated"
+                                      [editable]="authenticated && !userId"
                                       [user]="currentUser()"
                                       [size]="220"></app-user-picture>
                 </div>
                 <div class="info-column">
                     @if (!editMode()) {
                         <div class="view-mode">
-                            @if (authenticated) {
+                            @if (authenticated && !userId) {
                                 <div class="header-actions">
                                     <button mat-fab
                                             aria-label="Edit profile"
@@ -130,28 +130,30 @@
                 </div>
             </div>
 
-            <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
-                <mat-tab label="Мої рецепти">
-                    <div class="tab-content">
-                        <p>My recipes content goes here</p>
-                    </div>
-                </mat-tab>
-                <mat-tab label="Мої коментарі">
-                    <div class="tab-content">
-                        <p>My comments content goes here</p>
-                    </div>
-                </mat-tab>
-                <mat-tab label="Мої інгридієнти">
-                    <div class="tab-content">
-                        <p>My ingredients content goes here</p>
-                    </div>
-                </mat-tab>
-                <mat-tab label="Улюблені рецепти">
-                    <div class="tab-content">
-                        <p>My favorite recipes content goes here</p>
-                    </div>
-                </mat-tab>
-            </mat-tab-group>
+            @if (!userId) {
+                <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+                    <mat-tab label="Мої рецепти">
+                        <div class="tab-content">
+                            <p>My recipes content goes here</p>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="Мої коментарі">
+                        <div class="tab-content">
+                            <p>My comments content goes here</p>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="Мої інгридієнти">
+                        <div class="tab-content">
+                            <p>My ingredients content goes here</p>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="Улюблені рецепти">
+                        <div class="tab-content">
+                            <p>My favorite recipes content goes here</p>
+                        </div>
+                    </mat-tab>
+                </mat-tab-group>
+            }
         }
     }
 </div>

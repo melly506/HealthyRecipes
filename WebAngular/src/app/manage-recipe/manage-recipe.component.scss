@@ -66,6 +66,11 @@
     letter-spacing: 0.04rem;
     color: var(--color-tertiary-darken);
     gap: 12px;
+    cursor: pointer;
+    text-decoration: none;
+    &:hover {
+        color: var(--color-secondary);
+    }
 
     span {
         font-size: 18px;

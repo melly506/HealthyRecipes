@@ -9,6 +9,7 @@ import { RecipeResponse, User } from '../../core/interfaces';
 import { ManageIngredientsComponent } from '../../shared/manage-ingredients/manage-ingredients.component';
 import { UserPictureComponent } from '../../shared/user-picture/user-picture.component';
 import { CreatedByWrapperComponent } from '../../shared/created-by-wrapper/created-by-wrapper.component';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-recipe-details',
@@ -23,7 +24,8 @@ import { CreatedByWrapperComponent } from '../../shared/created-by-wrapper/creat
     MatChipSet,
     MatChip,
     UserPictureComponent,
-    CreatedByWrapperComponent
+    CreatedByWrapperComponent,
+    RouterLink
   ],
   styleUrl: './recipe-details.component.scss'
 })
