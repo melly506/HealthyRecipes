@@ -95,4 +95,11 @@
     <p class="description-field">
         {{ recipeResponse?.recipe?.instructions }}
     </p>
+
+    @if (recipeResponse?.recipe; as recipe) {
+        <div class="app-comments-wrapper">
+            <app-user-comments [recipe]="recipe"></app-user-comments>
+        </div>
+    }
+
 </div>

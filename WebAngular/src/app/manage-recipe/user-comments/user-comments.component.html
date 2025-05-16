@@ -1,0 +1,141 @@
+<div class="comments-section">
+    <label class="app-default-label">Коментарі</label>
+
+    <!-- Форма додавання/редагування коментаря -->
+    @if (authenticated) {
+        <div class="comment-form-container">
+            <form [formGroup]="commentForm" (ngSubmit)="submitComment()" class="comment-form">
+                <mat-form-field appearance="outline" class="comment-textarea">
+                    <mat-label>Додати коментар</mat-label>
+                    <textarea
+                            matInput
+                            #commentInput
+                            cdkTextareaAutosize
+                            cdkAutosizeMinRows="3"
+                            rows="3"
+                            #autosize="cdkTextareaAutosize"
+                            formControlName="text"
+                            placeholder="Напишіть ваш коментар тут..."></textarea>
+                    @if (commentForm.get('text')?.invalid && commentForm.get('text')?.touched) {
+                        <mat-error>
+                            {{ getFormErrorMessage() }}
+                        </mat-error>
+                    }
+                </mat-form-field>
+
+                <div class="comment-form-actions">
+                    @if (isSubmitting) {
+                        <div class="comment-form-actions-progress-wrapper">
+                            <app-progress-loader [minHeight]="48"></app-progress-loader>
+                        </div>
+                    } @else {
+                        <button
+                                mat-raised-button
+                                class="app-raised-icon-button"
+                                color="primary"
+                                type="submit">
+                            <mat-icon class="material-symbols-outlined">send</mat-icon>
+                            {{ editingCommentId ? 'Оновити' : 'Додати' }}
+                        </button>
+
+                        @if (editingCommentId) {
+                            <button
+                                    mat-button
+                                    type="button"
+                                    (click)="cancelEdit()">
+                                Скасувати
+                            </button>
+                        }
+                    }
+                </div>
+            </form>
+        </div>
+    }
+
+    @if (!authenticated) {
+        <div class="login-to-comment">
+            <p>Увійдіть до системи, щоб залишити коментар</p>
+        </div>
+    }
+
+
+    @if (isLoading) {
+        <div class="comments-loader">
+            <app-progress-loader></app-progress-loader>
+        </div>
+    }
+
+    <!-- Список коментарів -->
+    @if (!isLoading) {
+        <div class="comments-list" [class.action-in-progress]="isDeleting">
+            @if (comments.length === 0 && authenticated) {
+                <div class="no-comments">
+                    Поки немає коментарів. Будьте першим, хто залишить коментар!
+                </div>
+            }
+
+            @for (comment of comments; track comment.id) {
+                <div class="comment-item">
+                    <div class="comment-header">
+                        <div class="comment-user">
+                            @if (comment.user; as createdByUser) {
+                                <a [routerLink]="['/profile', createdByUser.id]" class="recipe-author">
+                                    <app-user-picture [size]="48" [user]="createdByUser"></app-user-picture>
+                                </a>
+                                <div class="comment-user-info">
+                                    <div class="user-name">
+                                        {{ createdByUser.firstName }} {{ createdByUser.lastName }}
+                                    </div>
+                                    <a [routerLink]="['/profile', createdByUser.id]" class="comment-user-nickname">
+                                        {{'@'}}{{ createdByUser.username }}
+                                    </a>
+                                </div>
+
+                            }
+                        </div>
+
+                        <!-- Кнопки дій -->
+                        @if (canModifyComment(comment)) {
+                            <div class="comment-actions">
+                                @if (currentUser()?.identifier === comment.createdBy) {
+                                    <button
+                                            mat-icon-button
+                                            color="primary"
+                                            (click)="editComment(comment)"
+                                            matTooltip="Редагувати">
+                                        <mat-icon class="material-symbols-outlined">edit_note</mat-icon>
+                                    </button>
+                                }
+
+                                <button
+                                        mat-icon-button
+                                        color="warn"
+                                        (click)="deleteComment(comment.id)"
+                                        matTooltip="Видалити">
+                                    <mat-icon class="material-symbols-outlined">delete</mat-icon>
+                                </button>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="comment-content">
+                        {{ comment.text }}
+                    </div>
+
+                    <div class="comment-footer">
+                        <div class="comment-date">
+                            <mat-icon class="material-symbols-outlined">schedule</mat-icon>
+                            {{ formatDate(comment.createdOn) }}
+
+                            @if (comment.lastModifiedOn && comment.lastModifiedOn !== comment.createdOn) {
+                                <span class="edited-mark">
+                                    (редаговано {{ formatDate(comment.lastModifiedOn) }})
+                                </span>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

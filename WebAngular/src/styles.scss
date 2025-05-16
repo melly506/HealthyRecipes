@@ -230,10 +230,22 @@ input.app-has-value {
     color: var(--color-secondary);
 }
 
-.app-raised-icon-button {
+.app-raised-icon-button.mat-mdc-raised-button {
     .mat-icon {
         color: var(--color-white);
         transform: scale(1.4);
         margin-right: 20px;
     }
+}
+
+.app-like-button {
+    .mdc-button__label {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+    }
+}
+
+.app-comments-wrapper {
+    padding: 20px 16%;
 }

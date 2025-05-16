@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatIcon } from '@angular/material/icon';
 import { MatChip, MatChipSet } from '@angular/material/chips';
@@ -8,8 +9,8 @@ import { CookingTimeFormatPipe } from '../../shared/pipes/cooking-time-format.pi
 import { RecipeResponse, User } from '../../core/interfaces';
 import { ManageIngredientsComponent } from '../../shared/manage-ingredients/manage-ingredients.component';
 import { UserPictureComponent } from '../../shared/user-picture/user-picture.component';
-import { CreatedByWrapperComponent } from '../../shared/created-by-wrapper/created-by-wrapper.component';
-import { RouterLink } from '@angular/router';
+import { CreatedByWrapperComponent } from '../../shared/created-by-wrapper';
+import { UserCommentsComponent } from '../user-comments/user-comments.component';
 
 @Component({
   selector: 'app-recipe-details',
@@ -25,7 +26,8 @@ import { RouterLink } from '@angular/router';
     MatChip,
     UserPictureComponent,
     CreatedByWrapperComponent,
-    RouterLink
+    RouterLink,
+    UserCommentsComponent
   ],
   styleUrl: './recipe-details.component.scss'
 })
