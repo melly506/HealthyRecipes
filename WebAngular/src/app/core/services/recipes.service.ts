@@ -1,9 +1,10 @@
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { RecipeDetailed, RecipeForUpdate, RecipeResponse } from '../interfaces';
+import { RecipeSource } from '../enums/recipe-source.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,7 @@ export class RecipesService {
    * Get a paginated list of recipes with optional filters and sorting
    */
   getRecipes(
+    source: RecipeSource = RecipeSource.default,
     filters: string = '',
     sortOrder: string = 'name',
     pageNumber: number = 1,
@@ -25,7 +27,43 @@ export class RecipesService {
     dietId: string = '',
     dishTypeId: string = '',
   ): Observable<RecipeDetailed[]> {
-    return this.#http.get<RecipeDetailed[]>(this.#baseUrl, {
+    let url;
+    switch (source) {
+      case RecipeSource.my:
+        url = `${environment.baseUrl}/${environment.apiVersion}/users/me/recipes`;
+        break;
+      case RecipeSource.favorite:
+        url = `${environment.baseUrl}/${environment.apiVersion}/users/me/favoriteRecipes`
+        break;
+      default:
+        url = this.#baseUrl;
+    }
+
+    return this.#http.get<RecipeDetailed[]>(url, {
+      params: {
+        filters,
+        sortOrder,
+        pageNumber,
+        pageSize,
+        foodTypeId,
+        seasonId,
+        dietId,
+        dishTypeId
+      }
+    });
+  }
+
+  getMyRecipes(
+    filters: string = '',
+    sortOrder: string = 'name',
+    pageNumber: number = 1,
+    pageSize: number = 20,
+    foodTypeId: string = '',
+    seasonId: string = '',
+    dietId: string = '',
+    dishTypeId: string = '',
+  ): Observable<RecipeDetailed[]> {
+    return this.#http.get<RecipeDetailed[]>(`${environment.baseUrl}/${environment.apiVersion}/users/me/recipes`, {
       params: {
         filters,
         sortOrder,

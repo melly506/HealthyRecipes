@@ -1,15 +1,15 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { MatChip } from '@angular/material/chips';
-import { MatIcon } from '@angular/material/icon';
 
+import { RecipeSource } from '../core/enums/recipe-source.enum';
+import { RecipeSearchParams } from '../core/interfaces';
 import { RecipeSearchComponent } from '../shared/recipe-search/recipe-search.component';
 import { RecipesListComponent } from '../shared/recipes-list/recipes-list.component';
-import { RecipeSearchParams } from '../core/interfaces';
-import { RecipeSource } from '../core/enums/recipe-source.enum';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
-  selector: 'app-favorites',
+  selector: 'app-my-recipes',
   standalone: true,
   imports: [
     RecipeSearchComponent,
@@ -17,13 +17,13 @@ import { RecipeSource } from '../core/enums/recipe-source.enum';
     MatChip,
     MatIcon
   ],
-  templateUrl: './favorites.component.html',
-  styleUrl: './favorites.component.scss'
+  templateUrl: './my-recipes.component.html',
+  styleUrl: './my-recipes.component.scss'
 })
-export class FavoritesComponent implements OnInit {
+export class MyRecipesComponent implements OnInit {
   #title = inject(Title);
 
-  likedRecipes: RecipeSource = RecipeSource.favorite;
+  myRecipes: RecipeSource = RecipeSource.my;
   searchParamsSignal = signal<RecipeSearchParams>({
     searchTerm: '',
     foodType: null,
@@ -33,7 +33,7 @@ export class FavoritesComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this.#title.setTitle('Green Spoon • Улюблені рецепти');
+    this.#title.setTitle('Green Spoon • Мої рецепти');
   }
 
   updateSearchParams(params: RecipeSearchParams): void {

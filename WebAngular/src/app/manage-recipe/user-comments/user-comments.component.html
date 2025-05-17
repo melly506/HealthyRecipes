@@ -77,22 +77,22 @@
             @for (comment of comments; track comment.id) {
                 <div class="comment-item">
                     <div class="comment-header">
-                        <div class="comment-user">
-                            @if (comment.user; as createdByUser) {
-                                <a [routerLink]="['/profile', createdByUser.id]" class="recipe-author">
+                        @if (comment.user; as createdByUser) {
+                            <a class="comment-user"
+                               [routerLink]="currentUser()?.identifier === createdByUser.identifier ? ['/profile'] : ['/profile', createdByUser.id]">
+                                <div class="recipe-author">
                                     <app-user-picture [size]="48" [user]="createdByUser"></app-user-picture>
-                                </a>
+                                </div>
                                 <div class="comment-user-info">
                                     <div class="user-name">
                                         {{ createdByUser.firstName }} {{ createdByUser.lastName }}
                                     </div>
-                                    <a [routerLink]="['/profile', createdByUser.id]" class="comment-user-nickname">
-                                        {{'@'}}{{ createdByUser.username }}
-                                    </a>
+                                    <span class="comment-user-nickname">
+                                        {{ '@' }}{{ createdByUser.username }}
+                                    </span>
                                 </div>
-
-                            }
-                        </div>
+                            </a>
+                        }
 
                         <!-- Кнопки дій -->
                         @if (canModifyComment(comment)) {

@@ -2,7 +2,7 @@
      [class.panel-active]="isActive"
      [class.has-filters]="hasFilters">
     <mat-form-field class="app-page-search-fields recipe-search-field" (click)="openPanel()">
-        <mat-label>Пошук рецептів</mat-label>
+        <mat-label>{{searchPlaceholder}}</mat-label>
         <mat-icon matPrefix class="material-symbols-outlined">
             search_outlined
         </mat-icon>
@@ -12,6 +12,10 @@
                (focus)="openPanel()"/>
         <div class="app-spacer"></div>
     </mat-form-field>
+    <div class="search-input-badge">
+        <ng-content></ng-content>
+    </div>
+
     @if (!isActive) {
         <div class="search-applied-filters">
             <ng-container *ngTemplateOutlet="chipset"></ng-container>
@@ -55,7 +59,7 @@
                             Очистити пошук та фільтри
                         </button>
                     } @else {
-                        <h2 class="recipes-search-header-title">Пошук рецептів</h2>
+                        <h2 class="recipes-search-header-title">{{searchPlaceholder}}</h2>
                         <div class="pull-right"></div>
                     }
                     <button mat-fab

@@ -1,1 +1,13 @@
-<p>favorites works!</p>
+<div class="page-container">
+    <app-recipe-search
+            searchPlaceholder="Пошук по улюбленим рецептам"
+            (searchParamsChange)="updateSearchParams($event)">
+        <mat-chip>
+            <mat-icon class="material-symbols-outlined">favorite_outlined</mat-icon>
+            Улюблені рецепти
+        </mat-chip>
+    </app-recipe-search>
+    <app-recipes-list [searchParams]="searchParamsSignal()"
+                      [hideNotFoundButton]="true"
+                      [source]="likedRecipes"></app-recipes-list>
+</div>

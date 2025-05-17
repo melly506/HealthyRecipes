@@ -1,0 +1,17 @@
+:host {
+    app-recipe-search {
+        mat-chip {
+            --mdc-chip-elevated-container-color: var(--color-primary-green);
+            --mdc-chip-focus-state-layer-color: var(--color-primary-green);
+            --mdc-chip-outline-color: var(--color-primary-green);
+            padding-left: 28px;
+
+            mat-icon {
+                position: absolute;
+                left: 6px;
+                top: 4px;
+                color: var(--color-white);
+            }
+        }
+    }
+}

@@ -2,12 +2,12 @@ import { Component, DestroyRef, effect, inject, OnInit, signal } from '@angular/
 import { Title } from '@angular/platform-browser';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatTabsModule } from '@angular/material/tabs';
+import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -16,12 +16,14 @@ import { catchError, mergeMap, Observable, of, switchMap, tap } from 'rxjs';
 
 import { KEYCLOAK_EVENT_SIGNAL, KeycloakEventType, ReadyArgs, typeEventArgs } from 'keycloak-angular';
 import { UsersService } from '../core/services';
-import { User, UserForUpdate } from '../core/interfaces';
+import { RecipeSearchParams, User, UserForUpdate } from '../core/interfaces';
 import { UserPictureComponent } from '../shared/user-picture/user-picture.component';
 import { GenderPipe } from '../shared/pipes/gender.pipe';
 import { ProgressLoaderComponent } from '../shared/progress-loader/progress-loader.component';
 import { UnauthorizedComponent } from '../shared/unauthorized/unauthorized.component';
 import { projectName, sbConfig, sbError } from '../app.constant';
+import { RecipesListComponent } from '../shared/recipes-list/recipes-list.component';
+import { RecipeSource } from '../core/enums/recipe-source.enum';
 
 @Component({
   selector: 'app-profile',
@@ -39,7 +41,9 @@ import { projectName, sbConfig, sbError } from '../app.constant';
     ReactiveFormsModule,
     UserPictureComponent,
     ProgressLoaderComponent,
-    UnauthorizedComponent
+    UnauthorizedComponent,
+    RecipesListComponent,
+    RouterLink
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
@@ -56,6 +60,22 @@ export class ProfileComponent implements OnInit {
   authenticated = false;
   currentUser = signal<User | null>(null);
   editMode = signal<boolean>(false);
+  myRecipeSearchParamsSignal = signal<RecipeSearchParams>({
+    searchTerm: '',
+    foodType: null,
+    season: null,
+    diet: null,
+    dishType: null
+  });
+  favoriteRecipeSearchParamsSignal = signal<RecipeSearchParams>({
+    searchTerm: '',
+    foodType: null,
+    season: null,
+    diet: null,
+    dishType: null
+  });
+  myRecipes: RecipeSource = RecipeSource.my;
+  likedRecipes: RecipeSource = RecipeSource.favorite;
   currentUserLoading = false;
   userForm!: FormGroup;
   isSaving = false;
@@ -215,6 +235,23 @@ export class ProfileComponent implements OnInit {
             this.#snackBar.open('Помилка оновлення користувача', '', sbError);
           }
         });
+    }
+  }
+
+  onTabChange(event: MatTabChangeEvent) {
+    switch (event.index) {
+      case 0:
+        this.myRecipeSearchParamsSignal.set({
+          ...this.favoriteRecipeSearchParamsSignal(),
+          searchTerm: ''
+        });
+        break
+      case 1:
+        this.favoriteRecipeSearchParamsSignal.set({
+          ...this.favoriteRecipeSearchParamsSignal(),
+          searchTerm: ''
+        });
+        break;
     }
   }
 

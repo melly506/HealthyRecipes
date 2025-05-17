@@ -1,10 +1,15 @@
 import {
-  Component, DestroyRef,
-  ElementRef, EventEmitter,
+  Component,
+  DestroyRef,
+  ElementRef,
+  EventEmitter,
   HostListener,
   inject,
+  Input,
   OnDestroy,
-  OnInit, Output, Signal,
+  OnInit,
+  Output,
+  Signal,
   ViewChild
 } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
@@ -53,6 +58,7 @@ interface RecipeSearchFilter {
 })
 export class RecipeSearchComponent implements OnInit, OnDestroy {
   @ViewChild('searchInput') searchInput!: ElementRef<HTMLInputElement>;
+  @Input() searchPlaceholder = 'Пошук рецептів';
   @Output() searchParamsChange = new EventEmitter<RecipeSearchParams>();
 
   #foodTypesService = inject(FoodTypesService);

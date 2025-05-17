@@ -2,10 +2,12 @@
     @if (noRecipesFound && !isLoading) {
         <div class="no-recipes-message">
             <h1 class="auth-message">Рецептів не знайдено</h1>
-            <button class="app-raised-icon-button" mat-raised-button color="primary" routerLink="/recipe">
-                <mat-icon class="material-symbols-outlined">contract_edit_outlined</mat-icon>
-                Створити рецепт
-            </button>
+            @if (!hideNotFoundButton) {
+                <button class="app-raised-icon-button" mat-raised-button color="primary" routerLink="/recipe">
+                    <mat-icon class="material-symbols-outlined">contract_edit_outlined</mat-icon>
+                    Створити рецепт
+                </button>
+            }
         </div>
     }
 

@@ -1,4 +1,4 @@
-import { Component, DestroyRef, effect, inject, input, OnInit } from '@angular/core';
+import { Component, DestroyRef, effect, inject, Input, input, OnInit } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
@@ -11,6 +11,7 @@ import { CookingTimeFormatPipe } from '../pipes/cooking-time-format.pipe';
 import { RecipeTagIconsComponent } from '../recipe-tag-icons/recipe-tag-icons.component';
 import { ProgressLoaderComponent } from '../progress-loader/progress-loader.component';
 import { RecipeLikeComponent } from './recipe-like/recipe-like.component';
+import { RecipeSource } from '../../core/enums/recipe-source.enum';
 
 
 @Component({
@@ -31,6 +32,9 @@ import { RecipeLikeComponent } from './recipe-like/recipe-like.component';
 export class RecipesListComponent implements OnInit {
   #recipesService = inject(RecipesService);
   #dr = inject(DestroyRef);
+
+  @Input() source: RecipeSource = RecipeSource.default;
+  @Input() hideNotFoundButton = false;
 
   recipes: RecipeDetailed[] = [];
   isLoading = false;
@@ -74,6 +78,7 @@ export class RecipesListComponent implements OnInit {
     this.isLoading = true;
 
     this.#recipesService.getRecipes(
+      this.source,
       params.searchTerm,
       this.sortOrder,
       this.currentPage,

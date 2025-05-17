@@ -1,0 +1,11 @@
+<div class="page-container">
+    <app-recipe-search searchPlaceholder="Пошук по моїм рецептам"
+                       (searchParamsChange)="updateSearchParams($event)">
+        <mat-chip>
+            <mat-icon class="material-symbols-outlined">sentiment_satisfied_outlined</mat-icon>
+            Мої рецепти
+        </mat-chip>
+    </app-recipe-search>
+    <app-recipes-list [searchParams]="searchParamsSignal()"
+                      [source]="myRecipes"></app-recipes-list>
+</div>

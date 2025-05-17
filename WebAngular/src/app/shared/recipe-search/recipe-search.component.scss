@@ -75,3 +75,10 @@
     display: flex;
     justify-content: center;
 }
+
+.search-input-badge {
+    position: absolute;
+    top: 105px;
+    left: 50%;
+    transform: translateX(-50%);
+}
