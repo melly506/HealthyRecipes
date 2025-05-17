@@ -1,0 +1,154 @@
+<div class="manage-ingredient">
+    @if (isLoading) {
+        <app-progress-loader></app-progress-loader>
+    } @else {
+        <div class="form-header">
+            <h2>{{ editMode ? 'Редагування інгредієнта' : 'Новий інгредієнт' }}</h2>
+        </div>
+
+        <form [formGroup]="ingredientForm">
+            <div class="form-sections">
+                <div class="form-section">
+                    <div class="form-row">
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Назва інгредієнта</mat-label>
+                            <input matInput formControlName="name" placeholder="Введіть назву інгредієнта">
+                            @if (nameControl?.hasError('required') && nameControl?.touched) {
+                                <mat-error>
+                                    Будь ласка, введіть назву інгредієнта
+                                </mat-error>
+                            }
+                            @if (nameControl?.hasError('maxlength')) {
+                                <mat-error>
+                                    Назва інгредієнта не повинна перевищувати 100 символів
+                                </mat-error>
+                            }
+                        </mat-form-field>
+                    </div>
+
+                    <div class="form-row">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Одиниця виміру</mat-label>
+                            <mat-select formControlName="unit">
+                                <mat-option value="g">Грам (г)</mat-option>
+                                <mat-option value="ml">Мілілітр (мл)</mat-option>
+                            </mat-select>
+                            <mat-icon class="material-symbols-outlined" matSuffix>keyboard_arrow_down_outlined</mat-icon>
+                            @if (unitControl?.hasError('required') && unitControl?.touched) {
+                                <mat-error>
+                                    Будь ласка, виберіть одиницю виміру
+                                </mat-error>
+                            }
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Харчова цінність (на 100 г/мл)</h3>
+
+                    <div class="form-row nutritional-row">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Калорії</mat-label>
+                            <input matInput mask="separator.2"  [allowNegativeNumbers]="false" formControlName="calories">
+                            <span matSuffix>ккал</span>
+                            @if (caloriesControl?.hasError('required') && caloriesControl?.touched) {
+                                <mat-error>
+                                    Будь ласка, вкажіть калорійність
+                                </mat-error>
+                            }
+
+                            @if (caloriesControl?.hasError('max')) {
+                                <mat-error>
+                                    Значення не повинно перевищувати 900 ккал
+                                </mat-error>
+                            }
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Жири</mat-label>
+                            <input matInput  mask="separator.2"  [allowNegativeNumbers]="false" formControlName="fat">
+                            <span matSuffix>г</span>
+                            @if (fatControl?.hasError('required') && fatControl?.touched) {
+                                <mat-error>
+                                    Будь ласка, вкажіть вміст жирів
+                                </mat-error>
+                            }
+                            @if (fatControl?.hasError('max')) {
+                                <mat-error>
+                                    Значення не повинно перевищувати 100 г
+                                </mat-error>
+                            }
+                        </mat-form-field>
+                    </div>
+
+                    <div class="form-row nutritional-row">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Вуглеводи</mat-label>
+                            <input matInput mask="separator.2"  [allowNegativeNumbers]="false" formControlName="carbs">
+                            <span matSuffix>г</span>
+                            @if (carbsControl?.hasError('required') && carbsControl?.touched) {
+                                <mat-error>
+                                    Будь ласка, вкажіть вміст вуглеводів
+                                </mat-error>
+                            }
+                            @if (carbsControl?.hasError('max')) {
+                                <mat-error>
+                                    Значення не повинно перевищувати 100 г
+                                </mat-error>
+                            }
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Білки</mat-label>
+                            <input matInput mask="separator.2"  [allowNegativeNumbers]="false" formControlName="protein">
+                            <span matSuffix>г</span>
+                            @if (proteinControl?.hasError('required') && proteinControl?.touched) {
+                                <mat-error>
+                                    Будь ласка, вкажіть вміст білків
+                                </mat-error>
+                            }
+                            @if (proteinControl?.hasError('max')) {
+                                <mat-error>
+                                    Значення не повинно перевищувати 100 г
+                                </mat-error>
+                            }
+                        </mat-form-field>
+                    </div>
+
+                    <div class="form-row">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Цукор</mat-label>
+                            <input matInput mask="separator.2"  [allowNegativeNumbers]="false" formControlName="sugar">
+                            <span matSuffix>г</span>
+                            @if (sugarControl?.hasError('required') && sugarControl?.touched) {
+                                <mat-error>
+                                    Будь ласка, вкажіть вміст цукру
+                                </mat-error>
+                            }
+                            @if (sugarControl?.hasError('max')) {
+                                <mat-error>
+                                    Значення не повинно перевищувати 100 г
+                                </mat-error>
+                            }
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                @if (isSaving) {
+                    <app-progress-loader [minHeight]="48"></app-progress-loader>
+                } @else {
+                    <button mat-button (click)="cancel()">
+                        Скасувати
+                    </button>
+                    <button mat-raised-button
+                            color="primary"
+                            (click)="saveIngredient()">
+                        {{ editMode ? 'Оновити' : 'Створити' }}
+                    </button>
+                }
+            </div>
+        </form>
+    }
+</div>

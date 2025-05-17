@@ -1,0 +1,75 @@
+.manage-ingredient  {
+    max-width: 100%;
+    width: 100%;
+    padding: 0;
+    font-family: "Oswald", sans-serif;
+    letter-spacing: 0.04rem;
+
+    .form-header {
+        padding: 40px;
+
+        h2 {
+            font-weight: 600;
+            font-size: 28px;
+            color: var(--color-secondary-dark);
+            text-transform: uppercase;
+            letter-spacing: 0.1rem;
+            margin: 0;
+        }
+    }
+
+    .form-section {
+        padding: 15px 40px;
+
+        h3 {
+            margin-top: 0;
+            margin-bottom: 16px;
+            font-size: 20px;
+            font-weight: 500;
+            color: var(--color-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.05rem;
+        }
+    }
+
+    .form-row {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 16px;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        mat-form-field {
+            flex: 1;
+        }
+
+        &.nutritional-row {
+            @media (max-width: 600px) {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+    }
+
+    .full-width {
+        width: 100%;
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 16px;
+        padding: 15px 40px 40px;
+
+        button {
+            min-width: 120px;
+        }
+    }
+
+    .form-sections {
+        overflow-y: auto;
+        height: calc(100vh - 240px);
+    }
+}

@@ -3,14 +3,12 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
-import { Ingredient } from '../interfaces';
+import { Ingredient, IngredientDetailed, IngredientForCreation } from '../interfaces';
 
 @Injectable({
   providedIn: 'root'
 })
-// name services 
 export class IngredientsService {
-  //#- ПРИВАТНИЙ МЕТОД
   #http = inject(HttpClient);
   #baseUrl = `${environment.baseUrl}/${environment.apiVersion}/ingredients`;
 
@@ -19,8 +17,8 @@ export class IngredientsService {
     sortOrder: string = 'name',
     pageNumber: number = 1,
     pageSize: number = 25
-  ): Observable<Ingredient[]> {
-    return this.#http.get<Ingredient[]>(`${this.#baseUrl}`, {
+  ): Observable<IngredientDetailed[]> {
+    return this.#http.get<IngredientDetailed[]>(`${this.#baseUrl}`, {
       params: {
         filters,
         sortOrder,
@@ -28,5 +26,21 @@ export class IngredientsService {
         pageSize
       }
     })
+  }
+
+  getIngredientById(id: string): Observable<IngredientDetailed> {
+    return this.#http.get<IngredientDetailed>(`${this.#baseUrl}/${id}`);
+  }
+
+  createIngredient(ingredient: IngredientForCreation): Observable<IngredientDetailed> {
+    return this.#http.post<IngredientDetailed>(`${this.#baseUrl}`, ingredient);
+  }
+
+  updateIngredient(id: string, ingredient: IngredientForCreation): Observable<IngredientDetailed> {
+    return this.#http.put<IngredientDetailed>(`${this.#baseUrl}/${id}`, ingredient);
+  }
+
+  deleteIngredient(id: string): Observable<void> {
+    return this.#http.delete<void>(`${this.#baseUrl}/${id}`);
   }
 }

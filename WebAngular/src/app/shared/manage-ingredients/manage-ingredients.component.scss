@@ -45,15 +45,24 @@
 }
 
 .no-results {
-    height: 60px;
     display: flex;
+    flex-direction: column;
+    height: 180px;
     align-items: center;
     justify-content: center;
     font-family: "Oswald", sans-serif;
     color: var(--color-tertiary-lighten);
     letter-spacing: 0.04rem;
-    font-weight: 300;
-    gap: 12px
+    font-weight: 400;
+    font-size: 21px;
+    gap: 32px
+}
+
+.ingredient-name-wrapper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .ingredient-name {

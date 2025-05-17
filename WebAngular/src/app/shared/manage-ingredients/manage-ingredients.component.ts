@@ -2,15 +2,16 @@ import {
   AfterViewInit,
   ChangeDetectorRef,
   Component,
-  DestroyRef,
+  DestroyRef, effect,
   ElementRef,
   forwardRef,
   HostListener,
   inject,
   Input,
-  OnInit,
+  OnInit, signal,
   ViewChild
 } from '@angular/core';
+import { MatTooltip } from '@angular/material/tooltip';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatFormField, MatInput, MatPrefix, MatSuffix } from '@angular/material/input';
 import { MatIcon } from '@angular/material/icon';
@@ -29,16 +30,19 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatList, MatListItem } from '@angular/material/list';
 import { MatTableModule } from '@angular/material/table';
 import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
-import { MatIconButton } from '@angular/material/button';
-import { debounceTime, distinctUntilChanged, finalize, Subject, switchMap, tap } from 'rxjs';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
+import { debounceTime, distinctUntilChanged, filter, finalize, Subject, switchMap, tap } from 'rxjs';
 import { NgxMaskDirective } from 'ngx-mask';
+import { KEYCLOAK_EVENT_SIGNAL, KeycloakEventType, ReadyArgs, typeEventArgs } from 'keycloak-angular';
 
-import { IngredientsService } from '../../core/services';
-import { Ingredient } from '../../core/interfaces';
+import { IngredientsService, UsersService } from '../../core/services';
+import { Ingredient, IngredientDetailed, User } from '../../core/interfaces';
 import { ProgressLoaderComponent } from '../progress-loader/progress-loader.component';
 import { UnitPipe } from '../pipes/unit.pipe';
 import { RecipeIngredientDetails } from '../../core/interfaces';
 import { NutritionCalculatorComponent } from '../nutrition-calculator';
+import { ManageIngredientComponent } from './manage-ingredient/manage-ingredient.component';
 
 @Component({
   selector: 'app-manage-ingredients',
@@ -60,7 +64,9 @@ import { NutritionCalculatorComponent } from '../nutrition-calculator';
     UnitPipe,
     MatIconButton,
     NgxMaskDirective,
-    NutritionCalculatorComponent
+    NutritionCalculatorComponent,
+    MatButton,
+    MatTooltip
   ],
   templateUrl: './manage-ingredients.component.html',
   styleUrl: './manage-ingredients.component.scss',
@@ -94,6 +100,8 @@ export class ManageIngredientsComponent implements OnInit, AfterViewInit, Contro
   #ingredientsService = inject(IngredientsService);
   #dr = inject(DestroyRef);
   #cd = inject(ChangeDetectorRef);
+  #dialog = inject(MatDialog);
+  #usersService = inject(UsersService);
   isActive = false;
 
   searchTermControl = new FormControl<string>('');
@@ -103,8 +111,10 @@ export class ManageIngredientsComponent implements OnInit, AfterViewInit, Contro
   pageSize = 10;
   hasMoreItems = true;
   isLoading = false;
+  authenticated = false;
+  currentUser = signal<User | null>(null);
 
-  filteredIngredients: Ingredient[] = [];
+  filteredIngredients: IngredientDetailed[] = [];
   selectedIngredients: Ingredient[] = [];
   ingredientCounts: Map<string, number | null> = new Map<string, number | null>();
   updateFormValue$ = new Subject<void>();
@@ -132,6 +142,23 @@ export class ManageIngredientsComponent implements OnInit, AfterViewInit, Contro
   @HostListener('document:keydown.escape')
   onEscapeKey(): void {
     this.closePanel();
+  }
+
+  constructor() {
+    const keycloakSignal = inject(KEYCLOAK_EVENT_SIGNAL);
+
+    effect(async () => {
+      const keycloakEvent = keycloakSignal();
+
+      if (keycloakEvent.type === KeycloakEventType.Ready) {
+        this.authenticated = typeEventArgs<ReadyArgs>(keycloakEvent.args);
+        this.#loadCurrentUser();
+      }
+
+      if (keycloakEvent.type === KeycloakEventType.AuthLogout) {
+        this.authenticated = false;
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -282,6 +309,50 @@ export class ManageIngredientsComponent implements OnInit, AfterViewInit, Contro
     this.updateFormValue$.next();
   }
 
+  openEditIngredient(event: MouseEvent, ingredient: IngredientDetailed) {
+    event.preventDefault();
+    event.stopPropagation();
+    const dialogRef = this.#dialog.open(ManageIngredientComponent, {
+      width: '1200px',
+      panelClass: 'app-big-modal',
+      data: { ingredientId: ingredient.id }
+    });
+
+    dialogRef.afterClosed()
+      .pipe(
+        takeUntilDestroyed(this.#dr),
+        filter((ingredient): ingredient is Ingredient => !!ingredient)
+      )
+      .subscribe(ingredient => {
+        this.filteredIngredients = this.filteredIngredients.map(filteredIngredient => {
+          if (filteredIngredient.id === ingredient.id) {
+            return {
+              ...filteredIngredient,
+              ...ingredient
+            };
+          }
+          return filteredIngredient;
+        });
+      });
+  }
+
+  openAddNewIngredient() {
+    const dialogRef = this.#dialog.open(ManageIngredientComponent, {
+      width: '1200px',
+      panelClass: 'app-big-modal',
+      data: { ingredientId: null }
+    });
+
+    dialogRef.afterClosed()
+      .pipe(
+        takeUntilDestroyed(this.#dr),
+        filter((ingredient): ingredient is IngredientDetailed => !!ingredient)
+      )
+      .subscribe(ingredient => {
+        this.filteredIngredients.unshift(ingredient);
+      });
+  }
+
   writeValue(ingredientDetails: RecipeIngredientDetails[]): void {
     if (ingredientDetails && ingredientDetails.length) {
       // Clear existing data
@@ -425,5 +496,16 @@ export class ManageIngredientsComponent implements OnInit, AfterViewInit, Contro
       protein: item.protein,
       name: item.ingredientName
     };
+  }
+
+  #loadCurrentUser(): void {
+    if (!this.authenticated) {
+      return;
+    }
+    this.#usersService.userCache
+      .pipe(takeUntilDestroyed(this.#dr))
+      .subscribe(user => {
+        this.currentUser.set(user);
+      });
   }
 }

@@ -26,7 +26,19 @@
                         [disabled]="isAdded(ingredient)"
                         role="listitem"
                         (click)="selectItem(ingredient)">
-                    {{ingredient.name}}
+                    <div class="ingredient-name-wrapper">
+                        {{ingredient.name}}
+                        @if (currentUser()?.identifier === ingredient.createdBy) {
+                            <button
+                                    mat-icon-button
+                                    color="primary"
+                                    [disabled]="isAdded(ingredient)"
+                                    (click)="openEditIngredient($event, ingredient)"
+                                    matTooltip="Редагувати">
+                                <mat-icon class="material-symbols-outlined">edit_note</mat-icon>
+                            </button>
+                        }
+                    </div>
                 </mat-list-item>
             }
         </mat-list>
@@ -37,8 +49,14 @@
 
         @if (filteredIngredients.length === 0 && !isLoading) {
             <div class="no-results">
-                <mat-icon class="material-symbols-outlined">fmd_bad_outlined</mat-icon>
                 Інгредієнти не знайдено
+                <button class="app-raised-icon-button"
+                        mat-raised-button
+                        color="primary"
+                        (click)="openAddNewIngredient()">
+                    <mat-icon class="material-symbols-outlined">add_outlined</mat-icon>
+                    Додати інгридієнт
+                </button>
             </div>
         }
     </div>

@@ -126,6 +126,11 @@
     }
 }
 
+// Mat dialog styles
+:root {
+    --mdc-dialog-container-color: var(--color-white);
+}
+
 
 html {
     color-scheme: light;
