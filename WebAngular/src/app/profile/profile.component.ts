@@ -24,6 +24,7 @@ import { UnauthorizedComponent } from '../shared/unauthorized/unauthorized.compo
 import { projectName, sbConfig, sbError } from '../app.constant';
 import { RecipesListComponent } from '../shared/recipes-list/recipes-list.component';
 import { RecipeSource } from '../core/enums/recipe-source.enum';
+import { MyIngredientsComponent } from './my-ingredients/my-ingredients.component';
 
 @Component({
   selector: 'app-profile',
@@ -43,7 +44,8 @@ import { RecipeSource } from '../core/enums/recipe-source.enum';
     ProgressLoaderComponent,
     UnauthorizedComponent,
     RecipesListComponent,
-    RouterLink
+    RouterLink,
+    MyIngredientsComponent
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'

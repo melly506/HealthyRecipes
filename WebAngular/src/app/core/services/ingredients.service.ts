@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
-import { Ingredient, IngredientDetailed, IngredientForCreation } from '../interfaces';
+import { IngredientDetailed, IngredientForCreation } from '../interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +26,23 @@ export class IngredientsService {
         pageSize
       }
     })
+  }
+
+  getMyIngredients(
+    filters: string = '',
+    sortOrder: string = 'name',
+    pageNumber: number = 1,
+    pageSize: number = 100
+  ): Observable<IngredientDetailed[]> {
+
+    return this.#http.get<IngredientDetailed[]>(`${environment.baseUrl}/${environment.apiVersion}/users/me/ingredients`, {
+      params: {
+        filters,
+        sortOrder,
+        pageNumber,
+        pageSize
+      }
+    });
   }
 
   getIngredientById(id: string): Observable<IngredientDetailed> {

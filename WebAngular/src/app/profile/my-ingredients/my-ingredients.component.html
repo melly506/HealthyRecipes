@@ -1,0 +1,68 @@
+<table
+        class="ingredients-table"
+        [hidden]="!myIngredients.length"
+        mat-table
+        matSort
+        [dataSource]="myIngredients">
+
+    <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Інгредієнт</th>
+        <td mat-cell *matCellDef="let ingredient">
+            <span class="ingredient-name">{{ingredient.name}}</span>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="calories">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Калорії</th>
+        <td mat-cell *matCellDef="let ingredient">{{ingredient.calories}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="fat">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Жири</th>
+        <td mat-cell *matCellDef="let ingredient">{{ingredient.fat}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="protein">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Білки</th>
+        <td mat-cell *matCellDef="let ingredient">{{ingredient.protein}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="carbs">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Вуглеводи</th>
+        <td mat-cell *matCellDef="let ingredient">{{ingredient.carbs}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="sugar">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Цукри</th>
+        <td mat-cell *matCellDef="let ingredient">{{ingredient.sugar}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="unit">
+        <th mat-header-cell *matHeaderCellDef>Одиниця виміру</th>
+        <td mat-cell *matCellDef="let ingredient">
+            {{ ingredient.unit | unit }}
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let ingredient">
+            <button
+                    mat-icon-button
+                    color="primary"
+                    (click)="openEditIngredient(ingredient)"
+                    matTooltip="Редагувати">
+                <mat-icon class="material-symbols-outlined">edit_note</mat-icon>
+            </button>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+
+@if (!myIngredients.length) {
+    <div class="no-ingredients-message">
+        У вас поки що немає інгредієнтів
+    </div>
+}
