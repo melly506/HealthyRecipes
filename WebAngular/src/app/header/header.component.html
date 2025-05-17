@@ -1,8 +1,7 @@
 <header [class.header-invisible]="isInvisible">
     <nav>
         <!-- Посилання для навігації -->
-        <a>ШВИДКІ РЕЦЕПТИ</a>
-        <a>СТАТТІ</a>
+        <a class="navigation-link" routerLink="/quick-recipes">ШВИДКІ РЕЦЕПТИ</a>
     </nav>
     <div class="logo">
         <!-- Посилання на головну сторінку -->
@@ -25,7 +24,6 @@
                 <mat-icon class="material-symbols-outlined">person_outlined</mat-icon>
             </button>
         }
-
 
         <button class="medium-icon-button" routerLink="/favorites" mat-icon-button>
             <mat-icon class="material-symbols-outlined">favorite_outlined</mat-icon>

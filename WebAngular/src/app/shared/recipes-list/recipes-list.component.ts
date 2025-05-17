@@ -32,9 +32,11 @@ import { RecipeSource } from '../../core/enums/recipe-source.enum';
 export class RecipesListComponent implements OnInit {
   #recipesService = inject(RecipesService);
   #dr = inject(DestroyRef);
+  #quickRecipesLimit = 30;
 
   @Input() source: RecipeSource = RecipeSource.default;
   @Input() hideNotFoundButton = false;
+  @Input() quick = false;
 
   recipes: RecipeDetailed[] = [];
   isLoading = false;
@@ -77,9 +79,11 @@ export class RecipesListComponent implements OnInit {
 
     this.isLoading = true;
 
+    const formattedSearchTerm = this.#formatSearchTerm(params.searchTerm);
+
     this.#recipesService.getRecipes(
       this.source,
-      params.searchTerm,
+      formattedSearchTerm,
       this.sortOrder,
       this.currentPage,
       this.pageSize,
@@ -135,5 +139,20 @@ export class RecipesListComponent implements OnInit {
           }
         }
       });
+  }
+
+  #formatSearchTerm(searchTerm: string): string {
+    if (!searchTerm || searchTerm.trim() === '') {
+      if (this.quick) {
+        return `cookingTime < ${this.#quickRecipesLimit}`;
+      }
+      return '';
+    }
+
+    if (this.quick) {
+      return `${searchTerm} && cookingTime < ${this.#quickRecipesLimit}`;
+    }
+
+    return searchTerm;
   }
 }

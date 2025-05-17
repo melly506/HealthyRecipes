@@ -1,1 +1,10 @@
-<p>quick-recipes works!</p>
+<div class="page-container">
+    <app-recipe-search searchPlaceholder="Пошук по швидким рецептам"
+                       (searchParamsChange)="updateSearchParams($event)">
+        <mat-chip>
+            <mat-icon class="material-symbols-outlined">acute_outlined</mat-icon>
+            Швидкі рецепти
+        </mat-chip>
+    </app-recipe-search>
+    <app-recipes-list [quick]="true" [searchParams]="searchParamsSignal()"></app-recipes-list>
+</div>
