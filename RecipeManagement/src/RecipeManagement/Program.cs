@@ -7,7 +7,13 @@ using RecipeManagement.Extensions.Services;
 using RecipeManagement.Databases;
 using RecipeManagement.Resources.HangfireUtilities;
 
+DotNetEnv.Env.Load(
+    Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "../../../.env"))
+);
+
+
 var builder = WebApplication.CreateBuilder(args);
+builder.Configuration.AddEnvironmentVariables();
 Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(builder.Configuration)
     .Enrich.WithProperty("ApplicationName", builder.Environment.ApplicationName)
@@ -15,6 +21,9 @@ Log.Logger = new LoggerConfiguration()
     .CreateLogger();
 
 builder.Host.UseSerilog();
+
+builder.Services.AddEnvironmentVariableProcessing(builder.Configuration);
+
 
 builder.ConfigureServices();
 var app = builder.Build();

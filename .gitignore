@@ -303,6 +303,3 @@ __pycache__/
 
 #ENV
 .env
-
-/RecipeManagement/src/RecipeManagement/appsettings.json
-/RecipeManagement/src/RecipeManagement/appsettings.Development.json

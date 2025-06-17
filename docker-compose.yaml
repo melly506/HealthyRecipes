@@ -4,24 +4,24 @@ services:
   keycloakdb:
     image: postgres
     ports:
-      - '50780:5432'
+      - '${KEYCLOAKDB_PORT}:5432'
     environment:
-      POSTGRES_DB: keycloak
-      POSTGRES_USER: keycloak
-      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - keycloak-data:/var/lib/postgresql/data
   
   keycloak:
     image: quay.io/keycloak/keycloak:latest
     environment:
-      KC_DB: postgres
-      KC_DB_URL_HOST: keycloakdb
-      KC_DB_URL_DATABASE: keycloak
-      KC_DB_USERNAME: keycloak
-      KC_DB_PASSWORD: password
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: ${KC_DB}
+      KC_DB_URL_HOST: ${KC_DB_URL_HOST}
+      KC_DB_URL_DATABASE: ${KC_DB_URL_DATABASE}
+      KC_DB_USERNAME: ${KC_DB_USERNAME}
+      KC_DB_PASSWORD: ${KC_DB_PASSWORD}
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
     ports:
       - '3255:8080'
     volumes:
@@ -35,12 +35,12 @@ services:
     image: mcr.microsoft.com/mssql/server
     restart: always
     ports:
-      - '50734:1433'
+      - '${RECIPEMANAGEMENT_DB_PORT}:1433'
     environment:
-      - DB_USER=SA
-      - SA_PASSWORD=MELNYKvalya123456123456q$!
-      - DB_CONTAINER_NAME=dev_recipemanagement
-      - ACCEPT_EULA=Y
+      - DB_USER=${DB_USER}
+      - SA_PASSWORD=${SA_PASSWORD}
+      - DB_CONTAINER_NAME=${DB_CONTAINER_NAME}
+      - ACCEPT_EULA=${ACCEPT_EULA}
     volumes:
       - recipemanagement-data:/var/lib/sqlserver/data
 
@@ -48,15 +48,15 @@ services:
     image: jaegertracing/all-in-one:latest
 #    port mappings: https://www.jaegertracing.io/docs/1.32/getting-started/
     ports:
-      - "50744:5775/udp"
-      - "50743:6831/udp"
-      - "50745:6832/udp"
-      - "50746:5778"
-      - "50747:16686"
-      - "50748:14250"
-      - "50749:14268"
-      - "50750:14269"
-      - "50751:9411"
+      - "${JAEGER_PORT_1}:5775/udp"
+      - "${JAEGER_PORT_2}:6831/udp"
+      - "${JAEGER_PORT_3}:6832/udp"
+      - "${JAEGER_PORT_4}:5778"
+      - "${JAEGER_PORT_5}:16686"
+      - "${JAEGER_PORT_6}:14250"
+      - "${JAEGER_PORT_7}:14268"
+      - "${JAEGER_PORT_8}:14269"
+      - "${JAEGER_PORT_9}:9411"
         
 volumes:
   # compose volumes marker - do not delete
